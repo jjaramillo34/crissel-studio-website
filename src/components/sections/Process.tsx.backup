@@ -1,0 +1,277 @@
+import { motion } from 'framer-motion'
+import { Palette, Smartphone, Heart, Clock, Star, Brush, Droplets, Layers } from 'lucide-react'
+
+const Process = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6 }
+    }
+  }
+
+  const tools = [
+    {
+      icon: Smartphone,
+      title: "Procreate",
+      description: "Arte digital profesional en iPad con pinceles personalizados para efectos de acuarela",
+      color: "from-blue-400 to-purple-600"
+    },
+    {
+      icon: Palette,
+      title: "Acuarelas Tradicionales",
+      description: "Pigmentos de alta calidad para crear efectos únicos y texturas auténticas",
+      color: "from-pink-400 to-red-500"
+    },
+    {
+      icon: Brush,
+      title: "Pinceles Japoneses",
+      description: "Herramientas tradicionales que permiten trazos precisos y delicados",
+      color: "from-amber-400 to-orange-500"
+    },
+    {
+      icon: Heart,
+      title: "Inspiración Gastronómica",
+      description: "Observación detallada de texturas, colores y formas de alimentos",
+      color: "from-green-400 to-emerald-500"
+    }
+  ]
+
+  const processSteps = [
+    {
+      step: "01",
+      title: "Inspiración y Boceto",
+      description: "Observo cuidadosamente el alimento, analizando sus formas, texturas y colores únicos.",
+      icon: Star,
+      time: "5-10 min"
+    },
+    {
+      step: "02", 
+      title: "Preparación de Materiales",
+      description: "Selecciono los colores perfectos y preparo el papel con técnicas de enmascarado.",
+      icon: Droplets,
+      time: "3-5 min"
+    },
+    {
+      step: "03",
+      title: "Capas Base",
+      description: "Aplico las primeras capas de color, trabajando de claro a oscuro con paciencia.",
+      icon: Layers,
+      time: "10-15 min"
+    },
+    {
+      step: "04",
+      title: "Detalles y Texturas",
+      description: "Añado los detalles finales que dan vida y realismo a la ilustración gastronómica.",
+      icon: Brush,
+      time: "15-20 min"
+    }
+  ]
+    {
+      name: "Cera Italiana",
+      type: "Cejas",
+      description: "Para el diseño perfecto de cejas",
+      icon: Heart,
+      gradient: "from-crissel-accent to-crissel-coral"
+    },
+    {
+      name: "Pestañas Premium",
+      type: "Extensiones",
+      description: "Pestañas individuales de máxima calidad",
+      icon: Sparkles,
+      gradient: "from-crissel-pink to-crissel-accent"
+    },
+    {
+      name: "Herramientas Pro",
+      type: "Profesionales",
+      description: "Instrumentos especializados para cada tratamiento",
+      icon: Heart,
+      gradient: "from-crissel-coral to-crissel-accent"
+    }
+  ]
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6 }
+    }
+  }
+
+  return (
+    <section id="process" className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl lg:text-5xl font-bold text-crissel-dark mb-4">
+            Nuestro <span className="gradient-text">Proceso</span>
+          </h2>
+          <div className="w-20 h-1 bg-gradient-to-r from-crissel-coral to-crissel-accent rounded-full mx-auto mb-6"></div>
+          <p className="text-xl text-crissel-dark/70 max-w-3xl mx-auto">
+            Cada tratamiento es un proceso cuidadoso diseñado para realzar tu belleza natural. 
+            Conoce paso a paso cómo trabajamos para ti.
+          </p>
+        </motion.div>
+
+        {/* Process steps */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+          className="relative mb-20"
+        >
+          {/* Connecting line */}
+          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-crissel-coral to-crissel-accent transform md:-translate-x-1/2"></div>
+
+          <div className="space-y-12">
+            {steps.map((step, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                className={`relative flex items-center ${
+                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                }`}
+              >
+                {/* Step content */}
+                <div className={`flex-1 ${index % 2 === 0 ? 'md:pr-8' : 'md:pl-8'} ml-16 md:ml-0`}>
+                  <motion.div
+                    whileHover={{ scale: 1.02, y: -5 }}
+                    className="bg-gradient-to-br from-white to-crissel-cream rounded-3xl p-8 shadow-lg border border-crissel-light/30"
+                  >
+                    <div className="flex items-start space-x-4">
+                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${step.color} flex items-center justify-center shadow-lg flex-shrink-0`}>
+                        <step.icon className="w-8 h-8 text-crissel-dark" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-crissel-dark mb-2">{step.title}</h3>
+                        <p className="text-crissel-dark/70 leading-relaxed">{step.description}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Step number circle */}
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 }}
+                  className="absolute left-4 md:left-1/2 w-16 h-16 bg-gradient-to-r from-crissel-coral to-crissel-accent rounded-full flex items-center justify-center transform md:-translate-x-1/2 shadow-lg border-4 border-white z-10"
+                >
+                  <span className="text-white font-bold text-lg">{step.number}</span>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Tools section */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+        >
+          <motion.div
+            variants={itemVariants}
+            className="text-center mb-12"
+          >
+            <h3 className="text-3xl font-bold text-crissel-dark mb-4">
+              Productos y Herramientas <span className="gradient-text">Profesionales</span>
+            </h3>
+            <p className="text-lg text-crissel-dark/70 max-w-2xl mx-auto">
+              Trabajamos solo con productos y herramientas de la más alta calidad
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {tools.map((tool, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                whileHover={{ scale: 1.05, y: -10 }}
+                className="group"
+              >
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white to-crissel-cream border-2 border-crissel-light/30 shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-center group-hover:border-crissel-coral/50">
+                  {/* Icon */}
+                  <motion.div
+                    animate={{ rotate: [0, 5, 0, -5, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }}
+                    className={`w-16 h-16 mx-auto mb-4 bg-gradient-to-r ${tool.gradient} rounded-2xl flex items-center justify-center shadow-lg`}
+                  >
+                    <tool.icon className="w-8 h-8 text-white" />
+                  </motion.div>
+
+                  {/* Content */}
+                  <h4 className="text-xl font-bold text-crissel-dark mb-2">{tool.name}</h4>
+                  <p className="text-sm text-crissel-coral font-medium mb-3">{tool.type}</p>
+                  <p className="text-crissel-dark/70 text-sm leading-relaxed">{tool.description}</p>
+
+                  {/* Hover effect */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-crissel-coral/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl"></div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Experience CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="text-center mt-16"
+        >
+          <div className="bg-gradient-to-r from-crissel-coral/10 to-crissel-accent/10 rounded-3xl p-8 border border-crissel-light/30">
+            <h3 className="text-2xl font-bold text-crissel-dark mb-4">
+              ¿Lista para vivir la experiencia Crissel Studio?
+            </h3>
+            <p className="text-crissel-dark/70 mb-6">
+              Agenda tu cita y descubre por qué somos la elección preferida en Ambato
+            </p>
+            <motion.a
+              href="https://bit.ly/crisselstudio"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-block px-8 py-4 bg-gradient-to-r from-crissel-coral to-crissel-accent text-white rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              Reserva tu Cita
+            </motion.a>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+export default Process
