@@ -2,105 +2,54 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { Eye, Sparkles, Star, Heart, Crown } from 'lucide-react'
 
-// Import gallery images
-import makeupTransform from '../../assets/images/makeuptransform.jpg'
-import lashExtensions1 from '../../assets/images/lashextensions1.jpg'
-import lashExtensions2 from '../../assets/images/lashextensions2.jpg'
-import lashLifting from '../../assets/images/lashLifting.jpg'
-import browDesign1 from '../../assets/images/browDesign1.jpg'
-import lashLiftingResult from '../../assets/images/lashLiftingResult.jpg'
-import browDesign2 from '../../assets/images/browDesign2.jpg'
-import lashExtensions3 from '../../assets/images/lashExtensions3.jpg'
-import artisticMakeup from '../../assets/images/artisticMakeup.jpg'
+// Dynamically import all images from the gallery folder
+const galleryImages = import.meta.glob('../../assets/gallery/*.{jpg,jpeg,png,webp}', { eager: true })
+const images = Object.keys(galleryImages).map((path) => ({
+  src: (galleryImages[path] as any).default,
+  name: path.split('/').pop(),
+}))
+
+// Map filenames to categories
+const imageCategories: Record<string, string> = {
+  // Lashes
+  'extensiones-pestanas-1.jpg': 'lashes',
+  'extensiones-pestanas-2.jpg': 'lashes',
+  'extensiones-pestanas-3.jpg': 'lashes',
+  'extensiones-pestanas-4.jpg': 'lashes',
+  // Brows
+  'microblading-cejas-1.jpg': 'brows',
+  'microblading-cejas-2.jpg': 'brows',
+  'planchado-cejas-1.jpg': 'brows',
+  'planchado-cejas-2.jpg': 'brows',
+  // Makeup
+  'maquillaje-fantasia-1.jpg': 'makeup',
+  'maquillaje-fantasia-2.jpg': 'makeup',
+  'maquillaje-fantasia-3.jpg': 'makeup',
+  'maquillaje-fantasia-4.jpg': 'makeup',
+  'maquillaje-fantasia-5.jpg': 'makeup',
+  'maquillaje-fantasia-6.jpg': 'makeup',
+  'maquillaje-fantasia-7.jpg': 'makeup',
+  'maquillaje-fantasia-8.jpg': 'makeup',
+  'maquillaje-fantasia-9.jpg': 'makeup',
+  'maquillaje-fantasia-10.jpg': 'makeup',
+  'maquillaje-fantasia-11.jpg': 'makeup',
+  'maquillaje-social-1.jpg': 'makeup',
+}
+
+const categories = [
+  { id: 'all', label: 'Todo', icon: Star },
+  { id: 'lashes', label: 'Extensiones de Pestañas', icon: Eye },
+  { id: 'brows', label: 'Diseño de Cejas', icon: Crown },
+  { id: 'makeup', label: 'Maquillaje', icon: Heart },
+]
 
 const Gallery = () => {
   const [activeCategory, setActiveCategory] = useState('all')
+  const [selected, setSelected] = useState<number|null>(null)
 
-  const categories = [
-    { id: 'all', label: 'Todo', icon: Star },
-    { id: 'lashes', label: 'Extensiones de Pestañas', icon: Eye },
-    { id: 'brows', label: 'Diseño de Cejas', icon: Crown },
-    { id: 'makeup', label: 'Maquillaje', icon: Heart }
-  ]
-
-  const artworks = [
-    {
-      id: 1,
-      title: "Transformación de Maquillaje",
-      category: "makeup",
-      type: "Antes y después",
-      image: makeupTransform,
-      icon: Heart
-    },
-    {
-      id: 2,
-      title: "Extensiones de Pestañas Volumen",
-      category: "lashes",
-      type: "Efecto dramático",
-      image: lashExtensions1,
-      icon: Eye
-    },
-    {
-      id: 3,
-      title: "Extensiones Profesionales",
-      category: "lashes",
-      type: "Resultado natural",
-      image: lashExtensions2,
-      icon: Eye
-    },
-    {
-      id: 4,
-      title: "Lifting de Pestañas",
-      category: "lashes",
-      type: "Curvatura natural",
-      image: lashLifting,
-      icon: Eye
-    },
-    {
-      id: 5,
-      title: "Diseño de Cejas Perfect",
-      category: "brows",
-      type: "Antes del tratamiento",
-      image: browDesign1,
-      icon: Crown
-    },
-    {
-      id: 6,
-      title: "Resultado Lifting",
-      category: "lashes",
-      type: "Transformación completa",
-      image: lashLiftingResult,
-      icon: Eye
-    },
-    {
-      id: 7,
-      title: "Cejas Diseñadas",
-      category: "brows",
-      type: "Depilación con hilo",
-      image: browDesign2,
-      icon: Crown
-    },
-    {
-      id: 8,
-      title: "Extensiones Híbridas",
-      category: "lashes",
-      type: "Efecto natural",
-      image: lashExtensions3,
-      icon: Eye
-    },
-    {
-      id: 9,
-      title: "Maquillaje Artístico",
-      category: "makeup",
-      type: "Trabajo creativo",
-      image: artisticMakeup,
-      icon: Heart
-    }
-  ]
-
-  const filteredArtworks = activeCategory === 'all' 
-    ? artworks 
-    : artworks.filter(artwork => artwork.category === activeCategory)
+  const filteredImages = activeCategory === 'all'
+    ? images
+    : images.filter(img => imageCategories[img.name ?? ''] === activeCategory)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -176,9 +125,9 @@ const Gallery = () => {
           variants={containerVariants}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {filteredArtworks.map((artwork) => (
+          {filteredImages.map((img, i) => (
             <motion.div
-              key={artwork.id}
+              key={img.name}
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -10 }}
               className="group cursor-pointer"
@@ -187,8 +136,8 @@ const Gallery = () => {
                 {/* Actual Beauty Work Image */}
                 <div className="aspect-square relative">
                   <img 
-                    src={artwork.image}
-                    alt={artwork.title}
+                    src={img.src}
+                    alt={img.name?.replace(/[-_]/g, ' ').replace(/\..+$/, '')}
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
@@ -199,15 +148,14 @@ const Gallery = () => {
                   {/* Service icon overlay */}
                   <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
-                      <artwork.icon className="w-6 h-6 text-[#E57373]" />
+                      <Eye className="w-6 h-6 text-[#E57373]" />
                     </div>
                   </div>
                 </div>
 
                 {/* Content overlay */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent text-white">
-                  <h3 className="text-lg font-bold mb-1">{artwork.title}</h3>
-                  <p className="text-white/90 text-sm">{artwork.type}</p>
+                  <h3 className="text-lg font-bold mb-1">{img.name?.replace(/\..+$/, '')}</h3>
                 </div>
 
                 {/* Hover effect - border glow */}
@@ -245,6 +193,37 @@ const Gallery = () => {
           </div>
         </motion.div>
       </div>
+      {/* Lightbox Modal */}
+      {selected !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={() => setSelected(null)}>
+          <div className="relative max-w-3xl w-full flex flex-col items-center" onClick={e => e.stopPropagation()}>
+            <button
+              className="absolute top-2 right-2 text-white text-2xl bg-black/40 rounded-full px-2 py-1 hover:bg-black/70 transition"
+              onClick={() => setSelected(null)}
+              aria-label="Cerrar"
+            >
+              ×
+            </button>
+            <img
+              src={filteredImages[selected].src}
+              alt={filteredImages[selected].name?.replace(/[-_]/g, ' ').replace(/\..+$/, '')}
+              className="rounded-lg shadow-2xl max-h-[80vh] w-auto object-contain"
+            />
+            <div className="flex gap-4 mt-4">
+              <button
+                className="text-white bg-[#E57373] rounded-full px-4 py-2 disabled:opacity-50"
+                onClick={() => setSelected(selected > 0 ? selected - 1 : selected)}
+                disabled={selected === 0}
+              >Anterior</button>
+              <button
+                className="text-white bg-[#E57373] rounded-full px-4 py-2 disabled:opacity-50"
+                onClick={() => setSelected(selected < filteredImages.length - 1 ? selected + 1 : selected)}
+                disabled={selected === filteredImages.length - 1}
+              >Siguiente</button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

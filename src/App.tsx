@@ -9,6 +9,8 @@ import Gallery from './components/sections/Gallery'
 import Contact from './components/sections/Contact'
 import Footer from './components/Footer'
 import ProductsPage from './components/ProductsPage'
+import FloatingWhatsApp from './components/FloatingWhatsApp'
+import GalleryPage from './components/GalleryPage'
 import logoImage from './assets/images/logo_photo.png'
 
 function LoadingScreen() {
@@ -72,8 +74,10 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/productos" element={<ProductsPage />} />
+          <Route path="/galeria" element={<GalleryPage />} />
         </Routes>
         <Footer />
+        <FloatingWhatsApp />
       </div>
     </Router>
   )

@@ -3,12 +3,12 @@ import { Eye, Crown, Heart, Sparkles, Clock, Star, ArrowLeft, Calendar } from 'l
 import { Link } from 'react-router-dom'
 
 // Import service images
-import extensionesImage from '../assets/images/WhatsApp Image 2025-06-06 at 10.05.34 PM.jpeg'
-import planchadoImage from '../assets/images/WhatsApp Image 2025-06-06 at 10.05.33 PM (2).jpeg'
-import depilacionImage from '../assets/images/WhatsApp Image 2025-06-06 at 10.05.33 PM (1).jpeg'
-import maquillajeImage from '../assets/images/WhatsApp Image 2025-06-06 at 10.05.33 PM.jpeg'
-import extensionesBenefitsImage from '../assets/images/WhatsApp Image 2025-06-06 at 10.05.32 PM (3).jpeg'
-import extensionesDetailsImage from '../assets/images/WhatsApp Image 2025-06-06 at 10.05.33 PM (3).jpeg'
+import extensionesImage from '../assets/gallery/maquillaje-fantasia-10.jpg'
+import planchadoImage from '../assets/gallery/maquillaje-fantasia-5.jpg'
+import depilacionImage from '../assets/gallery/maquillaje-fantasia-4.jpg'
+import maquillajeImage from '../assets/gallery/maquillaje-fantasia-9.jpg'
+import extensionesBenefitsImage from '../assets/gallery/maquillaje-fantasia-3.jpg'
+import extensionesDetailsImage from '../assets/gallery/maquillaje-fantasia-6.jpg'
 
 const ProductsPage = () => {
   const services = [
