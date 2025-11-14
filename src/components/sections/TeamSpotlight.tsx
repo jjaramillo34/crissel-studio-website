@@ -3,6 +3,7 @@ import { GraduationCap, Award } from 'lucide-react'
 import team1 from '../../assets/gallery/maquillaje-fantasia-7.jpg'
 import team2 from '../../assets/gallery/maquillaje-fantasia-11.jpg'
 import team3 from '../../assets/gallery/maquillaje-social-1.jpg'
+import { SectionHeader } from './SectionHeader'
 
 const teamMembers = [
   {
@@ -34,29 +35,11 @@ const TeamSpotlight = () => {
   return (
     <section className="bg-white py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 text-center">
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
-            className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white/95 px-5 py-2 text-sm font-medium text-[#E57373] shadow-sm"
-          >
-            Equipo certificado
-          </motion.div>
-          <motion.h2
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            className="text-4xl font-bold text-[#E57373]"
-          >
-            Manos expertas detrás de cada look
-          </motion.h2>
-          <p className="mt-4 text-gray-600">
-            Nuestro equipo está en constante actualización, domina tendencias globales y adapta cada técnica a tus rasgos únicos.
-          </p>
-        </div>
+        <SectionHeader
+          eyebrow="Nuestro talento"
+          title="Conoce al equipo certificado de Crissel"
+          description="Somos especialistas en mirada, maquillaje y cuidado integral. Cada artista mantiene certificaciones vigentes y actualiza técnicas globales para ofrecerte resultados impecables."
+        />
 
         <div className="grid gap-8 md:grid-cols-3">
           {teamMembers.map((member, index) => (

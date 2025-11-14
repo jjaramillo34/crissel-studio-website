@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { Eye, Sparkles, Clock, Star, Heart, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { SectionHeader } from './SectionHeader'
 
 const Services = () => {
   const prefersReducedMotion = useReducedMotion()
@@ -121,33 +122,11 @@ const Services = () => {
         }
       />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <motion.div
-          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={prefersReducedMotion ? { duration: 0.6 } : { duration: 0.8, ease: 'easeOut' }}
-          className="text-center mb-16"
-        >
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
-            className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white/80 px-5 py-2 text-sm font-medium text-[#E57373] shadow-sm backdrop-blur"
-          >
-            <span className="inline-flex h-2 w-2 rounded-full bg-[#E57373] shadow-[0_0_10px_rgba(229,115,115,0.6)]" />
-            Rituales hechos a tu medida
-          </motion.div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-            Nuestros <span className="text-[#E57373]">Servicios</span>
-          </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] rounded-full mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Servicios profesionales de belleza especializados en realzar el poder de tu mirada.
-            Técnicas expertas para pestañas, cejas y maquillaje.
-          </p>
-        </motion.div>
+        <SectionHeader
+          eyebrow="Servicios estrella"
+          title="Experiencias de belleza hechas para ti"
+          description="Realzamos tu mirada con tratamientos personalizados, técnicas certificadas y seguimiento cercano. Descubre el servicio que encaja con tu estilo."
+        />
 
         <div className="mx-auto mb-14 grid gap-4 sm:grid-cols-3 max-w-5xl">
           {highlightStats.map((stat, index) => (

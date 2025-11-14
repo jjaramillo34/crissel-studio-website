@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { Sparkles, Gift, Heart } from 'lucide-react'
+import { SectionHeader } from './SectionHeader'
 
 const packages = [
   {
@@ -31,29 +32,11 @@ const FeaturedPackages = () => {
   return (
     <section className="bg-white py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 text-center">
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
-            className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white/95 px-5 py-2 text-sm font-medium text-[#E57373] shadow-sm"
-          >
-            Paquetes destacados
-          </motion.div>
-          <motion.h2
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            className="text-4xl font-bold text-[#E57373]"
-          >
-            Diseñados para tu momento especial
-          </motion.h2>
-          <p className="mt-4 text-gray-600">
-            Combos curados por nuestro equipo para que solo tengas que disfrutar. Reserva rápida y beneficios extra incluidos.
-          </p>
-        </div>
+        <SectionHeader
+          eyebrow="Paquetes destacados"
+          title="Bundles creados para consentirte"
+          description="Elige combos listos para cada ocasión. Incluyen beneficios adicionales y recomendaciones exclusivas del estudio."
+        />
 
         <div className="grid gap-8 md:grid-cols-3">
           {packages.map((bundle, index) => (

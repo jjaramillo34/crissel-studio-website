@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Sparkles } from 'lucide-react'
+import { SectionHeader } from './SectionHeader'
 
 const highlights = [
   {
@@ -30,17 +31,16 @@ const ProductsTeaser = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
-              className="space-y-5"
+              className="space-y-6"
             >
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white/90 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#E57373]">
-                Sección de productos
-              </span>
-              <h2 className="text-3xl font-bold text-[#E57373] md:text-4xl">
-                Complementa tu look con nuestros favoritos studio
-              </h2>
-              <p className="text-gray-600">
-                Descubre el catálogo completo en la página de productos. Preparamos kits exclusivos y recomendaciones personalizadas para que tu rutina sea más fácil.
-              </p>
+              <SectionHeader
+                eyebrow="Favoritos del estudio"
+                title="Productos que potencian tus servicios"
+                description="Descubre accesorios, tratamientos y kits que recomendamos después de cada experiencia. Están listos en el estudio y también puedes solicitarlos online."
+                align="start"
+                className="mb-6"
+              />
+
               <Link
                 to="/productos"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#E57373] transition-colors duration-300 hover:text-[#c84d4d]"

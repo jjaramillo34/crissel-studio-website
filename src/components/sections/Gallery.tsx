@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Eye, Sparkles, Star, Heart, Crown } from 'lucide-react'
+import { SectionHeader } from './SectionHeader'
 
 // Dynamically import all images from the gallery folder
 const galleryImages = import.meta.glob('../../assets/gallery/*.{jpg,jpeg,png,webp}', { eager: true })
@@ -185,23 +186,11 @@ const Gallery = () => {
         }
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, ease: 'easeOut' }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-            Nuestra <span className="text-[#E57373]">Galería</span>
-          </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] rounded-full mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Descubre las transformaciones increíbles que realizamos en Crissel Studio. 
-            Cada imagen muestra nuestro compromiso con la excelencia y la belleza natural.
-          </p>
-        </motion.div>
+        <SectionHeader
+          eyebrow="Galería principal"
+          title="Explora los looks más pedidos del estudio"
+          description="Filtra por categoría y descubre cómo transformamos pestañas, cejas y maquillaje. Cada imagen es una clienta feliz que confió en nuestro equipo."
+        />
 
         {/* Category filters */}
         <motion.div
@@ -331,34 +320,33 @@ const Gallery = () => {
           className="text-center mt-16"
         >
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-pink-100">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">
-              ¿Lista para tu transformación?
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Agenda tu cita y descubre el poder de realzar tu mirada con nuestros servicios profesionales
-            </p>
-            <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <MotionLink
-                to="/galeria"
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center justify-center rounded-full border-2 border-[#E57373] px-8 py-3 text-sm font-semibold text-[#E57373] transition-all duration-300 hover:bg-[#E57373] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
-                aria-label="Ver galería completa"
-              >
-                Ver Galería Completa
-              </MotionLink>
-              <motion.a
-                href="https://bit.ly/crisselstudio"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-block px-8 py-4 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
-                aria-label="Abrir reservas online de Crissel Studio en una nueva ventana"
-              >
-                Reservar Cita
-              </motion.a>
-            </div>
+            <SectionHeader
+              eyebrow="¿Lista para lucir así?"
+              title="Reserva tu cita con Crissel Studio"
+              description="Agenda online o envíanos un mensaje. Nuestro equipo te guiará para elegir el servicio perfecto y preparar tu próxima transformación."
+              align="center"
+              className="mb-6"
+            />
+            <MotionLink
+              to="/galeria"
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center justify-center rounded-full border-2 border-[#E57373] px-8 py-3 text-sm font-semibold text-[#E57373] transition-all duration-300 hover:bg-[#E57373] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+              aria-label="Ver galería completa"
+            >
+              Ver Galería Completa
+            </MotionLink>
+            <motion.a
+              href="https://bit.ly/crisselstudio"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-block px-8 py-4 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+              aria-label="Abrir reservas online de Crissel Studio en una nueva ventana"
+            >
+              Reservar Cita
+            </motion.a>
           </div>
         </motion.div>
       </div>

@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { MapPin, Star, MessageCircle } from 'lucide-react'
+import { SectionHeader } from './SectionHeader'
 
 const reviews = [
   { name: 'Julia M.', text: 'Servicio impecable, súper delicadas con el trabajo y el asesoramiento.', rating: 5 },
@@ -12,26 +13,11 @@ const LocationReviews = () => {
   return (
     <section className="bg-white py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto mb-12 text-center max-w-2xl">
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
-            className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white/90 px-5 py-2 text-sm font-medium text-[#E57373] shadow-sm"
-          >
-            Estamos en el corazón de Ambato
-          </motion.div>
-          <motion.h2
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            className="text-4xl font-bold text-[#E57373]"
-          >
-            Mapa interactivo + reseñas
-          </motion.h2>
-        </div>
+        <SectionHeader
+          eyebrow="Visítanos"
+          title="Ubicación precisa y reseñas reales"
+          description="Nos encuentras en el Centro Comercial La Galería, un espacio seguro y céntrico en Ambato. Mira cómo nos califican nuestras clientas."
+        />
 
         <div className="grid gap-8 lg:grid-cols-2">
           <motion.div
@@ -43,7 +29,7 @@ const LocationReviews = () => {
           >
             <iframe
               title="Ubicación Crissel Studio"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d998.2456134498702!2d-78.6172263!3d-1.2523192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d38153a7f47a1b%3A0xede20b87c18fd8f!2sCentro%20Comercial%20La%20Galer%C3%ADa!5e0!3m2!1ses-419!2sec!4v1732552800000!5m2!1ses-419!2sec"
+              src="https://www.google.com/maps/embed?pb=!4v1731613494000!6m8!1m7!1sjuRQZVoaQ-9Iv1kgEQ6n6A!2m2!1d-1.2406276!2d-78.6290431!3f90!4f0!5f0.7820865974627469"
               className="h-[420px] w-full border-0"
               allowFullScreen
               loading="lazy"

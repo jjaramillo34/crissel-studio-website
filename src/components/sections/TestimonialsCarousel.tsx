@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react'
+import { SectionHeader } from './SectionHeader'
 
 const testimonials = [
   {
@@ -47,26 +48,11 @@ const TestimonialsCarousel = () => {
   return (
     <section className="relative overflow-hidden bg-white py-20">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 text-center">
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
-            className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white/90 px-5 py-2 text-sm font-medium text-[#E57373] shadow-sm"
-          >
-            Testimonios Crissel Studio
-          </motion.div>
-          <motion.h2
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            className="text-4xl font-bold text-[#E57373]"
-          >
-            Lo que dicen nuestras clientas
-          </motion.h2>
-        </div>
+        <SectionHeader
+          eyebrow="Testimonios crissel studio"
+          title="Opiniones que inspiran confianza"
+          description="Cada experiencia se adapta a tus necesidades. Ellas ya lo vivieron y comparten cómo transformó su rutina."
+        />
 
         <div className="relative overflow-hidden rounded-3xl border border-pink-100 bg-gradient-to-r from-[#FCE4EC]/70 to-white p-8 shadow-xl">
           <motion.button

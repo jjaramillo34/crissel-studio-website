@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { Heart, Eye, Star, Award, Sparkles } from 'lucide-react'
 import heroImage from '../../assets/images/hero.jpg'
+import { SectionHeader } from './SectionHeader'
 
 const About = () => {
   const prefersReducedMotion = useReducedMotion()
@@ -108,41 +109,12 @@ const About = () => {
           {/* Left side - Content */}
           <div className="space-y-8">
             <motion.div variants={itemVariants}>
-              <motion.h2 
-                className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, ease: 'easeOut' }}
-              >
-                Sobre <motion.span 
-                  className="text-[#E57373] inline-block"
-                  animate={
-                    prefersReducedMotion
-                      ? { textShadow: "0 0 0px rgba(229, 115, 115, 0)" }
-                      : { 
-                          textShadow: [
-                            "0 0 0px rgba(229, 115, 115, 0)",
-                            "0 0 10px rgba(229, 115, 115, 0.5)",
-                            "0 0 0px rgba(229, 115, 115, 0)"
-                          ]
-                        }
-                  }
-                  transition={
-                    prefersReducedMotion
-                      ? { duration: 0 }
-                      : { duration: 2, repeat: Infinity }
-                  }
-                >Nosotros</motion.span>
-              </motion.h2>
-              <motion.div 
-                className="w-20 h-1 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] rounded-full"
-                initial={{ width: 0 }}
-                whileInView={{ width: "5rem" }}
-                transition={
-                  prefersReducedMotion
-                    ? { duration: 0 }
-                    : { duration: 1, delay: 0.5, ease: 'easeOut' }
-                }
+              <SectionHeader
+                eyebrow="Nuestra esencia"
+                title="Belleza consciente en Crissel Studio"
+                description="Somos especialistas en realzar la mirada con técnicas seguras, procesos personalizados y un acompañamiento cálido en cada visita."
+                align="start"
+                className="mb-4"
               />
             </motion.div>
 

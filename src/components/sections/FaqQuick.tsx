@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ChevronDown, HelpCircle } from 'lucide-react'
+import { SectionHeader } from './SectionHeader'
 
 const faqItems = [
   {
@@ -34,26 +35,11 @@ const FaqQuick = () => {
   return (
     <section className="bg-white py-20">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 text-center">
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
-            className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white/95 px-5 py-2 text-sm font-medium text-[#E57373] shadow-sm"
-          >
-            FAQ rápido
-          </motion.div>
-          <motion.h2
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            className="text-4xl font-bold text-[#E57373]"
-          >
-            Resolvemos lo que más nos consultan
-          </motion.h2>
-        </div>
+        <SectionHeader
+          eyebrow="FAQ rápido"
+          title="Respuestas a tus dudas más comunes"
+          description="Queremos que te sientas segura antes, durante y después de tu visita. Aquí resolvemos las preguntas que más recibimos."
+        />
 
         <div className="space-y-4">
           {faqItems.map((item, index) => {

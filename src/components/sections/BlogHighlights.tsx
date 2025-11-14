@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { PenTool, Sparkles } from 'lucide-react'
+import { SectionHeader } from './SectionHeader'
 
 const posts = [
   {
@@ -29,29 +30,11 @@ const BlogHighlights = () => {
   return (
     <section className="bg-[#FDF7F9] py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 flex flex-col items-center gap-4 text-center">
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
-            className="inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white px-5 py-2 text-sm font-medium text-[#E57373] shadow-sm"
-          >
-            Blog & Tips
-          </motion.div>
-          <motion.h2
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            className="text-4xl font-bold text-[#E57373]"
-          >
-            Consejos para potenciar tu rutina beauty
-          </motion.h2>
-          <p className="max-w-3xl text-gray-600">
-            Compartimos contenido educativo para que disfrutes tus servicios por más tiempo y descubras nuevas tendencias de belleza.
-          </p>
-        </div>
+        <SectionHeader
+          eyebrow="Blog & tips"
+          title="Consejos para prolongar tu belleza"
+          description="Descubre guías rápidas, tendencias y recomendaciones profesionales para que cada servicio se mantenga radiante desde casa."
+        />
 
         <div className="grid gap-6 md:grid-cols-3">
           {posts.map((post, index) => (

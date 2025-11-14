@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { CalendarDays, Clock, PhoneCall } from 'lucide-react'
+import { SectionHeader } from './SectionHeader'
 
 const slots = [
   { day: 'Hoy', time: '4:30 PM', service: 'Extensiones híbridas' },
@@ -20,17 +21,15 @@ const AvailabilityWidget = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
-              className="space-y-4"
+              className="space-y-6"
             >
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-[#E57373]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#E57373]">
-                Widget de disponibilidad
-              </span>
-              <h2 className="text-3xl font-bold text-gray-800 md:text-4xl">
-                Reserva tu momento en minutos
-              </h2>
-              <p className="text-gray-600">
-                Actualizamos la agenda a diario. Selecciona un horario sugerido o envíanos un mensaje para ajustar tu cita.
-              </p>
+              <SectionHeader
+                eyebrow="Agenda en tiempo real"
+                title="Reserva tu momento ideal en segundos"
+                description="Actualizamos la disponibilidad todos los días. Elige un horario sugerido o escríbenos para coordinar un espacio personalizado."
+                align="start"
+                className="mb-6"
+              />
 
               <div className="grid gap-4">
                 {slots.map((slot) => (

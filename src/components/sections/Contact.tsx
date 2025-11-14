@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { useState } from 'react'
 import { Mail, MapPin, Instagram, Youtube, MessageCircle, Send, Heart, Star } from 'lucide-react'
+import { SectionHeader } from './SectionHeader'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -145,23 +146,11 @@ const Contact = () => {
         }
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, ease: 'easeOut' }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-            Ubicación y <span className="text-[#E57373]">Contacto</span>
-          </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] rounded-full mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Visítanos en nuestro estudio en Ambato o agenda tu cita online. 
-            ¡Estamos aquí para realzar el poder de tu mirada!
-          </p>
-        </motion.div>
+        <SectionHeader
+          eyebrow="Reserva y contacto"
+          title="Ubicación estratégica y canales directos"
+          description="Visítanos en Centro Comercial La Galería o agenda tu cita online. Estamos listas para asesorarte por WhatsApp, redes sociales o formulario."
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Contact form */}

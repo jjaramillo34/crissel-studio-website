@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import { SectionHeader } from './SectionHeader'
 import beforeAfter1 from '../../assets/gallery/extensiones-pestanas-1.jpg'
 import beforeAfter2 from '../../assets/gallery/extensiones-pestanas-3.jpg'
 import makeupBefore from '../../assets/gallery/maquillaje-fantasia-2.jpg'
@@ -39,29 +40,11 @@ const ResultsShowcase = () => {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-white via-pink-50 to-[#FDECF1] py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto mb-12 text-center max-w-2xl">
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
-            className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white/80 px-5 py-2 text-sm font-medium text-[#E57373] shadow-sm backdrop-blur"
-          >
-            Transformaciones reales
-          </motion.div>
-          <motion.h2
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            className="text-4xl font-bold text-[#E57373] sm:text-5xl"
-          >
-            Resultados Antes y Después
-          </motion.h2>
-          <p className="mt-4 text-gray-600">
-            Cada look se diseña con técnicas avanzadas, enfoque en el cuidado posterior y mantenimiento pensado para tu rutina.
-          </p>
-        </div>
+        <SectionHeader
+          eyebrow="Metamorfosis reales"
+          title="Antes y después que cuentan historias"
+          description="Nuestro equipo aplica técnicas avanzadas, planifica la durabilidad de cada servicio y comparte un plan de cuidado personalizado para que tu look se mantenga impecable."
+        />
 
         <div className="grid gap-10 lg:grid-cols-3">
           {results.map((result, index) => (
