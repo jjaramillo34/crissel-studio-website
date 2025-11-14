@@ -21,6 +21,8 @@ import BlogHighlights from './components/sections/BlogHighlights'
 import AvailabilityWidget from './components/sections/AvailabilityWidget'
 import LocationReviews from './components/sections/LocationReviews'
 import ProductsTeaser from './components/sections/ProductsTeaser'
+import BlogIndexPage from './pages/BlogIndexPage'
+import BlogPostPage from './pages/BlogPostPage'
 import logoImage from './assets/images/logo_photo.png'
 
 function LoadingScreen() {
@@ -95,6 +97,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/productos" element={<ProductsPage />} />
           <Route path="/galeria" element={<GalleryPage />} />
+          <Route path="/blog" element={<BlogIndexPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
         </Routes>
         <Footer />
         <FloatingWhatsApp />

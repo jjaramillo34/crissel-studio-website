@@ -2,27 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { PenTool, Sparkles } from 'lucide-react'
 import { SectionHeader } from './SectionHeader'
-
-const posts = [
-  {
-    title: '5 pasos para prolongar tus extensiones',
-    excerpt: 'Desde la limpieza diaria hasta los productos prohibidos. Guía rápida para que tus pestañas luzcan impecables por más tiempo.',
-    category: 'Extensiones',
-    date: 'Abr 2025',
-  },
-  {
-    title: 'Rutina de skincare antes del maquillaje pro',
-    excerpt: 'Preparar la piel es la clave del glow. Descubre la rutina recomendada por nuestro team para lograr un acabado perfecto.',
-    category: 'Skincare',
-    date: 'Mar 2025',
-  },
-  {
-    title: 'Tendencias de cejas 2025',
-    excerpt: 'Laminado suave, lifting nutritivo y diseño híbrido. Analizamos qué técnicas favorecen cada tipo de rostro.',
-    category: 'Cejas',
-    date: 'Feb 2025',
-  },
-]
+import { blogPosts } from '@/data/blogPosts'
 
 const BlogHighlights = () => {
   const prefersReducedMotion = useReducedMotion()
@@ -37,28 +17,48 @@ const BlogHighlights = () => {
         />
 
         <div className="grid gap-6 md:grid-cols-3">
-          {posts.map((post, index) => (
+          {blogPosts.map((post, index) => (
             <motion.article
-              key={post.title}
+              key={post.id}
               initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={prefersReducedMotion ? { duration: 0.4 } : { duration: 0.5, ease: 'easeOut', delay: index * 0.1 }}
-              className="flex h-full flex-col rounded-2xl border border-pink-100 bg-white p-6 shadow-lg"
+              className="flex h-full flex-col overflow-hidden rounded-2xl border border-pink-100 bg-white shadow-lg"
             >
-              <div className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[#E57373]">
-                <PenTool className="h-4 w-4" aria-hidden="true" /> {post.category}
-              </div>
-              <h3 className="mt-3 text-xl font-bold text-gray-800">{post.title}</h3>
-              <p className="mt-3 flex-1 text-sm text-gray-600">{post.excerpt}</p>
-              <div className="mt-4 text-xs font-semibold text-[#E57373]/80">{post.date}</div>
-              <Link
-                to="/blog"
-                className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#E57373] transition-colors duration-300 hover:text-[#c84d4d]"
-              >
-                Leer más
-                <Sparkles className="h-4 w-4" aria-hidden="true" />
+              <Link to={`/blog/${post.slug}`} className="group block h-40 overflow-hidden">
+                <img
+                  src={post.featuredImage}
+                  alt={post.title}
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                  loading="lazy"
+                />
               </Link>
+              <div className="flex flex-col gap-3 p-6">
+                <div className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[#E57373]">
+                  <PenTool className="h-4 w-4" aria-hidden="true" /> {post.category}
+                </div>
+                <h3 className="text-xl font-bold text-gray-800">
+                  <Link to={`/blog/${post.slug}`} className="transition-colors duration-300 hover:text-[#E57373]">
+                    {post.title}
+                  </Link>
+                </h3>
+                <p className="flex-1 text-sm text-gray-600">{post.excerpt}</p>
+                <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-[#E57373]/80">
+                  <span>{new Date(post.publishedAt).toLocaleDateString('es-EC', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                  <span className="text-[#E57373]">•</span>
+                  <span>{post.readingTime}</span>
+                  <span className="text-[#E57373]">•</span>
+                  <span>{post.author}</span>
+                </div>
+                <Link
+                  to={`/blog/${post.slug}`}
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#E57373] transition-colors duration-300 hover:text-[#c84d4d]"
+                >
+                  Leer más
+                  <Sparkles className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </div>
             </motion.article>
           ))}
         </div>

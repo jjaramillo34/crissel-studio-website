@@ -1,0 +1,35 @@
+[
+  {
+    "id": "glam-lash-care",
+    "title": "5 claves para prolongar tus extensiones de pestañas",
+    "excerpt": "Aprende la rutina diaria que recomendamos en Crissel Studio para que tus extensiones luzcan llenas y saludables durante más tiempo.",
+    "category": "Extensiones",
+    "publishedAt": "2025-04-08",
+    "readingTime": "4 min lectura",
+    "author": "Cris León",
+    "slug": "glam-lash-care",
+    "featuredImage": "/assets/gallery/extensiones-pestanas-3.jpg"
+  },
+  {
+    "id": "skin-prep-makeup",
+    "title": "Skin prep profesional antes del maquillaje social",
+    "excerpt": "Descubre el paso a paso que seguimos en el estudio para preparar la piel y lograr un acabado impecable que resista cada celebración.",
+    "category": "Skincare",
+    "publishedAt": "2025-03-21",
+    "readingTime": "3 min lectura",
+    "author": "Carla Ríos",
+    "slug": "skin-prep-maquillaje",
+    "featuredImage": "/assets/gallery/maquillaje-fantasia-9.jpg"
+  },
+  {
+    "id": "brow-trends-2025",
+    "title": "Tendencias en diseño de cejas 2025",
+    "excerpt": "Laminado natural, lifting nutritivo y diseños híbridos. Analizamos qué técnicas favorecen cada tipo de rostro y cómo mantenerlas en casa.",
+    "category": "Cejas",
+    "publishedAt": "2025-02-26",
+    "readingTime": "5 min lectura",
+    "author": "Dani Vera",
+    "slug": "tendencias-cejas-2025",
+    "featuredImage": "/assets/gallery/planchado-cejas-2.jpg"
+  }
+]
