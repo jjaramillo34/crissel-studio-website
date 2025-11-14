@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Eye, Crown, Heart, Sparkles, Clock, Star, ArrowLeft, Calendar } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -11,6 +11,8 @@ import extensionesBenefitsImage from '../assets/gallery/maquillaje-fantasia-3.jp
 import extensionesDetailsImage from '../assets/gallery/maquillaje-fantasia-6.jpg'
 
 const ProductsPage = () => {
+  const prefersReducedMotion = useReducedMotion()
+
   const services = [
     {
       id: 'extensiones',
@@ -87,38 +89,71 @@ const ProductsPage = () => {
   ]
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 24 }) },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
+      ...(prefersReducedMotion ? {} : { y: 0 }),
+      transition: prefersReducedMotion
+        ? { duration: 0.4 }
+        : {
+            staggerChildren: 0.2,
+            duration: 0.4,
+            ease: 'easeOut'
+          }
     }
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 30 }) },
     visible: {
       opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 }
+      ...(prefersReducedMotion ? {} : { y: 0 }),
+      transition: prefersReducedMotion ? { duration: 0.4 } : { duration: 0.6, ease: 'easeOut' }
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-white pt-20">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-pink-50 via-white to-[#FDECF1] pt-20">
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-24 -left-20 h-72 w-72 rounded-full bg-[#F8BBD9]/30 blur-3xl"
+        animate={
+          prefersReducedMotion
+            ? { opacity: 0.4 }
+            : { opacity: [0.25, 0.6, 0.25], scale: [1, 1.08, 1] }
+        }
+        transition={
+          prefersReducedMotion
+            ? undefined
+            : { duration: 14, repeat: Infinity, ease: 'easeInOut' }
+        }
+      />
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-32 right-16 h-64 w-64 rounded-full bg-[#E57373]/20 blur-3xl"
+        animate={
+          prefersReducedMotion
+            ? { opacity: 0.35 }
+            : { opacity: [0.3, 0.55, 0.3], scale: [0.95, 1.1, 0.95] }
+        }
+        transition={
+          prefersReducedMotion
+            ? undefined
+            : { duration: 16, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }
+        }
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.8, ease: 'easeOut' }}
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center mb-6">
             <Link
               to="/"
-              className="flex items-center space-x-2 text-[#E57373] hover:text-[#D45F5F] transition-colors mr-8"
+              className="mr-8 inline-flex items-center gap-2 rounded-full border border-[#E57373]/30 bg-white/80 px-4 py-2 text-sm font-medium text-[#E57373] transition-colors duration-300 hover:border-[#E57373]/60 hover:bg-white"
             >
               <ArrowLeft className="w-5 h-5" />
               <span>Volver al Inicio</span>
@@ -129,7 +164,7 @@ const ProductsPage = () => {
             Nuestros <span className="text-[#E57373]">Productos</span>
           </h1>
           <div className="w-20 h-1 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] rounded-full mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Descubre nuestros servicios profesionales de belleza diseñados para realzar tu mirada
             y destacar tu belleza natural con técnicas expertas.
           </p>
@@ -152,13 +187,21 @@ const ProductsPage = () => {
             >
               {/* Content */}
               <div className={`space-y-8 ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
-                <div className="flex items-center space-x-4 mb-6">
+                <div className="flex flex-wrap items-center gap-4 mb-6">
                   <motion.div
-                    animate={{ rotate: [0, 5, 0, -5, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }}
-                    className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${service.color} flex items-center justify-center shadow-lg`}
+                    animate={
+                      prefersReducedMotion
+                        ? { scale: 1 }
+                        : { rotate: [0, 5, 0, -5, 0] }
+                    }
+                    transition={
+                      prefersReducedMotion
+                        ? undefined
+                        : { duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }
+                    }
+                    className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r ${service.color} shadow-lg`}
                   >
-                    <service.icon className="w-8 h-8 text-white" />
+                    <service.icon className="h-8 w-8 text-white" aria-hidden="true" />
                   </motion.div>
                   
                   <div>
@@ -167,7 +210,7 @@ const ProductsPage = () => {
                   </div>
                 </div>
 
-                <p className="text-gray-700 text-lg leading-relaxed">
+                <p className="text-gray-700 text-base leading-relaxed sm:text-lg">
                   {service.description}
                 </p>
 
@@ -193,7 +236,7 @@ const ProductsPage = () => {
                       {service.prices.map((price, priceIndex) => (
                         <motion.div
                           key={priceIndex}
-                          whileHover={{ scale: 1.05, y: -5 }}
+                          whileHover={prefersReducedMotion ? undefined : { scale: 1.05, y: -5 }}
                           className="p-6 rounded-2xl bg-white/80 backdrop-blur-sm border-2 border-pink-100 shadow-lg hover:shadow-xl transition-all duration-300"
                         >
                           <h4 className="font-bold text-gray-800 text-lg mb-2">{price.name}</h4>
@@ -216,10 +259,11 @@ const ProductsPage = () => {
                     {service.benefits.map((benefit, benefitIndex) => (
                       <motion.div
                         key={benefitIndex}
-                        initial={{ opacity: 0, x: -20 }}
+                        initial={{ opacity: 0, ...(prefersReducedMotion ? {} : { x: -20 }) }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.1 * benefitIndex }}
-                        className="flex items-center space-x-3 p-3 rounded-xl bg-white/60 backdrop-blur-sm"
+                        viewport={{ once: true, amount: 0.4 }}
+                        transition={{ delay: 0.1 * benefitIndex, duration: 0.4, ease: 'easeOut' }}
+                        className="flex items-center space-x-3 rounded-xl bg-white/60 p-3 backdrop-blur-sm"
                       >
                         <Star className="w-5 h-5 text-[#E57373] flex-shrink-0" />
                         <span className="text-gray-700 font-medium">{benefit}</span>
@@ -233,9 +277,10 @@ const ProductsPage = () => {
                   href="https://bit.ly/crisselstudio"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r ${service.color} text-white rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300`}
+                  className={`inline-flex items-center space-x-2 rounded-full bg-gradient-to-r ${service.color} px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]`}
+                  aria-label={`Reservar ${service.title}`}
                 >
                   <Calendar className="w-5 h-5" />
                   <span>Reservar {service.title}</span>
@@ -245,8 +290,8 @@ const ProductsPage = () => {
               {/* Images */}
               <div className={`space-y-6 ${index % 2 === 1 ? 'lg:col-start-1' : ''}`}>
                 <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  className="relative rounded-3xl overflow-hidden shadow-2xl"
+                  whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
+                  className="relative overflow-hidden rounded-3xl shadow-2xl"
                 >
                   <img 
                     src={service.mainImage}
@@ -260,8 +305,8 @@ const ProductsPage = () => {
                 {service.benefitsImage && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      className="rounded-2xl overflow-hidden shadow-lg"
+                      whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                      className="overflow-hidden rounded-2xl shadow-lg"
                     >
                       <img 
                         src={service.benefitsImage}
@@ -271,8 +316,8 @@ const ProductsPage = () => {
                     </motion.div>
                     {service.detailsImage && (
                       <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        className="rounded-2xl overflow-hidden shadow-lg"
+                        whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                        className="overflow-hidden rounded-2xl shadow-lg"
                       >
                         <img 
                           src={service.detailsImage}
@@ -290,11 +335,11 @@ const ProductsPage = () => {
 
         {/* Contact Section */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="text-center mt-20 p-12 rounded-3xl bg-gradient-to-r from-[#E57373]/10 to-[#F8BBD9]/10 border border-pink-100"
+          transition={prefersReducedMotion ? { duration: 0.5 } : { delay: 0.6, duration: 0.8, ease: 'easeOut' }}
+          className="text-center mt-20 rounded-3xl border border-pink-100 bg-gradient-to-r from-[#E57373]/10 to-[#F8BBD9]/10 p-12"
         >
           <h3 className="text-3xl font-bold text-gray-800 mb-4">
             ¿Lista para tu transformación?
@@ -331,9 +376,10 @@ const ProductsPage = () => {
               href="https://bit.ly/crisselstudio"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-block px-8 py-4 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              className="inline-block rounded-full bg-gradient-to-r from-[#E57373] to-[#F8BBD9] px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+              aria-label="Reservar cita online"
             >
               Reservar Cita Online
             </motion.a>
@@ -341,9 +387,10 @@ const ProductsPage = () => {
               href="https://instagram.com/crisselstudio.ec"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-block px-8 py-4 border-2 border-[#E57373] text-[#E57373] rounded-full font-semibold text-lg hover:bg-[#E57373] hover:text-white transition-all duration-300"
+              className="inline-block rounded-full border-2 border-[#E57373] px-8 py-4 text-lg font-semibold text-[#E57373] transition-all duration-300 hover:bg-[#E57373] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+              aria-label="Abrir Instagram de Crissel Studio"
             >
               Síguenos en Instagram
             </motion.a>

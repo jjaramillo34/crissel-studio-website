@@ -1,8 +1,9 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import logoImage from '../assets/images/logo_photo.png'
 import { Heart, Instagram, MapPin, MessageCircle, Calendar, Sparkles, Eye } from 'lucide-react'
 
 const Footer = () => {
+  const prefersReducedMotion = useReducedMotion()
   const currentYear = new Date().getFullYear()
 
   const quickLinks = [
@@ -32,12 +33,51 @@ const Footer = () => {
   }
 
   return (
-    <footer className="bg-gray-800 text-white relative overflow-hidden">
+    <footer className="relative overflow-hidden bg-[#1F1F28] text-white">
       {/* Decorative background elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-10 left-10 w-20 h-20 bg-[#E57373]/10 rounded-full animate-float"></div>
-        <div className="absolute top-32 right-20 w-16 h-16 bg-[#F8BBD9]/10 rounded-full animate-gentle-bounce"></div>
-        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-pink-300/10 rounded-full animate-float"></div>
+        <motion.div
+          aria-hidden="true"
+          className="absolute top-10 left-10 h-24 w-24 rounded-full bg-[#E57373]/10 blur-2xl"
+          animate={
+            prefersReducedMotion
+              ? { opacity: 0.4 }
+              : { scale: [1, 1.05, 1], opacity: [0.3, 0.6, 0.3] }
+          }
+          transition={
+            prefersReducedMotion
+              ? undefined
+              : { duration: 12, repeat: Infinity, ease: 'easeInOut' }
+          }
+        />
+        <motion.div
+          aria-hidden="true"
+          className="absolute top-32 right-16 h-20 w-20 rounded-full bg-[#F8BBD9]/10 blur-2xl"
+          animate={
+            prefersReducedMotion
+              ? { opacity: 0.35 }
+              : { scale: [0.95, 1.08, 0.95], opacity: [0.4, 0.7, 0.4] }
+          }
+          transition={
+            prefersReducedMotion
+              ? undefined
+              : { duration: 14, repeat: Infinity, ease: 'easeInOut', delay: 1 }
+          }
+        />
+        <motion.div
+          aria-hidden="true"
+          className="absolute bottom-20 left-1/4 h-16 w-16 rounded-full bg-pink-300/10 blur-2xl"
+          animate={
+            prefersReducedMotion
+              ? { opacity: 0.3 }
+              : { scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }
+          }
+          transition={
+            prefersReducedMotion
+              ? undefined
+              : { duration: 16, repeat: Infinity, ease: 'easeInOut', delay: 2 }
+          }
+        />
       </div>
 
       <div className="relative z-10">
@@ -46,46 +86,58 @@ const Footer = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Brand section */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
               className="lg:col-span-2"
             >
-              <div className="flex items-center space-x-3 mb-4">
-                <img 
-                  src={logoImage} 
-                  alt="Crissel Studio Logo" 
-                  className="w-12 h-12"
-                />
-                <motion.button
-                  onClick={scrollToTop}
-                  whileHover={{ scale: 1.05 }}
-                  className="text-3xl font-bold text-[#E57373]"
+              <div className="mb-4 flex flex-col items-start gap-4">
+                <div className="flex items-center gap-3">
+                  <img 
+                    src={logoImage} 
+                    alt="Crissel Studio Logo" 
+                    className="h-12 w-12 rounded-full border border-[#E57373]/30 shadow-lg"
+                    loading="lazy"
+                  />
+                  <motion.button
+                    onClick={scrollToTop}
+                    whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                    className="text-3xl font-bold tracking-tight text-white"
+                  >
+                    Crissel Studio
+                  </motion.button>
+                </div>
+                <motion.div
+                  initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-1 text-xs uppercase tracking-[0.2em] text-white/60 shadow-sm backdrop-blur"
                 >
-                  Crissel Studio
-                </motion.button>
+                  Belleza consciente • Detalle artesanal
+                </motion.div>
               </div>
               
-              <p className="text-white/80 mb-6 leading-relaxed max-w-md">
+              <p className="mb-6 max-w-md leading-relaxed text-white/75">
                 Estudio de belleza especializado en maquillaje profesional, 
                 diseño de cejas y extensiones de pestañas. 
                 Realzamos el poder de tu mirada.
               </p>
 
-              <div className="flex items-center space-x-2 text-gray-300">
-                <Eye className="w-5 h-5" />
+              <div className="flex flex-wrap items-center gap-2 text-gray-300">
+                <Eye className="h-5 w-5" aria-hidden="true" />
                 <span className="text-sm">Centro Comercial La Galería, Ambato, Ecuador</span>
-                <Heart className="w-4 h-4 text-[#E57373] animate-pulse" />
+                <Heart className="h-4 w-4 animate-pulse text-[#E57373]" aria-hidden="true" />
               </div>
             </motion.div>
 
             {/* Quick links */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, delay: 0.2, ease: 'easeOut' }}
             >
               <h3 className="text-xl font-semibold mb-6 text-gray-300">
                 Navegación
@@ -94,8 +146,8 @@ const Footer = () => {
                 {quickLinks.map((link, index) => (
                   <motion.li
                     key={index}
-                    whileHover={{ x: 5 }}
-                    transition={{ type: "spring", stiffness: 300 }}
+                    whileHover={prefersReducedMotion ? undefined : { x: 5 }}
+                    transition={{ type: prefersReducedMotion ? 'tween' : "spring", stiffness: 300 }}
                   >
                     <button
                       onClick={() => scrollToSection(link.href)}
@@ -110,10 +162,10 @@ const Footer = () => {
 
             {/* Social links */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, delay: 0.4, ease: 'easeOut' }}
             >
               <h3 className="text-xl font-semibold mb-6 text-gray-300">
                 Síguenos
@@ -125,12 +177,13 @@ const Footer = () => {
                     href={social.href}
                     target={social.href.startsWith('http') ? "_blank" : undefined}
                     rel={social.href.startsWith('http') ? "noopener noreferrer" : undefined}
-                    whileHover={{ scale: 1.05, x: 5 }}
+                    whileHover={prefersReducedMotion ? undefined : { scale: 1.05, x: 5 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center space-x-3 text-white/70 hover:text-[#E57373] transition-colors duration-300 text-sm group"
+                    className="flex items-center space-x-3 text-white/70 hover:text-[#E57373] transition-colors duration-300 text-sm group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]/60 rounded-lg"
+                    aria-label={`Abrir ${social.name}`}
                   >
                     <div className="w-8 h-8 bg-[#E57373]/20 rounded-lg flex items-center justify-center group-hover:bg-[#E57373]/30 transition-colors duration-300">
-                      <social.icon className="w-4 h-4" />
+                      <social.icon className="w-4 h-4" aria-hidden="true" />
                     </div>
                     <span>{social.name}</span>
                   </motion.a>
@@ -149,9 +202,10 @@ const Footer = () => {
                   href="https://bit.ly/crisselstudio"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="block w-full px-3 py-2 bg-[#E57373] rounded-lg text-xs font-medium hover:bg-[#E57373]/80 transition-colors text-center text-white"
+                  aria-label="Reservar cita en Crissel Studio"
                 >
                   Reservar Cita
                 </motion.a>
@@ -162,10 +216,10 @@ const Footer = () => {
 
         {/* Bottom bar */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.6 }}
+          transition={prefersReducedMotion ? { duration: 0.6 } : { duration: 0.6, delay: 0.6 }}
           className="border-t border-white/10"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -177,18 +231,18 @@ const Footer = () => {
 
               <div className="flex items-center space-x-6 text-sm text-white/60">
                 <span>Hecho con</span>
-                <Heart className="w-4 h-4 text-[#E57373] animate-pulse" />
+                <Heart className="w-4 h-4 text-[#E57373] animate-pulse" aria-hidden="true" />
                 <span>en Ambato, Ecuador</span>
               </div>
             </div>
 
             {/* Decorative elements */}
             <div className="flex items-center justify-center mt-6 space-x-2">
-              <Sparkles className="w-4 h-4 text-[#E57373] animate-gentle-bounce" />
+              <Sparkles className="w-4 h-4 text-[#E57373] animate-gentle-bounce" aria-hidden="true" />
               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#E57373] to-transparent"></div>
-              <Eye className="w-4 h-4 text-[#F8BBD9] animate-float" />
+              <Eye className="w-4 h-4 text-[#F8BBD9] animate-float" aria-hidden="true" />
               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#F8BBD9] to-transparent"></div>
-              <Heart className="w-4 h-4 text-pink-300 animate-pulse" />
+              <Heart className="w-4 h-4 text-pink-300 animate-pulse" aria-hidden="true" />
             </div>
           </div>
         </motion.div>
@@ -197,12 +251,13 @@ const Footer = () => {
       {/* Back to top button */}
       <motion.button
         onClick={scrollToTop}
-        whileHover={{ scale: 1.1, y: -2 }}
+        whileHover={prefersReducedMotion ? undefined : { scale: 1.1, y: -2 }}
         whileTap={{ scale: 0.9 }}
         className="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 z-50"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1 }}
+        aria-label="Volver al inicio"
       >
         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />

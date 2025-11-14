@@ -1,8 +1,9 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Eye, Sparkles, Clock, Star, Heart, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const Services = () => {
+  const prefersReducedMotion = useReducedMotion()
   const services = [
     {
       icon: Eye,
@@ -47,36 +48,97 @@ const Services = () => {
     }
   ]
 
+  const highlightStats = [
+    {
+      label: 'Consultas personalizadas',
+      value: '100%',
+      description: 'Diagnóstico previo en cada servicio'
+    },
+    {
+      label: 'Productos profesionales',
+      value: 'Dermatológicos',
+      description: 'Calidad certificada para tu piel'
+    },
+    {
+      label: 'Atención flexible',
+      value: 'Agenda express',
+      description: 'Horarios adaptados a tu rutina'
+    }
+  ]
+
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 24 }) },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
+      ...(prefersReducedMotion ? {} : { y: 0 }),
+      transition: prefersReducedMotion
+        ? { duration: 0.4 }
+        : {
+            staggerChildren: 0.2,
+            duration: 0.5,
+            ease: 'easeOut'
+          }
     }
   }
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 50 }) },
     visible: {
       opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 }
+      ...(prefersReducedMotion ? {} : { y: 0 }),
+      transition: prefersReducedMotion ? { duration: 0.4 } : { duration: 0.6, ease: 'easeOut' }
     }
   }
 
   return (
-    <section id="servicios" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="servicios" className="relative py-20 overflow-hidden bg-gradient-to-br from-white via-pink-50 to-[#FDECF1]">
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-24 -right-20 h-72 w-72 rounded-full bg-[#F8BBD9]/40 blur-3xl"
+        animate={
+          prefersReducedMotion
+            ? { opacity: 0.6 }
+            : { opacity: [0.4, 0.7, 0.4], scale: [1, 1.08, 1], rotate: [0, 8, 0] }
+        }
+        transition={
+          prefersReducedMotion
+            ? undefined
+            : { duration: 12, repeat: Infinity, ease: 'easeInOut' }
+        }
+      />
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-28 -left-16 h-80 w-80 rounded-full bg-[#E57373]/10 blur-3xl"
+        animate={
+          prefersReducedMotion
+            ? { opacity: 0.4 }
+            : { opacity: [0.3, 0.6, 0.3], scale: [1.05, 0.95, 1.05], rotate: [0, -6, 0] }
+        }
+        transition={
+          prefersReducedMotion
+            ? undefined
+            : { duration: 14, repeat: Infinity, ease: 'easeInOut' }
+        }
+      />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={prefersReducedMotion ? { duration: 0.6 } : { duration: 0.8, ease: 'easeOut' }}
           className="text-center mb-16"
         >
+          <motion.div
+            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
+            className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white/80 px-5 py-2 text-sm font-medium text-[#E57373] shadow-sm backdrop-blur"
+          >
+            <span className="inline-flex h-2 w-2 rounded-full bg-[#E57373] shadow-[0_0_10px_rgba(229,115,115,0.6)]" />
+            Rituales hechos a tu medida
+          </motion.div>
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
             Nuestros <span className="text-[#E57373]">Servicios</span>
           </h2>
@@ -86,6 +148,23 @@ const Services = () => {
             Técnicas expertas para pestañas, cejas y maquillaje.
           </p>
         </motion.div>
+
+        <div className="mx-auto mb-14 grid gap-4 sm:grid-cols-3 max-w-5xl">
+          {highlightStats.map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, delay: index * 0.1, ease: 'easeOut' }}
+              className="rounded-2xl border border-[#F8BBD9]/60 bg-white/80 p-4 shadow-sm backdrop-blur text-left"
+            >
+              <p className="text-sm font-semibold uppercase tracking-wide text-[#E57373] mb-1">{stat.value}</p>
+              <h3 className="text-lg font-bold text-gray-800 mb-1">{stat.label}</h3>
+              <p className="text-sm text-gray-600">{stat.description}</p>
+            </motion.div>
+          ))}
+        </div>
 
         {/* Services grid */}
         <motion.div
@@ -99,18 +178,22 @@ const Services = () => {
             <motion.div
               key={index}
               variants={cardVariants}
-              whileHover={{ scale: 1.02, y: -5 }}
+              whileHover={
+                prefersReducedMotion ? undefined : { scale: 1.02, y: -5 }
+              }
               className="relative group"
+              aria-labelledby={`service-title-${index}`}
+              aria-describedby={`service-description-${index}`}
             >
               {/* Popular badge */}
               {service.popular && (
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ delay: 0.5 + index * 0.2 }}
+                  transition={prefersReducedMotion ? { duration: 0.3 } : { delay: 0.5 + index * 0.2, duration: 0.4, ease: 'easeOut' }}
                   className="absolute -top-3 -right-3 z-10 bg-gradient-to-r from-crissel-pink to-crissel-purple text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center space-x-1"
                 >
-                  <Star className="w-4 h-4" />
+                  <Star className="w-4 h-4" aria-hidden="true" />
                   <span>Popular</span>
                 </motion.div>
               )}
@@ -119,18 +202,26 @@ const Services = () => {
                 {/* Icon and header */}
                 <div className="flex items-start space-x-4 mb-6">
                   <motion.div
-                    animate={{ rotate: [0, 5, 0, -5, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }}
+                    animate={
+                      prefersReducedMotion
+                        ? { scale: 1 }
+                        : { rotate: [0, 5, 0, -5, 0] }
+                    }
+                    transition={
+                      prefersReducedMotion
+                        ? undefined
+                        : { duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }
+                    }
                     className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${service.color} flex items-center justify-center shadow-lg`}
                   >
                     <span className="text-2xl">{service.emoji}</span>
                   </motion.div>
                   
                   <div className="flex-1">
-                    <h3 className="text-2xl font-bold text-gray-800 mb-2">{service.title}</h3>
+                    <h3 id={`service-title-${index}`} className="text-2xl font-bold text-gray-800 mb-2">{service.title}</h3>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center space-x-2 text-[#E57373]">
-                        <Clock className="w-4 h-4" />
+                        <Clock className="w-4 h-4" aria-hidden="true" />
                         <span className="text-sm font-medium">{service.duration}</span>
                       </div>
                       <div className="text-lg font-bold text-[#E57373]">
@@ -141,18 +232,19 @@ const Services = () => {
                 </div>
 
                 {/* Description */}
-                <p className="text-gray-600 mb-6 leading-relaxed">
+                <p id={`service-description-${index}`} className="text-gray-600 mb-6 leading-relaxed">
                   {service.description}
                 </p>
 
                 {/* Features */}
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-3 mb-8" role="list">
                   {service.features.map((feature, featureIndex) => (
                     <motion.li
                       key={featureIndex}
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={{ opacity: 0, ...(prefersReducedMotion ? {} : { x: -20 }) }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 * featureIndex }}
+                      viewport={{ once: true, amount: 0.4 }}
+                      transition={prefersReducedMotion ? { duration: 0.3 } : { delay: 0.1 * featureIndex, duration: 0.4, ease: 'easeOut' }}
                       className="flex items-center space-x-3"
                     >
                       <div className="w-2 h-2 rounded-full bg-[#E57373]"></div>
@@ -164,9 +256,10 @@ const Services = () => {
                 {/* CTA Button */}
                 <Link to="/productos">
                   <motion.div
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className={`block w-full py-3 rounded-full bg-gradient-to-r ${service.color} text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-center`}
+                    aria-label={`Ver detalles del servicio ${service.title}`}
                   >
                     Ver Detalles
                   </motion.div>
@@ -178,10 +271,14 @@ const Services = () => {
 
         {/* Bottom CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.6, duration: 0.8 }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0.6 }
+              : { delay: 0.6, duration: 0.8, ease: 'easeOut' }
+          }
           className="text-center mt-16"
         >
           <div className="bg-gradient-to-r from-[#E57373]/10 to-[#F8BBD9]/10 rounded-3xl p-8 border border-pink-100">
@@ -196,17 +293,19 @@ const Services = () => {
                 href="https://bit.ly/crisselstudio"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="inline-block px-8 py-4 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                aria-label="Reservar una cita en Crissel Studio"
               >
                 Reservar Cita
               </motion.a>
               <Link to="/productos">
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="inline-block px-8 py-4 border-2 border-[#E57373] text-[#E57373] rounded-full font-semibold text-lg hover:bg-[#E57373] hover:text-white transition-all duration-300"
+                  aria-label="Ver productos disponibles"
                 >
                   Ver Productos
                 </motion.div>

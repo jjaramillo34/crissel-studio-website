@@ -11,6 +11,16 @@ import Footer from './components/Footer'
 import ProductsPage from './components/ProductsPage'
 import FloatingWhatsApp from './components/FloatingWhatsApp'
 import GalleryPage from './components/GalleryPage'
+import ResultsShowcase from './components/sections/ResultsShowcase'
+import TestimonialsCarousel from './components/sections/TestimonialsCarousel'
+import FeaturedPackages from './components/sections/FeaturedPackages'
+import ProcessTimeline from './components/sections/ProcessTimeline'
+import FaqQuick from './components/sections/FaqQuick'
+import TeamSpotlight from './components/sections/TeamSpotlight'
+import BlogHighlights from './components/sections/BlogHighlights'
+import AvailabilityWidget from './components/sections/AvailabilityWidget'
+import LocationReviews from './components/sections/LocationReviews'
+import ProductsTeaser from './components/sections/ProductsTeaser'
 import logoImage from './assets/images/logo_photo.png'
 
 function LoadingScreen() {
@@ -42,8 +52,18 @@ function HomePage() {
     <div className="min-h-screen bg-gradient-to-br from-pink-50 to-white">
       <main>
         <Hero />
+        <ResultsShowcase />
         <About />
         <Services />
+        <FeaturedPackages />
+        <ProcessTimeline />
+        <AvailabilityWidget />
+        <TestimonialsCarousel />
+        <FaqQuick />
+        <TeamSpotlight />
+        <BlogHighlights />
+        <ProductsTeaser />
+        <LocationReviews />
         <Gallery />
         <Contact />
       </main>

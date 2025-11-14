@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { X, Menu } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { X, Menu, Sparkles, Calendar, PhoneCall } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import logoImage from '../assets/images/logo_photo.png'
 
 const Navigation = () => {
+  const prefersReducedMotion = useReducedMotion()
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('hero')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -18,6 +19,14 @@ const Navigation = () => {
     { id: 'galeria', label: 'Galería', path: '/' },
     { id: 'contacto', label: 'Contacto', path: '/' }
   ]
+
+  const gradientBackground = useMemo(
+    () =>
+      isScrolled
+        ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-pink-100'
+        : 'bg-white/80 backdrop-blur-sm',
+    [isScrolled]
+  )
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,30 +78,26 @@ const Navigation = () => {
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
+        initial={prefersReducedMotion ? { y: 0 } : { y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled 
-            ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-pink-100' 
-            : 'bg-white/80 backdrop-blur-sm'
-        }`}
+        transition={{ duration: prefersReducedMotion ? 0 : 0.6, ease: 'easeOut' }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${gradientBackground}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-16 gap-4">
             {/* Logo */}
             <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex-shrink-0 flex items-center space-x-2"
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+              className="flex items-center gap-2"
             >
               <img 
                 src={logoImage} 
                 alt="Crissel Studio Logo" 
-                className="w-8 h-8 object-contain"
+                className="w-9 h-9 object-contain rounded-full border border-[#E57373]/40 shadow-sm"
               />
               <Link 
                 to="/"
-                className="text-xl font-bold text-[#E57373] hover:opacity-80 transition-opacity"
+                className="text-lg sm:text-xl font-bold text-[#E57373] hover:opacity-80 transition-opacity"
               >
                 Crissel Studio
               </Link>
@@ -100,7 +105,7 @@ const Navigation = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
+              <div className="ml-10 flex items-center space-x-3">
                 {navItems.map((item) => {
                   const isActive = (item.path === '/productos' && location.pathname === '/productos') ||
                                  (item.path === '/' && location.pathname === '/' && activeSection === item.id)
@@ -109,7 +114,7 @@ const Navigation = () => {
                     return (
                       <Link key={item.id} to="/productos">
                         <motion.div
-                          whileHover={{ scale: 1.05 }}
+                          whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                             isActive
@@ -126,7 +131,7 @@ const Navigation = () => {
                   return (
                     <motion.button
                       key={item.id}
-                      whileHover={{ scale: 1.05 }}
+                      whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleNavigation(item)}
                       className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
@@ -148,10 +153,12 @@ const Navigation = () => {
                 href="https://bit.ly/crisselstudio"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#E57373] to-[#F8BBD9] px-4 py-2 text-sm font-medium text-white shadow-lg transition-all duration-300 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+                aria-label="Reservar cita en Crissel Studio"
               >
+                <Calendar className="h-4 w-4" aria-hidden="true" />
                 Reservar Cita
               </motion.a>
             </div>
@@ -161,7 +168,8 @@ const Navigation = () => {
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="bg-[#E57373] text-white p-2 rounded-lg"
+                className="rounded-lg bg-[#E57373] p-2 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
+                aria-label={isMobileMenuOpen ? 'Cerrar menú móvil' : 'Abrir menú móvil'}
               >
                 {isMobileMenuOpen ? (
                   <X className="h-6 w-6" />
@@ -235,8 +243,9 @@ const Navigation = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: navItems.length * 0.1 }}
-                className="block w-full bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white px-4 py-3 rounded-lg text-center font-medium shadow-lg"
+                className="block w-full rounded-lg bg-gradient-to-r from-[#E57373] to-[#F8BBD9] px-4 py-3 text-center font-medium text-white shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
                 onClick={() => setIsMobileMenuOpen(false)}
+                aria-label="Reservar cita en Crissel Studio"
               >
                 Reservar Cita
               </motion.a>

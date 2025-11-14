@@ -1,0 +1,100 @@
+import { motion, useReducedMotion } from 'framer-motion'
+import { Sparkles, Gift, Heart } from 'lucide-react'
+
+const packages = [
+  {
+    name: 'Mirada Completa',
+    price: '$70',
+    description: 'Extensiones híbridas + diseño de cejas con laminado y tinte.',
+    bonus: 'Incluye cepillo de mantenimiento y guía personalizada.',
+    gradient: 'from-[#E57373] to-[#F8BBD9]',
+  },
+  {
+    name: 'Glow Events',
+    price: '$90',
+    description: 'Maquillaje social HD + peinado express + retoque de cejas.',
+    bonus: 'Se entrega kit mini retoque para la noche del evento.',
+    gradient: 'from-[#F8BBD9] to-[#FDECF6]',
+  },
+  {
+    name: 'Lash Rehab',
+    price: '$55',
+    description: 'Lifting nutritivo + tratamiento fortalecedor + plan de home care.',
+    bonus: 'Agenda seguimiento gratuito a los 15 días.',
+    gradient: 'from-[#FDECF6] to-[#F8BBD9]',
+  },
+]
+
+const FeaturedPackages = () => {
+  const prefersReducedMotion = useReducedMotion()
+
+  return (
+    <section className="bg-white py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-12 text-center">
+          <motion.div
+            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut' }}
+            className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white/95 px-5 py-2 text-sm font-medium text-[#E57373] shadow-sm"
+          >
+            Paquetes destacados
+          </motion.div>
+          <motion.h2
+            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut', delay: 0.1 }}
+            className="text-4xl font-bold text-[#E57373]"
+          >
+            Diseñados para tu momento especial
+          </motion.h2>
+          <p className="mt-4 text-gray-600">
+            Combos curados por nuestro equipo para que solo tengas que disfrutar. Reserva rápida y beneficios extra incluidos.
+          </p>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-3">
+          {packages.map((bundle, index) => (
+            <motion.article
+              key={bundle.name}
+              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={prefersReducedMotion ? { duration: 0.4 } : { duration: 0.5, ease: 'easeOut', delay: index * 0.1 }}
+              className="flex h-full flex-col rounded-3xl border border-pink-100 bg-white shadow-lg"
+            >
+              <div className={`rounded-t-3xl bg-gradient-to-r ${bundle.gradient} p-6 text-white`}>
+                <div className="flex items-center gap-3 text-sm uppercase tracking-[0.3em]">
+                  {index === 0 ? <Sparkles className="h-5 w-5" /> : index === 1 ? <Gift className="h-5 w-5" /> : <Heart className="h-5 w-5" />}
+                  Paquete #{index + 1}
+                </div>
+                <h3 className="mt-3 text-2xl font-bold">{bundle.name}</h3>
+                <p className="mt-2 text-lg font-semibold">{bundle.price}</p>
+              </div>
+              <div className="flex flex-1 flex-col gap-6 p-6">
+                <p className="text-gray-700">{bundle.description}</p>
+                <div className="rounded-2xl bg-gradient-to-r from-[#E57373]/10 to-[#F8BBD9]/10 p-4 text-sm text-[#E57373]">
+                  <strong>Bonus:</strong> {bundle.bonus}
+                </div>
+                <motion.a
+                  href="https://wa.me/593992950683"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="mt-auto inline-flex items-center justify-center rounded-full border-2 border-[#E57373] px-6 py-3 text-sm font-semibold text-[#E57373] transition-all duration-300 hover:bg-[#E57373] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+                >
+                  Consultar disponibilidad
+                </motion.a>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default FeaturedPackages
