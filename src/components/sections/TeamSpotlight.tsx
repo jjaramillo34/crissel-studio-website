@@ -1,30 +1,30 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { GraduationCap, Award } from 'lucide-react'
-import team1 from '../../assets/gallery/maquillaje-fantasia-7.jpg'
-import team2 from '../../assets/gallery/maquillaje-fantasia-11.jpg'
-import team3 from '../../assets/gallery/maquillaje-social-1.jpg'
+import team1 from '@/assets/team/team1.jpg'
+import team2 from '@/assets/team/team2.jpg'
+import team3 from '@/assets/team/team3.jpg'
 import { SectionHeader } from './SectionHeader'
 
 const teamMembers = [
   {
     name: 'Cris León',
     role: 'Master Lash & Brow Artist',
-    certifications: ['Lash Institute 2018', 'Keratina Expert 2020'],
-    specialty: 'Extensiones volumen y diseño de cejas laminadas',
+    certifications: ['Lash Institute 2018', 'Keratina Expert 2020', 'Lash Lift Advanced'],
+    specialty: 'Extensiones volumen, diseño de cejas laminadas y lifting de cejas',
     photo: team1,
   },
   {
-    name: 'Carla Ríos',
+    name: 'Sofy Jaramillo',
     role: 'Makeup Lead Artist',
-    certifications: ['MAC Pro Masterclass', 'Bridal Studio 2021'],
-    specialty: 'Maquillaje social HD y visagismo personalizado',
+    certifications: ['Unidad Educativa Ecuatoriano Holandés'],
+    specialty: 'Maquillaje social, visagismo personalizado y maquillaje para eventos',
     photo: team2,
   },
   {
-    name: 'Dani Vera',
+    name: 'Betty León',
     role: 'Skin & Lash Care Specialist',
-    certifications: ['Cosmetología ISPED', 'Lash Lift Advanced'],
-    specialty: 'Tratamientos nutritivos y planes de mantenimiento',
+    certifications: ['Cosmetología ISPED'],
+    specialty: 'Tratamientos nutritivos y planes de mantenimiento para pestañas y cejas',
     photo: team3,
   },
 ]

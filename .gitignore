@@ -1,1 +1,10 @@
 node_modules
+pnpm-debug.log*
+dist
+.vite
+.DS_Store
+.env
+.env.local
+.env.*.local
+.vscode/
+*.log

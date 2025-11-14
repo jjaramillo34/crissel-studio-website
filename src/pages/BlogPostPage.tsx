@@ -4,6 +4,7 @@ import { blogPosts } from '@/data/blogPosts'
 import { SectionHeader } from '@/components/sections/SectionHeader'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
+import { Seo } from '@/components/Seo'
 
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -32,6 +33,12 @@ const BlogPostPage = () => {
 
   return (
     <article className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-[#FDECF1] py-20">
+      <Seo
+        title={`${post.title} | Blog Crissel Studio`}
+        description={post.excerpt}
+        image={post.featuredImage}
+        type="article"
+      />
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <Link
           to="/blog"

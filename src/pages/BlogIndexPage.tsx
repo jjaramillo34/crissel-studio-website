@@ -3,12 +3,18 @@ import { SectionHeader } from '@/components/sections/SectionHeader'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { PenTool } from 'lucide-react'
+import { Seo } from '@/components/Seo'
 
 const BlogIndexPage = () => {
   const prefersReducedMotion = useReducedMotion()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-[#FDECF1] py-24">
+      <Seo
+        title="Blog Crissel Studio | Tips de extensiones, cejas y maquillaje"
+        description="Lee las últimas recomendaciones de nuestras especialistas en Ambato: extensiones de pestañas, skin prep profesional, tendencias en cejas y más."
+        type="article"
+      />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Blog Crissel Studio"

@@ -23,6 +23,7 @@ import LocationReviews from './components/sections/LocationReviews'
 import ProductsTeaser from './components/sections/ProductsTeaser'
 import BlogIndexPage from './pages/BlogIndexPage'
 import BlogPostPage from './pages/BlogPostPage'
+import { Seo } from './components/Seo'
 import logoImage from './assets/images/logo_photo.png'
 
 function LoadingScreen() {
@@ -52,6 +53,10 @@ function LoadingScreen() {
 function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 to-white">
+      <Seo
+        title="Crissel Studio | Expertas en mirada, cejas y maquillaje en Ambato"
+        description="Somos especialistas en extensiones de pestañas, diseño de cejas, maquillaje profesional y paquetes de belleza personalizada en Ambato."
+      />
       <main>
         <Hero />
         <ResultsShowcase />

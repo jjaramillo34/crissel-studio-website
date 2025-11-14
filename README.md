@@ -1,50 +1,62 @@
-# React + TypeScript + Vite
+# Crissel Studio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Experiential beauty studio site built with **React + TypeScript + Vite**. The interface focuses on immersive storytelling, accessibility, and subtle motion while showcasing Crissel Studio’s core services, portfolio, and educational content.
 
-Currently, two official plugins are available:
+## Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Animated Landing Experience** – Hero, services, results, testimonials, FAQ, and contact sections enhanced with Framer Motion, reduced-motion fallbacks, and consistent `SectionHeader` styling.
+- **Dynamic Gallery & Lightbox** – Category filters, keyboard-accessible lightbox, and Vite-powered image imports for performant media delivery.
+- **Rich Blog System** – JSON/TS data source plus `/blog` listing and `/blog/:slug` detail pages with featured images, structured sections, pull quotes, and share-ready metadata.
+- **Products & Availability Widgets** – Dedicated product highlights, booking prompts, WhatsApp CTA, and embedded map with live reviews.
+- **Accessibility & A11y Enhancements** – ARIA attributes, focus-visible states, keyboard interactions, and reduced-motion handling across components.
+- **SEO & Open Graph Metadata** – Reusable `<Seo />` helper sets titles, descriptions, canonical links, Open Graph, and Twitter card data per route.
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+pnpm install
+pnpm dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Commands:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- `pnpm dev` – Start local development with hot reloading.
+- `pnpm build` – Create a production build (TypeScript project references + Vite bundle).
+- `pnpm preview` – Preview the production build locally.
+- `pnpm lint` – Run ESLint with project defaults.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## Project Structure
+
 ```
+src/
+  components/
+    sections/        # Homepage sections and reusable SectionHeader
+    Seo.tsx          # SEO metadata helper
+    FloatingWhatsApp # Persistent WhatsApp CTA
+    Footer, Navigation, etc.
+  pages/
+    BlogIndexPage.tsx
+    BlogPostPage.tsx
+  data/
+    blogPosts.ts     # Source of blog content (mirrored in public/data/blogs.json)
+  assets/
+    images & gallery assets loaded via import.meta.glob
+public/
+  data/blogs.json    # Public JSON feed for blog listings
+```
+
+## Notable Integrations
+
+- **Framer Motion** for declarative animations.
+- **React Router v6** for client-side routing.
+- **Tailwind CSS** for design tokens, gradients, and utilities.
+- **Lucide Icons** to complement UI badges and metrics.
+
+## Deployment Notes
+
+- Commit only source files—build output (`dist`) and local environment files (`.env*`) are ignored via `.gitignore`.
+- Update blog entries by editing `src/data/blogPosts.ts` (and syncing `public/data/blogs.json` if external access is required).
+- Replace default OG images by updating `/src/assets/images/logo_photo.png` and the `defaultMeta` in `Seo.tsx` if branding changes.
+
+---
+Crissel Studio © 2025 – Crafted to elevate beauty experiences in Ambato.
