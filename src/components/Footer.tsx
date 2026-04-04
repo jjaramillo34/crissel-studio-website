@@ -1,5 +1,9 @@
+'use client'
+
 import { motion, useReducedMotion } from 'framer-motion'
-import logoImage from '../assets/images/logo_photo.png'
+import Link from 'next/link'
+// Use public folder path for static image
+const logoImage = '/assets/images/logo_photo.png'
 import { Heart, Instagram, MapPin, MessageCircle, Calendar, Sparkles, Eye } from 'lucide-react'
 
 const Footer = () => {
@@ -10,8 +14,10 @@ const Footer = () => {
     { name: 'Inicio', href: '#hero' },
     { name: 'Sobre Nosotros', href: '#sobre-nosotros' },
     { name: 'Servicios', href: '#servicios' },
+    { name: 'Productos', href: '/productos' },
+    { name: 'Tienda Nagaraku', href: '/tienda' },
     { name: 'Galería', href: '#galeria' },
-    { name: 'Contacto', href: '#contacto' }
+    { name: 'Contacto', href: '#contacto' },
   ]
 
   const socialLinks = [
@@ -143,18 +149,28 @@ const Footer = () => {
                 Navegación
               </h3>
               <ul className="space-y-3">
-                {quickLinks.map((link, index) => (
+                {quickLinks.map((link) => (
                   <motion.li
-                    key={index}
+                    key={link.href}
                     whileHover={prefersReducedMotion ? undefined : { x: 5 }}
                     transition={{ type: prefersReducedMotion ? 'tween' : "spring", stiffness: 300 }}
                   >
-                    <button
-                      onClick={() => scrollToSection(link.href)}
-                      className="text-white/70 hover:text-[#E57373] transition-colors duration-300 text-sm"
-                    >
-                      {link.name}
-                    </button>
+                    {link.href.startsWith('/') ? (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-white/70 transition-colors duration-300 hover:text-[#E57373]"
+                      >
+                        {link.name}
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => scrollToSection(link.href)}
+                        className="text-left text-sm text-white/70 transition-colors duration-300 hover:text-[#E57373]"
+                      >
+                        {link.name}
+                      </button>
+                    )}
                   </motion.li>
                 ))}
               </ul>
@@ -171,12 +187,14 @@ const Footer = () => {
                 Síguenos
               </h3>
               <div className="space-y-4">
-                {socialLinks.map((social, index) => (
+                {socialLinks.map((social, index) => {
+                  const href = String(social.href || '')
+                  return (
                   <motion.a
                     key={index}
-                    href={social.href}
-                    target={social.href.startsWith('http') ? "_blank" : undefined}
-                    rel={social.href.startsWith('http') ? "noopener noreferrer" : undefined}
+                    href={href}
+                    target={href.startsWith('http') ? "_blank" : undefined}
+                    rel={href.startsWith('http') ? "noopener noreferrer" : undefined}
                     whileHover={prefersReducedMotion ? undefined : { scale: 1.05, x: 5 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex items-center space-x-3 text-white/70 hover:text-[#E57373] transition-colors duration-300 text-sm group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]/60 rounded-lg"
@@ -187,7 +205,8 @@ const Footer = () => {
                     </div>
                     <span>{social.name}</span>
                   </motion.a>
-                ))}
+                  )
+                })}
               </div>
 
               {/* Call to action */}

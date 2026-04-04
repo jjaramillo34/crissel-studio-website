@@ -1,10 +1,11 @@
-import lashFeatured from '@/assets/gallery/extensiones-pestanas-3.jpg'
-import makeupFeatured from '@/assets/gallery/maquillaje-fantasia-9.jpg'
-import browFeatured from '@/assets/gallery/planchado-cejas-2.jpg'
-import skincare2025Featured from '@/assets/gallery/maquillaje-fantasia-3.jpg'
-import lash2025Featured from '@/assets/gallery/extensiones-pestanas-4.jpg'
-import makeup2025Featured from '@/assets/gallery/maquillaje-fantasia-8.jpg'
-import brow2025Featured from '@/assets/gallery/planchado-cejas-1.jpg'
+// Use public folder paths for blog post images
+const lashFeatured = '/assets/gallery/extensiones-pestanas-3.jpg'
+const makeupFeatured = '/assets/gallery/maquillaje-fantasia-9.jpg'
+const browFeatured = '/assets/gallery/planchado-cejas-2.jpg'
+const skincare2025Featured = '/assets/gallery/maquillaje-fantasia-3.jpg'
+const lash2025Featured = '/assets/gallery/extensiones-pestanas-4.jpg'
+const makeup2025Featured = '/assets/gallery/maquillaje-fantasia-8.jpg'
+const brow2025Featured = '/assets/gallery/planchado-cejas-1.jpg'
 
 
 export type BlogSection = {

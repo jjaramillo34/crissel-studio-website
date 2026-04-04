@@ -4,29 +4,48 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "pnpm install && vite",
-    "build": "pnpm install && rm -rf node_modules/.vite-temp && tsc -b && vite build",
-    "lint": "pnpm install && eslint .",
-    "preview": "pnpm install && vite preview"
+    "dev": "cross-env NODE_OPTIONS='--max-old-space-size=6144 --no-deprecation' next dev",
+    "dev:all": "cross-env NODE_OPTIONS='--max-old-space-size=6144 --no-deprecation' next dev",
+    "devsafe": "rm -rf .next && cross-env NODE_OPTIONS='--max-old-space-size=6144 --no-deprecation' next dev",
+    "build": "cross-env NODE_OPTIONS='--max-old-space-size=4096 --no-deprecation' next build",
+    "start": "cross-env NODE_OPTIONS='--no-deprecation' next start",
+    "lint": "cross-env NODE_OPTIONS='--no-deprecation' next lint",
+    "payload": "cross-env NODE_OPTIONS='--no-deprecation' payload",
+    "generate:importmap": "cross-env NODE_OPTIONS='--no-deprecation' payload generate:importmap",
+    "generate:types": "cross-env NODE_OPTIONS='--no-deprecation' payload generate:types",
+    "create-user": "tsx scripts/create-first-user.ts",
+    "test-api": "tsx scripts/test-api.ts",
+    "create-content": "tsx scripts/create-content-example.ts",
+    "upload-media": "tsx scripts/upload-media-example.ts",
+    "seed-data": "tsx scripts/seed-real-data.ts",
+    "clear-data": "tsx scripts/clear-collections.ts"
   },
   "dependencies": {
+    "@payloadcms/db-mongodb": "3.63.0",
+    "@payloadcms/next": "3.63.0",
+    "@payloadcms/richtext-lexical": "3.63.0",
+    "@payloadcms/ui": "3.63.0",
     "@vercel/analytics": "^1.5.0",
+    "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cross-env": "^7.0.3",
     "framer-motion": "^12.16.0",
-    "lucide-react": "^0.364.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6",
-    "tailwind-merge": "^2.6.0",
+    "graphql": "^16.8.1",
+    "lucide-react": "^0.376.0",
+    "next": "15.4.7",
+    "payload": "3.63.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "sharp": "^0.34.5",
+    "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
+    "@types/express": "^5.0.5",
     "@types/node": "^22.10.7",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "@types/react-router-dom": "^5",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6",
     "autoprefixer": "10.4.20",
     "eslint": "^9.15.0",
     "eslint-plugin-react-hooks": "^5.0.0",
@@ -34,9 +53,16 @@
     "globals": "^15.12.0",
     "postcss": "8.4.49",
     "tailwindcss": "v3.4.16",
+    "tsx": "^4.20.6",
     "typescript": "~5.6.2",
-    "typescript-eslint": "^8.15.0",
-    "vite": "^6.0.1"
+    "typescript-eslint": "^8.15.0"
   },
-  "packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c"
+  "packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild",
+      "unrs-resolver"
+    ]
+  }
 }

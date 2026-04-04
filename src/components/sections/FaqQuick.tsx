@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ChevronDown, HelpCircle } from 'lucide-react'
@@ -33,7 +35,7 @@ const FaqQuick = () => {
   const toggle = (index: number) => setOpenIndex((prev) => (prev === index ? null : index))
 
   return (
-    <section className="bg-white py-20">
+    <section className="section-brand-alt py-20">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="FAQ rápido"
@@ -45,7 +47,7 @@ const FaqQuick = () => {
           {faqItems.map((item, index) => {
             const isOpen = openIndex === index
             return (
-              <div key={item.question} className="overflow-hidden rounded-2xl border border-pink-100 bg-white shadow-sm">
+              <div key={item.question} className="overflow-hidden rounded-2xl border border-rose-200/70 bg-white/95 shadow-sm hover:border-rose-200 transition-colors">
                 <button
                   type="button"
                   onClick={() => toggle(index)}

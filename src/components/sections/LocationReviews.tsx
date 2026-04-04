@@ -1,3 +1,5 @@
+'use client'
+
 import { motion, useReducedMotion } from 'framer-motion'
 import { MapPin, Star, MessageCircle } from 'lucide-react'
 import { SectionHeader } from './SectionHeader'
@@ -11,7 +13,7 @@ const LocationReviews = () => {
   const prefersReducedMotion = useReducedMotion()
 
   return (
-    <section className="bg-white py-20">
+    <section className="section-brand-alt py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Visítanos"
@@ -25,7 +27,7 @@ const LocationReviews = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={prefersReducedMotion ? { duration: 0.4 } : { duration: 0.6, ease: 'easeOut' }}
-            className="overflow-hidden rounded-3xl border border-pink-100 shadow-lg"
+            className="overflow-hidden rounded-2xl border border-rose-200/70 shadow-lg shadow-rose-100/25"
           >
             <iframe
               title="Ubicación Crissel Studio"
@@ -43,7 +45,7 @@ const LocationReviews = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={prefersReducedMotion ? { duration: 0.4 } : { duration: 0.5, ease: 'easeOut' }}
-              className="rounded-3xl border border-pink-100 bg-gradient-to-br from-[#F8BBD9]/20 to-white p-6"
+              className="rounded-2xl border border-rose-200/70 bg-gradient-to-br from-[#F8BBD9]/30 to-white p-6"
             >
               <div className="flex items-center gap-3 text-[#E57373]">
                 <MapPin className="h-6 w-6" aria-hidden="true" />
@@ -62,7 +64,7 @@ const LocationReviews = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.4 }}
                   transition={prefersReducedMotion ? { duration: 0.3 } : { duration: 0.4, ease: 'easeOut', delay: index * 0.1 }}
-                  className="rounded-2xl border border-pink-100 bg-white p-5 shadow-sm"
+                  className="rounded-2xl border border-rose-100/90 bg-white p-5 shadow-sm"
                 >
                   <div className="flex items-center gap-3 text-[#E57373]">
                     <Star className="h-4 w-4 fill-current" aria-hidden="true" />

@@ -1,16 +1,18 @@
-import { motion, useReducedMotion } from 'framer-motion'
-import { Eye, Crown, Heart, Sparkles, Clock, Star, ArrowLeft, Calendar } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import ResultsShowcase from './sections/ResultsShowcase'
+'use client'
+
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
+import { Eye, Crown, Heart, Sparkles, Clock, Star, ArrowLeft, Calendar, Phone, Mail, MapPin } from 'lucide-react'
+import Link from 'next/link'
+import { SectionHeader } from './sections/SectionHeader'
 import { Seo } from './Seo'
 
-// Import service images
-import extensionesImage from '../assets/gallery/maquillaje-fantasia-10.jpg'
-import planchadoImage from '../assets/gallery/maquillaje-fantasia-5.jpg'
-import depilacionImage from '../assets/gallery/maquillaje-fantasia-4.jpg'
-import maquillajeImage from '../assets/gallery/maquillaje-fantasia-9.jpg'
-import extensionesBenefitsImage from '../assets/gallery/maquillaje-fantasia-3.jpg'
-import extensionesDetailsImage from '../assets/gallery/maquillaje-fantasia-6.jpg'
+// Use public folder paths for service images
+const extensionesImage = '/assets/gallery/maquillaje-fantasia-10.jpg'
+const planchadoImage = '/assets/gallery/maquillaje-fantasia-5.jpg'
+const depilacionImage = '/assets/gallery/maquillaje-fantasia-4.jpg'
+const maquillajeImage = '/assets/gallery/maquillaje-fantasia-9.jpg'
+const extensionesBenefitsImage = '/assets/gallery/maquillaje-fantasia-3.jpg'
+const extensionesDetailsImage = '/assets/gallery/maquillaje-fantasia-6.jpg'
 
 const ProductsPage = () => {
   const prefersReducedMotion = useReducedMotion()
@@ -90,29 +92,43 @@ const ProductsPage = () => {
     }
   ]
 
-  const containerVariants = {
-    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 24 }) },
-    visible: {
-      opacity: 1,
-      ...(prefersReducedMotion ? {} : { y: 0 }),
-      transition: prefersReducedMotion
-        ? { duration: 0.4 }
-        : {
+  const containerVariants: Variants = prefersReducedMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { duration: 0.4 }
+        }
+      }
+    : {
+        hidden: { opacity: 0, y: 24 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
             staggerChildren: 0.2,
             duration: 0.4,
             ease: 'easeOut'
           }
-    }
-  }
+        }
+      }
 
-  const itemVariants = {
-    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 30 }) },
-    visible: {
-      opacity: 1,
-      ...(prefersReducedMotion ? {} : { y: 0 }),
-      transition: prefersReducedMotion ? { duration: 0.4 } : { duration: 0.6, ease: 'easeOut' }
-    }
-  }
+  const itemVariants: Variants = prefersReducedMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { duration: 0.4 }
+        }
+      }
+    : {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.6, ease: 'easeOut' }
+        }
+      }
 
   return (
     <>
@@ -121,7 +137,7 @@ const ProductsPage = () => {
         description="Descubre extensiones de pestañas, laminado de cejas, maquillaje social y paquetes exclusivos diseñados por nuestro equipo en Ambato."
         type="article"
       />
-      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-pink-50 via-white to-[#FDECF1] pt-20">
+      <div className="section-brand relative min-h-screen overflow-hidden pt-20">
         <motion.div
           aria-hidden="true"
           className="pointer-events-none absolute -top-24 -left-20 h-72 w-72 rounded-full bg-[#F8BBD9]/30 blur-3xl"
@@ -150,32 +166,39 @@ const ProductsPage = () => {
               : { duration: 16, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }
           }
         />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-16">
           {/* Header */}
           <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
+            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.8, ease: 'easeOut' }}
-            className="text-center mb-16"
+            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-16"
           >
-            <div className="flex items-center justify-center mb-6">
+            <div className="mb-8 flex justify-center sm:justify-start">
               <Link
-                to="/"
-                className="mr-8 inline-flex items-center gap-2 rounded-full border border-[#E57373]/30 bg-white/80 px-4 py-2 text-sm font-medium text-[#E57373] transition-colors duration-300 hover:border-[#E57373]/60 hover:bg-white"
+                href="/"
+                className="inline-flex items-center gap-2 rounded-2xl border border-rose-200/80 bg-white/90 px-4 py-2.5 text-sm font-medium text-[#c45c5c] shadow-sm backdrop-blur-sm transition-all hover:border-[#E57373]/50 hover:bg-white"
               >
-                <ArrowLeft className="w-5 h-5" />
-                <span>Volver al Inicio</span>
+                <ArrowLeft className="h-4 w-4 shrink-0" aria-hidden />
+                Volver al inicio
               </Link>
             </div>
-            
-            <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-4">
-              Nuestros <span className="text-[#E57373]">Productos</span>
-            </h1>
-            <div className="w-20 h-1 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] rounded-full mx-auto mb-6"></div>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Descubre nuestros servicios profesionales de belleza diseñados para realzar tu mirada
-              y destacar tu belleza natural con técnicas expertas.
-            </p>
+            <SectionHeader
+              titleAs="h1"
+              titleClassName="text-4xl sm:text-5xl lg:text-[2.85rem] max-w-4xl mx-auto leading-[1.15]"
+              eyebrow="Catálogo"
+              title={
+                <>
+                  Nuestros{' '}
+                  <span className="bg-gradient-to-r from-[#c45c5c] via-[#E57373] to-rose-400 bg-clip-text text-transparent">
+                    productos & servicios
+                  </span>
+                </>
+              }
+              description="Extensiones de pestañas, cejas, depilación con hilo y maquillaje social — todo con el mismo estándar profesional de Crissel Studio en Ambato."
+              align="center"
+              className="mb-0"
+            />
           </motion.div>
 
           {/* Services */}
@@ -183,7 +206,7 @@ const ProductsPage = () => {
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-            className="space-y-20"
+            className="space-y-24"
           >
             {services.map((service, index) => (
               <motion.div
@@ -207,18 +230,20 @@ const ProductsPage = () => {
                           ? undefined
                           : { duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }
                       }
-                      className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r ${service.color} shadow-lg`}
+                      className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r ${service.color} shadow-md shadow-rose-200/35`}
                     >
                       <service.icon className="h-8 w-8 text-white" aria-hidden="true" />
                     </motion.div>
                     
                     <div>
-                      <h2 className="text-3xl lg:text-4xl font-bold text-gray-800">{service.title}</h2>
-                      <p className="text-[#E57373] text-lg font-medium">{service.subtitle}</p>
+                      <h2 className="font-display text-3xl font-semibold tracking-tight text-neutral-900 lg:text-4xl">
+                        {service.title}
+                      </h2>
+                      <p className="text-lg font-medium text-[#c45c5c]">{service.subtitle}</p>
                     </div>
                   </div>
 
-                  <p className="text-gray-700 text-base leading-relaxed sm:text-lg">
+                  <p className="text-base leading-relaxed text-neutral-600 sm:text-lg">
                     {service.description}
                   </p>
 
@@ -239,15 +264,15 @@ const ProductsPage = () => {
                   {/* Pricing */}
                   {service.prices ? (
                     <div className="space-y-4">
-                      <h3 className="text-2xl font-bold text-gray-800 mb-4">Precios</h3>
+                      <h3 className="font-display text-2xl font-semibold text-neutral-900 mb-4">Precios</h3>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         {service.prices.map((price, priceIndex) => (
                           <motion.div
                             key={priceIndex}
                             whileHover={prefersReducedMotion ? undefined : { scale: 1.05, y: -5 }}
-                            className="p-6 rounded-2xl bg-white/80 backdrop-blur-sm border-2 border-pink-100 shadow-lg hover:shadow-xl transition-all duration-300"
+                            className="rounded-2xl border border-rose-200/70 bg-white/95 p-6 shadow-md shadow-rose-100/25 backdrop-blur-sm transition-all hover:border-rose-200 hover:shadow-lg"
                           >
-                            <h4 className="font-bold text-gray-800 text-lg mb-2">{price.name}</h4>
+                            <h4 className="mb-2 text-lg font-semibold text-neutral-900">{price.name}</h4>
                             <p className="text-3xl font-bold text-[#E57373] mb-2">{price.price}</p>
                             <p className="text-gray-600 text-sm">{price.description}</p>
                           </motion.div>
@@ -255,14 +280,14 @@ const ProductsPage = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="p-6 rounded-2xl bg-gradient-to-r from-[#E57373]/10 to-[#F8BBD9]/10 border border-pink-100">
+                    <div className="rounded-2xl border border-rose-200/80 bg-gradient-to-r from-[#E57373]/12 to-[#F8BBD9]/25 p-6 shadow-sm">
                       <p className="text-2xl font-bold text-[#E57373]">{service.price}</p>
                     </div>
                   )}
 
                   {/* Benefits */}
                   <div>
-                    <h3 className="text-2xl font-bold text-gray-800 mb-4">Beneficios</h3>
+                    <h3 className="font-display text-2xl font-semibold text-neutral-900 mb-4">Beneficios</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {service.benefits.map((benefit, benefitIndex) => (
                         <motion.div
@@ -271,10 +296,10 @@ const ProductsPage = () => {
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true, amount: 0.4 }}
                           transition={{ delay: 0.1 * benefitIndex, duration: 0.4, ease: 'easeOut' }}
-                          className="flex items-center space-x-3 rounded-xl bg-white/60 p-3 backdrop-blur-sm"
+                          className="flex items-center space-x-3 rounded-2xl border border-rose-100/80 bg-white/85 p-3 backdrop-blur-sm"
                         >
                           <Star className="w-5 h-5 text-[#E57373] flex-shrink-0" />
-                          <span className="text-gray-700 font-medium">{benefit}</span>
+                          <span className="font-medium text-neutral-700">{benefit}</span>
                         </motion.div>
                       ))}
                     </div>
@@ -287,7 +312,7 @@ const ProductsPage = () => {
                     rel="noopener noreferrer"
                     whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`inline-flex items-center space-x-2 rounded-full bg-gradient-to-r ${service.color} px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]`}
+                    className={`inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r ${service.color} px-8 py-4 text-lg font-semibold text-white shadow-md shadow-rose-200/40 transition-all hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]`}
                     aria-label={`Reservar ${service.title}`}
                   >
                     <Calendar className="w-5 h-5" />
@@ -299,7 +324,7 @@ const ProductsPage = () => {
                 <div className={`space-y-6 ${index % 2 === 1 ? 'lg:col-start-1' : ''}`}>
                   <motion.div
                     whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
-                    className="relative overflow-hidden rounded-3xl shadow-2xl"
+                    className="relative overflow-hidden rounded-2xl border border-rose-200/50 shadow-[0_28px_60px_-28px_rgba(229,115,115,0.35)] ring-1 ring-rose-100/50"
                   >
                     <img 
                       src={service.mainImage}
@@ -314,7 +339,7 @@ const ProductsPage = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <motion.div
                         whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                        className="overflow-hidden rounded-2xl shadow-lg"
+                        className="overflow-hidden rounded-2xl border border-rose-100/60 shadow-md"
                       >
                         <img 
                           src={service.benefitsImage}
@@ -325,7 +350,7 @@ const ProductsPage = () => {
                       {service.detailsImage && (
                         <motion.div
                           whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                          className="overflow-hidden rounded-2xl shadow-lg"
+                          className="overflow-hidden rounded-2xl border border-rose-100/60 shadow-md"
                         >
                           <img 
                             src={service.detailsImage}
@@ -347,57 +372,59 @@ const ProductsPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={prefersReducedMotion ? { duration: 0.5 } : { delay: 0.6, duration: 0.8, ease: 'easeOut' }}
-            className="text-center mt-20 rounded-3xl border border-pink-100 bg-gradient-to-r from-[#E57373]/10 to-[#F8BBD9]/10 p-12"
+            className="mt-20 rounded-2xl border border-rose-200/80 bg-gradient-to-br from-[#E57373]/10 via-white to-[#F8BBD9]/20 p-8 text-center shadow-md shadow-rose-100/30 sm:p-12"
           >
-            <h3 className="text-3xl font-bold text-gray-800 mb-4">
+            <h2 className="font-display mb-3 text-3xl font-semibold tracking-tight text-neutral-900 sm:text-4xl">
               ¿Lista para tu transformación?
-            </h3>
-            <p className="text-gray-600 mb-8 text-lg">
+            </h2>
+            <p className="mb-10 text-lg text-neutral-600 max-w-2xl mx-auto">
               Contáctanos para agendar tu cita y descubrir el poder de realzar tu mirada
             </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-[#E57373] rounded-full flex items-center justify-center mx-auto mb-3">
-                  <span className="text-white text-lg">📞</span>
+
+            <div className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
+              <div className="rounded-2xl border border-rose-100/90 bg-white/90 px-4 py-5 text-center shadow-sm">
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#E57373] to-[#F8BBD9] text-white shadow-sm">
+                  <Phone className="h-5 w-5" aria-hidden />
                 </div>
-                <p className="font-semibold text-gray-800">0995059403</p>
-                <p className="font-semibold text-gray-800">0992950683</p>
+                <p className="font-semibold text-neutral-900">0995059403</p>
+                <p className="font-semibold text-neutral-900">0992950683</p>
               </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-[#E57373] rounded-full flex items-center justify-center mx-auto mb-3">
-                  <span className="text-white text-lg">📧</span>
+              <div className="rounded-2xl border border-rose-100/90 bg-white/90 px-4 py-5 text-center shadow-sm">
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#E57373] to-[#F8BBD9] text-white shadow-sm">
+                  <Mail className="h-5 w-5" aria-hidden />
                 </div>
-                <p className="font-semibold text-gray-800">crisseleon1990@gmail.com</p>
+                <p className="break-all font-semibold text-neutral-900 text-sm sm:text-base">
+                  crisseleon1990@gmail.com
+                </p>
               </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-[#E57373] rounded-full flex items-center justify-center mx-auto mb-3">
-                  <span className="text-white text-lg">📍</span>
+              <div className="rounded-2xl border border-rose-100/90 bg-white/90 px-4 py-5 text-center shadow-sm">
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#E57373] to-[#F8BBD9] text-white shadow-sm">
+                  <MapPin className="h-5 w-5" aria-hidden />
                 </div>
-                <p className="font-semibold text-gray-800">Calle Mera entre Bolívar y Rocafuerte</p>
-                <p className="text-gray-600">Ambato, Ecuador</p>
+                <p className="font-semibold text-neutral-900">Calle Mera entre Bolívar y Rocafuerte</p>
+                <p className="text-sm text-neutral-600">Ambato, Ecuador</p>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <motion.a
                 href="https://bit.ly/crisselstudio"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-block rounded-full bg-gradient-to-r from-[#E57373] to-[#F8BBD9] px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-block rounded-2xl bg-gradient-to-r from-[#E57373] to-[#F8BBD9] px-8 py-4 text-lg font-semibold text-white shadow-md shadow-rose-200/40 transition-all hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
                 aria-label="Reservar cita online"
               >
-                Reservar Cita Online
+                Reservar cita online
               </motion.a>
               <motion.a
                 href="https://instagram.com/crisselstudio.ec"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-block rounded-full border-2 border-[#E57373] px-8 py-4 text-lg font-semibold text-[#E57373] transition-all duration-300 hover:bg-[#E57373] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-block rounded-2xl border-2 border-[#E57373] bg-white/80 px-8 py-4 text-lg font-semibold text-[#c45c5c] transition-all hover:bg-[#E57373] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
                 aria-label="Abrir Instagram de Crissel Studio"
               >
                 Síguenos en Instagram

@@ -1,14 +1,40 @@
-import { motion, useReducedMotion } from 'framer-motion'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Eye, Sparkles, Star, Heart, Crown } from 'lucide-react'
-import { SectionHeader } from './SectionHeader'
+'use client'
 
-// Dynamically import all images from the gallery folder
-const galleryImages = import.meta.glob('../../assets/gallery/*.{jpg,jpeg,png,webp}', { eager: true })
-const images = Object.keys(galleryImages).map((path) => ({
-  src: (galleryImages[path] as any).default,
-  name: path.split('/').pop(),
+import { motion, useReducedMotion, Variants } from 'framer-motion';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import Link from 'next/link';
+import { Eye, Sparkles, Star, Heart, Crown } from 'lucide-react';
+import { SectionHeader } from './SectionHeader';
+
+
+
+// Use public folder paths for gallery images
+const galleryImageFiles = [
+  'extensiones-pestanas-1.jpg',
+  'extensiones-pestanas-2.jpg',
+  'extensiones-pestanas-3.jpg',
+  'extensiones-pestanas-4.jpg',
+  'maquillaje-fantasia-1.jpg',
+  'maquillaje-fantasia-2.jpg',
+  'maquillaje-fantasia-3.jpg',
+  'maquillaje-fantasia-4.jpg',
+  'maquillaje-fantasia-5.jpg',
+  'maquillaje-fantasia-6.jpg',
+  'maquillaje-fantasia-7.jpg',
+  'maquillaje-fantasia-8.jpg',
+  'maquillaje-fantasia-9.jpg',
+  'maquillaje-fantasia-10.jpg',
+  'maquillaje-fantasia-11.jpg',
+  'maquillaje-social-1.jpg',
+  'microblading-cejas-1.jpg',
+  'microblading-cejas-2.jpg',
+  'planchado-cejas-1.jpg',
+  'planchado-cejas-2.jpg',
+]
+
+const images = galleryImageFiles.map((name) => ({
+  src: `/assets/gallery/${name}`,
+  name,
 }))
 
 // Map filenames to categories
@@ -129,34 +155,47 @@ const Gallery = () => {
     }
   }, [selected])
 
-  const containerVariants = {
-    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 24 }) },
-    visible: {
-      opacity: 1,
-      ...(prefersReducedMotion ? {} : { y: 0 }),
-      transition: prefersReducedMotion
-        ? { duration: 0 }
-        : {
+  const containerVariants: Variants = prefersReducedMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { duration: 0 }
+        }
+      }
+    : {
+        hidden: { opacity: 0, y: 24 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
             staggerChildren: 0.1,
             duration: 0.5,
             ease: 'easeOut'
           }
-    }
-  }
+        }
+      }
 
-  const itemVariants = {
-    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { scale: 0.9, y: 16 }) },
-    visible: {
-      opacity: 1,
-      ...(prefersReducedMotion ? {} : { scale: 1, y: 0 }),
-      transition: prefersReducedMotion
-        ? { duration: 0 }
-        : { duration: 0.45, ease: 'easeOut' }
-    }
-  }
+  const itemVariants: Variants = prefersReducedMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { duration: 0 }
+        }
+      }
+    : {
+        hidden: { opacity: 0, scale: 0.9, y: 16 },
+        visible: {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          transition: { duration: 0.45, ease: 'easeOut' }
+        }
+      }
 
   return (
-    <section id="galeria" className="relative overflow-hidden py-20 bg-gradient-to-br from-pink-50 to-white">
+    <section id="galeria" className="section-brand relative scroll-mt-20 py-20 md:scroll-mt-24">
       <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute -top-24 -right-16 h-80 w-80 rounded-full bg-[#E57373]/10 blur-3xl"
@@ -210,10 +249,10 @@ const Gallery = () => {
                 whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setActiveCategory(category.id)}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
+                className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
                   isActive
-                    ? 'bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white shadow-lg focus-visible:outline-[#E57373]'
-                    : 'bg-white text-gray-700 border-2 border-pink-100 hover:bg-pink-50 focus-visible:outline-[#F8BBD9]'
+                    ? 'bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white shadow-md shadow-rose-200/40 focus-visible:outline-[#E57373]'
+                    : 'bg-white text-gray-700 border-2 border-rose-100 hover:bg-rose-50 focus-visible:outline-[#F8BBD9]'
                 }`}
                 aria-pressed={isActive}
               >
@@ -260,7 +299,7 @@ const Gallery = () => {
                   }
                 }}
               >
-                <div className="relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500">
+                <div className="relative overflow-hidden rounded-2xl border border-rose-200/50 shadow-md shadow-rose-100/25 transition-all duration-500 hover:shadow-xl hover:border-rose-200/70">
                   {/* Actual Beauty Work Image */}
                   <div className="aspect-square relative">
                     <img 
@@ -300,7 +339,7 @@ const Gallery = () => {
                   </div>
 
                   {/* Hover effect - border glow */}
-                  <div className="absolute inset-0 rounded-3xl border-2 border-transparent group-hover:border-[#E57373]/50 transition-all duration-300" aria-hidden="true"></div>
+                  <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-[#E57373]/45 transition-all duration-300" aria-hidden="true" />
                 </div>
               </motion.article>
             )
@@ -319,7 +358,7 @@ const Gallery = () => {
           }
           className="text-center mt-16"
         >
-          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-pink-100">
+          <div className="rounded-2xl border border-rose-200/70 bg-white/90 p-8 shadow-md shadow-rose-100/30 backdrop-blur-sm">
             <SectionHeader
               eyebrow="¿Lista para lucir así?"
               title="Reserva tu cita con Crissel Studio"
@@ -327,26 +366,28 @@ const Gallery = () => {
               align="center"
               className="mb-6"
             />
-            <MotionLink
-              to="/galeria"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center justify-center rounded-full border-2 border-[#E57373] px-8 py-3 text-sm font-semibold text-[#E57373] transition-all duration-300 hover:bg-[#E57373] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
-              aria-label="Ver galería completa"
-            >
-              Ver Galería Completa
-            </MotionLink>
-            <motion.a
-              href="https://bit.ly/crisselstudio"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-block px-8 py-4 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
-              aria-label="Abrir reservas online de Crissel Studio en una nueva ventana"
-            >
-              Reservar Cita
-            </motion.a>
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <MotionLink
+                href="/galeria"
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center justify-center rounded-2xl border-2 border-[#E57373] bg-white/80 px-8 py-3 text-sm font-semibold text-[#c45c5c] transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E57373] hover:to-[#F8BBD9] hover:text-white hover:border-transparent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+                aria-label="Ver galería completa"
+              >
+                Ver galería completa
+              </MotionLink>
+              <motion.a
+                href="https://bit.ly/crisselstudio"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-block rounded-2xl bg-gradient-to-r from-[#E57373] to-[#F8BBD9] px-8 py-4 text-lg font-semibold text-white shadow-md shadow-rose-200/40 transition-all hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+                aria-label="Abrir reservas online de Crissel Studio en una nueva ventana"
+              >
+                Reservar cita
+              </motion.a>
+            </div>
           </div>
         </motion.div>
       </div>

@@ -1,4 +1,6 @@
-import { motion, useReducedMotion } from 'framer-motion'
+'use client'
+
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { useState } from 'react'
 import { Mail, MapPin, Instagram, Youtube, MessageCircle, Send, Heart, Star } from 'lucide-react'
 import { SectionHeader } from './SectionHeader'
@@ -77,32 +79,46 @@ const Contact = () => {
     }
   ]
 
-  const containerVariants = {
-    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 24 }) },
-    visible: {
-      opacity: 1,
-      ...(prefersReducedMotion ? {} : { y: 0 }),
-      transition: prefersReducedMotion
-        ? { duration: 0 }
-        : {
+  const containerVariants: Variants = prefersReducedMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { duration: 0 }
+        }
+      }
+    : {
+        hidden: { opacity: 0, y: 24 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
             staggerChildren: 0.2,
             duration: 0.6,
             ease: 'easeOut'
           }
-    }
-  }
+        }
+      }
 
-  const itemVariants = {
-    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 30 }) },
-    visible: {
-      opacity: 1,
-      ...(prefersReducedMotion ? {} : { y: 0 }),
-      transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' }
-    }
-  }
+  const itemVariants: Variants = prefersReducedMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { duration: 0 }
+        }
+      }
+    : {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.6, ease: 'easeOut' }
+        }
+      }
 
   return (
-    <section id="contacto" className="py-20 bg-gradient-to-br from-pink-50 to-white relative overflow-hidden">
+    <section id="contacto" className="section-brand py-20 relative">
       <motion.div
         aria-hidden="true"
         className="absolute -top-24 -left-16 h-64 w-64 rounded-full bg-[#E57373]/10 blur-3xl"
@@ -325,7 +341,7 @@ const Contact = () => {
                     whileHover={
                       prefersReducedMotion ? undefined : { scale: 1.02, x: 5 }
                     }
-                    className="flex items-start gap-4 p-5 rounded-2xl bg-white/90 backdrop-blur-sm border border-pink-100 shadow transition-shadow hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]/70 focus-visible:shadow-lg"
+                    className="flex items-start gap-4 p-5 rounded-2xl bg-white/90 backdrop-blur-sm border border-rose-200/70 shadow transition-shadow hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]/70 focus-visible:shadow-lg"
                     aria-labelledby={`contact-info-title-${index}`}
                     aria-describedby={`contact-info-description-${index}`}
                     role="group"
@@ -354,10 +370,12 @@ const Contact = () => {
                 Síguenos en Redes
               </h3>
               <div className="space-y-4">
-                {socialLinks.map((social, index) => (
+                {socialLinks.map((social, index) => {
+                  const url = String(social.url || '')
+                  return (
                   <motion.a
                     key={index}
-                    href={social.url}
+                    href={url}
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={
@@ -382,7 +400,8 @@ const Contact = () => {
                       </svg>
                     </div>
                   </motion.a>
-                ))}
+                  )
+                })}
               </div>
             </motion.div>
 

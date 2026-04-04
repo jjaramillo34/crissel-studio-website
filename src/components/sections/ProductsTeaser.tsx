@@ -1,5 +1,7 @@
+'use client'
+
 import { motion, useReducedMotion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { ArrowRight, Sparkles } from 'lucide-react'
 import { SectionHeader } from './SectionHeader'
 
@@ -22,9 +24,9 @@ const ProductsTeaser = () => {
   const prefersReducedMotion = useReducedMotion()
 
   return (
-    <section className="bg-white py-20">
+    <section className="section-brand py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl border border-pink-100 bg-gradient-to-r from-[#FDECF6] via-white to-[#F8BBD9]/40 p-10 shadow-xl">
+        <div className="rounded-2xl border border-rose-200/70 bg-gradient-to-br from-[#FDECF6]/90 via-white to-[#F8BBD9]/45 p-10 shadow-xl shadow-rose-100/35">
           <div className="grid gap-8 lg:grid-cols-2">
             <motion.div
               initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
@@ -42,7 +44,7 @@ const ProductsTeaser = () => {
               />
 
               <Link
-                to="/productos"
+                href="/productos"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#E57373] transition-colors duration-300 hover:text-[#c84d4d]"
               >
                 Ver todos los servicios & productos

@@ -1,3 +1,5 @@
+'use client'
+
 import { motion, useReducedMotion } from 'framer-motion'
 import { ClipboardList, Brush, Sparkles, HeartHandshake } from 'lucide-react'
 import { SectionHeader } from './SectionHeader'
@@ -30,7 +32,7 @@ const ProcessTimeline = () => {
   const prefersReducedMotion = useReducedMotion()
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-white via-[#FDECF6] to-pink-50 py-20">
+    <section className="section-brand relative py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Nuestro método"
@@ -57,7 +59,7 @@ const ProcessTimeline = () => {
                   transition={prefersReducedMotion ? { duration: 0.4 } : { duration: 0.5, ease: 'easeOut', delay: index * 0.1 }}
                   className={containerClasses}
                 >
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[#E57373]/40 bg-white shadow-md">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-rose-200/80 bg-gradient-to-br from-white to-rose-50/50 shadow-md ring-2 ring-[#E57373]/15">
                     <step.icon className="h-7 w-7 text-[#E57373]" aria-hidden="true" />
                   </div>
                   <div className={cn('max-w-lg space-y-3', isEven ? 'md:text-left' : 'md:text-right')}>

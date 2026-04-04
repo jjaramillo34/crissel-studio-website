@@ -1,5 +1,8 @@
+'use client'
+
 import { useEffect } from 'react'
-import ogImage from '@/assets/images/logo_photo.png'
+// Use public folder path for static image
+const ogImage = '/assets/images/logo_photo.png'
 
 const defaultMeta = {
   title: 'Crissel Studio | Belleza consciente en Ambato',

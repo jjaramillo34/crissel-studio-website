@@ -1,3 +1,5 @@
+'use client'
+
 import { motion, useReducedMotion } from 'framer-motion'
 import { CalendarDays, Clock, PhoneCall } from 'lucide-react'
 import { SectionHeader } from './SectionHeader'
@@ -12,9 +14,9 @@ const AvailabilityWidget = () => {
   const prefersReducedMotion = useReducedMotion()
 
   return (
-    <section className="bg-gradient-to-br from-[#FDECF6] via-white to-pink-50 py-16">
+    <section className="section-brand py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl border border-pink-100 bg-white shadow-xl">
+        <div className="rounded-2xl border border-rose-200/70 bg-white shadow-xl shadow-rose-100/40">
           <div className="grid gap-10 p-10 lg:grid-cols-2">
             <motion.div
               initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
@@ -69,7 +71,7 @@ const AvailabilityWidget = () => {
                 rel="noopener noreferrer"
                 whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#E57373] shadow-lg transition-all duration-300 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-semibold text-[#c45c5c] shadow-lg transition-all duration-300 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 <CalendarDays className="h-5 w-5" aria-hidden="true" />
                 Abrir calendario online
@@ -80,7 +82,7 @@ const AvailabilityWidget = () => {
                 rel="noopener noreferrer"
                 whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/70 px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/70 px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 <PhoneCall className="h-5 w-5" aria-hidden="true" />
                 Hablar con el equipo

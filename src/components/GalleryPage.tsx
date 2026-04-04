@@ -1,20 +1,35 @@
+'use client'
+
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { Eye, Sparkles, Star, X } from 'lucide-react'
+import Link from 'next/link'
+import { ArrowLeft, Eye, Heart, Sparkles, Crown, X } from 'lucide-react'
 import { SectionHeader } from './sections/SectionHeader'
 import { Seo } from '@/components/Seo'
 
-const galleryFiles = import.meta.glob('../assets/gallery/*.{jpg,jpeg,png,webp}', {
-  eager: true
-}) as Record<string, { default: string }>
-
-const gallerySourceMap: Record<string, string> = Object.fromEntries(
-  Object.entries(galleryFiles).map(([path, mod]) => {
-    const name = path.split('/').pop() ?? path
-    return [name, mod.default]
-  })
-)
+// Use public folder paths for gallery images
+const gallerySourceMap: Record<string, string> = {
+  'extensiones-pestanas-1.jpg': '/assets/gallery/extensiones-pestanas-1.jpg',
+  'extensiones-pestanas-2.jpg': '/assets/gallery/extensiones-pestanas-2.jpg',
+  'extensiones-pestanas-3.jpg': '/assets/gallery/extensiones-pestanas-3.jpg',
+  'extensiones-pestanas-4.jpg': '/assets/gallery/extensiones-pestanas-4.jpg',
+  'maquillaje-fantasia-1.jpg': '/assets/gallery/maquillaje-fantasia-1.jpg',
+  'maquillaje-fantasia-2.jpg': '/assets/gallery/maquillaje-fantasia-2.jpg',
+  'maquillaje-fantasia-3.jpg': '/assets/gallery/maquillaje-fantasia-3.jpg',
+  'maquillaje-fantasia-4.jpg': '/assets/gallery/maquillaje-fantasia-4.jpg',
+  'maquillaje-fantasia-5.jpg': '/assets/gallery/maquillaje-fantasia-5.jpg',
+  'maquillaje-fantasia-6.jpg': '/assets/gallery/maquillaje-fantasia-6.jpg',
+  'maquillaje-fantasia-7.jpg': '/assets/gallery/maquillaje-fantasia-7.jpg',
+  'maquillaje-fantasia-8.jpg': '/assets/gallery/maquillaje-fantasia-8.jpg',
+  'maquillaje-fantasia-9.jpg': '/assets/gallery/maquillaje-fantasia-9.jpg',
+  'maquillaje-fantasia-10.jpg': '/assets/gallery/maquillaje-fantasia-10.jpg',
+  'maquillaje-fantasia-11.jpg': '/assets/gallery/maquillaje-fantasia-11.jpg',
+  'maquillaje-social-1.jpg': '/assets/gallery/maquillaje-social-1.jpg',
+  'microblading-cejas-1.jpg': '/assets/gallery/microblading-cejas-1.jpg',
+  'microblading-cejas-2.jpg': '/assets/gallery/microblading-cejas-2.jpg',
+  'planchado-cejas-1.jpg': '/assets/gallery/planchado-cejas-1.jpg',
+  'planchado-cejas-2.jpg': '/assets/gallery/planchado-cejas-2.jpg',
+}
 
 type GalleryCategory = 'extensiones' | 'cejas' | 'maquillaje'
 
@@ -44,8 +59,8 @@ const imageCategories: Record<string, { label: string; path: GalleryCategory; ac
 const categories = [
   { id: 'all', label: 'Todo', icon: Sparkles },
   { id: 'extensiones', label: 'Extensiones de Pestañas', icon: Eye },
-  { id: 'cejas', label: 'Diseño de Cejas', icon: Star },
-  { id: 'maquillaje', label: 'Maquillaje', icon: Sparkles }
+  { id: 'cejas', label: 'Diseño de Cejas', icon: Crown },
+  { id: 'maquillaje', label: 'Maquillaje', icon: Heart },
 ] as const
 
 const galleryItems = Object.entries(imageCategories)
@@ -58,8 +73,8 @@ const galleryItems = Object.entries(imageCategories)
 
 const categoryIconMap = {
   extensiones: Eye,
-  cejas: Star,
-  maquillaje: Sparkles
+  cejas: Crown,
+  maquillaje: Heart,
 } as const
 
 const formatTitle = (name: string) =>
@@ -136,7 +151,7 @@ const GalleryPage = () => {
         description="Inspírate con nuestros antes y después en extensiones, cejas y maquillaje. Filtra por categoría y conoce el trabajo de nuestras especialistas."
       />
       <motion.section
-        className="relative min-h-screen overflow-hidden bg-gradient-to-br from-pink-50 via-white to-[#FDECF1] py-20 px-4"
+        className="section-brand relative min-h-screen overflow-hidden px-4 pb-16 pt-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -170,30 +185,39 @@ const GalleryPage = () => {
           }
         />
 
-        <div className="relative mx-auto max-w-6xl">
-          <div className="mb-12 text-center">
-            <motion.div
-              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.7, ease: 'easeOut' }}
-              className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white/80 px-5 py-2 text-sm font-medium text-[#E57373] shadow-sm backdrop-blur"
-            >
-              <Sparkles className="h-4 w-4" aria-hidden="true" />
-              Transformaciones reales de nuestras clientas
-            </motion.div>
-            <motion.h1
-              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.7, ease: 'easeOut', delay: 0.1 }}
-              className="mb-3 text-4xl font-bold text-[#E57373] sm:text-5xl"
-            >
-              Galería de Belleza
-            </motion.h1>
-            <p className="mx-auto max-w-2xl text-sm text-gray-600 sm:text-base">
-              Explora nuestros looks más recientes en extensiones de pestañas, diseño de cejas y maquillaje profesional.
-              Cada imagen refleja nuestro compromiso con la precisión y el cuidado personalizado.
-            </p>
-          </div>
+        <div className="relative mx-auto max-w-6xl sm:px-2">
+          <motion.div
+            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-12"
+          >
+            <div className="mb-8 flex justify-center sm:justify-start">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 rounded-2xl border border-rose-200/80 bg-white/90 px-4 py-2.5 text-sm font-medium text-[#c45c5c] shadow-sm backdrop-blur-sm transition-all hover:border-[#E57373]/50 hover:bg-white"
+              >
+                <ArrowLeft className="h-4 w-4 shrink-0" aria-hidden />
+                Volver al inicio
+              </Link>
+            </div>
+            <SectionHeader
+              titleAs="h1"
+              titleClassName="text-4xl sm:text-5xl lg:text-[2.75rem] max-w-3xl mx-auto leading-[1.15]"
+              eyebrow="Inspiración"
+              title={
+                <>
+                  Galería de{' '}
+                  <span className="bg-gradient-to-r from-[#c45c5c] via-[#E57373] to-rose-400 bg-clip-text text-transparent">
+                    belleza
+                  </span>
+                </>
+              }
+              description="Transformaciones reales: extensiones de pestañas, diseño de cejas y maquillaje. Filtra por categoría y ve el trabajo del estudio en Ambato."
+              align="center"
+              className="mb-0"
+            />
+          </motion.div>
 
           <div className="mb-10 flex flex-wrap justify-center gap-3">
             {categories.map((category) => {
@@ -206,14 +230,14 @@ const GalleryPage = () => {
                   onClick={() => setActiveCategory(category.id)}
                   whileHover={prefersReducedMotion ? undefined : { y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`inline-flex items-center gap-2 rounded-full border px-5 py-2 text-sm font-medium transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373] ${
+                  className={`inline-flex items-center gap-2 rounded-2xl border-2 px-5 py-2.5 text-sm font-semibold transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
                     isActive
-                      ? 'border-transparent bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white shadow-lg'
-                      : 'border-[#E57373]/30 bg-white/80 text-[#E57373] hover:border-[#E57373]/60 hover:shadow'
+                      ? 'border-transparent bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white shadow-md shadow-rose-200/40 focus-visible:outline-[#E57373]'
+                      : 'border-rose-100 bg-white text-neutral-700 hover:bg-rose-50 focus-visible:outline-[#F8BBD9]'
                   }`}
                   aria-pressed={isActive}
                 >
-                  <Icon className="h-4 w-4" aria-hidden="true" />
+                  <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
                   {category.label}
                 </motion.button>
               )
@@ -251,7 +275,7 @@ const GalleryPage = () => {
                       transition: prefersReducedMotion ? { duration: 0.3 } : { duration: 0.35, ease: 'easeOut' }
                     }
                   }}
-                  className="group relative overflow-hidden rounded-2xl border border-white/60 bg-white shadow-lg transition-all duration-300"
+                  className="group relative overflow-hidden rounded-2xl border border-rose-200/60 bg-white shadow-md shadow-rose-100/20 transition-all duration-300 hover:border-rose-200 hover:shadow-lg"
                 >
                   <button
                     type="button"
@@ -294,7 +318,7 @@ const GalleryPage = () => {
               const title = formatTitle(currentItem.name)
               return (
                 <motion.div
-                  className="relative flex w-full max-w-4xl flex-col items-center gap-6 rounded-3xl bg-white/10 p-6 backdrop-blur-xl"
+                  className="relative flex w-full max-w-4xl flex-col items-center gap-6 rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur-xl"
                   onClick={(event) => event.stopPropagation()}
                   initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -306,7 +330,7 @@ const GalleryPage = () => {
                   <motion.button
                     type="button"
                     onClick={closeLightbox}
-                    className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white shadow-lg hover:bg-black/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-black/45 text-white shadow-lg hover:bg-black/65 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                     whileHover={prefersReducedMotion ? undefined : { rotate: 90 }}
                     whileTap={{ scale: 0.95 }}
                     aria-label="Cerrar galería ampliada"
@@ -336,7 +360,7 @@ const GalleryPage = () => {
                         showPrevious()
                       }}
                       disabled={selected === 0}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-sm font-medium text-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-40"
+                      className="inline-flex items-center gap-2 rounded-2xl border border-white/40 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-40"
                       whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
                       whileTap={{ scale: 0.97 }}
                       aria-label="Ver imagen anterior"
@@ -350,7 +374,7 @@ const GalleryPage = () => {
                         showNext()
                       }}
                       disabled={selected === filteredImages.length - 1}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-2 text-sm font-medium text-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-40"
+                      className="inline-flex items-center gap-2 rounded-2xl border border-white/40 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-40"
                       whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
                       whileTap={{ scale: 0.97 }}
                       aria-label="Ver imagen siguiente"

@@ -1,425 +1,216 @@
+'use client'
+
 import { motion, useReducedMotion } from 'framer-motion'
-import { Sparkles, Eye, Star, Calendar, Award, Crown, HeartHandshake } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import logoImage from '../../assets/images/logo_photo.png'
-import heroImage from '../../assets/images/hero.jpeg'
+import { Sparkles, Calendar, MapPin } from 'lucide-react'
+import Link from 'next/link'
+import Image from 'next/image'
+
+const logoImage = '/assets/images/logo_photo.png'
+const heroImage = '/assets/images/hero.jpeg'
 
 const Hero = () => {
   const prefersReducedMotion = useReducedMotion()
 
-  const floatingElements = [
-    { icon: Eye, delay: 0, x: '10%', y: '20%' },
-    { icon: Sparkles, delay: 1, x: '80%', y: '15%' },
-    { icon: Star, delay: 2, x: '15%', y: '70%' },
-    { icon: Sparkles, delay: 1.5, x: '85%', y: '75%' },
-  ]
-
   const highlightMetrics = [
-    {
-      icon: HeartHandshake,
-      value: '+1.5K',
-      label: 'Clientes encantadas'
-    },
-    {
-      icon: Crown,
-      value: '10+',
-      label: 'Años perfeccionando miradas'
-    },
-    {
-      icon: Award,
-      value: '4.9★',
-      label: 'Promedio en reseñas'
-    }
+    { value: '+1.5K', label: 'Clientes felices' },
+    { value: '10+', label: 'Años de experiencia' },
+    { value: '4.9★', label: 'Reseñas' },
   ]
 
   return (
-    <section id="hero" className="min-h-screen relative overflow-hidden bg-gradient-to-br from-pink-50 via-rose-50 to-white flex items-center">
-      {/* Animated gradient background shapes */}
+    <section
+      id="hero"
+      className="mesh-hero relative min-h-screen overflow-hidden pt-20 flex flex-col"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 grid-subtle opacity-[0.35]"
+        aria-hidden
+      />
       <motion.div
-        aria-hidden="true"
-        className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-gradient-to-br from-[#E57373]/20 to-[#F8BBD9]/30 rounded-full blur-3xl z-0"
+        aria-hidden
+        className="absolute -top-40 right-[-10%] h-[min(55vw,520px)] w-[min(55vw,520px)] rounded-full bg-gradient-to-br from-[#E57373]/12 via-rose-200/20 to-transparent blur-3xl"
         animate={
           prefersReducedMotion
             ? undefined
-            : { scale: [1, 1.1, 1], rotate: [0, 15, 0] }
+            : { opacity: [0.5, 0.75, 0.5], scale: [1, 1.03, 1] }
         }
         transition={
-          prefersReducedMotion
-            ? undefined
-            : { duration: 12, repeat: Infinity, ease: 'easeInOut' }
-        }
-      />
-      <motion.div
-        aria-hidden="true"
-        className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tr from-[#F8BBD9]/30 to-[#E57373]/20 rounded-full blur-2xl z-0"
-        animate={
-          prefersReducedMotion
-            ? undefined
-            : { scale: [1.1, 1, 1.1], rotate: [0, -10, 0] }
-        }
-        transition={
-          prefersReducedMotion
-            ? undefined
-            : { duration: 14, repeat: Infinity, ease: 'easeInOut' }
+          prefersReducedMotion ? undefined : { duration: 14, repeat: Infinity, ease: 'easeInOut' }
         }
       />
 
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-5 z-0">
-        <div className="absolute top-0 left-0 w-full h-full"
-             style={{
-               backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23E57373' fill-opacity='0.1'%3E%3Cpath d='M30 30c0-11.046 8.954-20 20-20s20 8.954 20 20-8.954 20-20 20-20-8.954-20-20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-               backgroundSize: '60px 60px'
-             }}
-        />
-      </div>
-
-      {/* Floating decorative elements */}
-      <div className="absolute inset-0 z-10">
-        {floatingElements.map((element, index) => (
+      <div className="relative z-10 flex flex-1 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-16 w-full">
           <motion.div
-            key={index}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={
-              prefersReducedMotion
-                ? { opacity: 0.12, scale: 1 }
-                : { opacity: 0.2, scale: 1, rotate: [0, 10, -10, 0] }
-            }
-            transition={
-              prefersReducedMotion
-                ? { duration: 0.8 }
-                : { delay: element.delay, duration: 2, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }
-            }
-            className="absolute"
-            style={{ left: element.x, top: element.y }}
-            aria-hidden="true"
+            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={prefersReducedMotion ? { duration: 0.4 } : { duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            className="flex-1 flex flex-col justify-center text-center lg:text-left lg:max-w-xl"
           >
-            <motion.div
-              animate={
-                prefersReducedMotion
-                  ? undefined
-                  : { y: [-10, 10, -10] }
-              }
-              transition={
-                prefersReducedMotion
-                  ? undefined
-                  : { duration: 3, repeat: Infinity, ease: "easeInOut" }
-              }
-            >
-              <element.icon className="w-8 h-8 text-[#E57373]" aria-hidden="true" focusable="false" />
-            </motion.div>
-          </motion.div>
-        ))}
-      </div>
+            <div className="mb-6 flex justify-center lg:justify-start">
+              <span className="inline-flex items-center gap-2 rounded-full border border-neutral-200/80 bg-white/70 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.12em] text-neutral-600 shadow-sm backdrop-blur-md">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#E57373]" />
+                Ambato · 2026
+              </span>
+            </div>
 
-      {/* Jumbotron main content */}
-      <div className="relative z-20 w-full">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-20 flex flex-col lg:flex-row lg:flex-wrap items-center lg:items-stretch gap-12">
-          {/* Left side - Text content */}
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: -50 }}
-            animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, x: 0 }}
-            transition={prefersReducedMotion ? { duration: 0.6 } : { duration: 0.8, ease: 'easeOut' }}
-            className="flex-1 flex flex-col justify-center lg:items-start items-center text-center lg:text-left"
-          >
-            <motion.div
-              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.7, ease: 'easeOut' }}
-              className="inline-flex items-center gap-2 rounded-full border border-[#E57373]/20 bg-white/80 px-5 py-2 text-sm font-medium text-[#E57373] shadow-sm backdrop-blur"
-              aria-label="Nuevas tendencias de belleza 2025"
-            >
-              <span className="inline-flex h-2 w-2 rounded-full bg-[#E57373] shadow-[0_0_10px_rgba(229,115,115,0.6)]" />
-              Tendencias 2025 • Glam Glow Collection
-            </motion.div>
-
-            {/* Logo */}
-            <motion.div
-              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={prefersReducedMotion ? { duration: 0.6 } : { delay: 0.1, duration: 0.8, ease: 'easeOut' }}
-              className="flex items-center space-x-4 mb-6"
-            >
-              <img 
-                src={logoImage} 
-                alt="Crissel Studio Logo" 
-                className="w-16 h-16 object-contain drop-shadow-lg"
-              />
-              <div>
-                <motion.h1
-                  className="text-4xl lg:text-6xl font-bold text-[#E57373] drop-shadow-[0_2px_12px_rgba(229,115,115,0.25)]"
-                  initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -20 }}
-                  animate={
-                    prefersReducedMotion
-                      ? { opacity: 1 }
-                      : {
-                          opacity: 1,
-                          y: 0,
-                          textShadow: [
-                            "0 0 0px #E57373",
-                            "0 0 16px #E57373",
-                            "0 0 0px #E57373"
-                          ]
-                        }
-                  }
-                  transition={prefersReducedMotion ? { duration: 0.8 } : { duration: 1.2, delay: 0.2, ease: 'easeOut' }}
-                >
-                  Crissel Studio
-                </motion.h1>
-                <motion.p
-                  className="text-sm text-gray-600 italic"
-                  initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={prefersReducedMotion ? { duration: 0.6 } : { duration: 1, delay: 0.5, ease: 'easeOut' }}
-                >By Cris Pestañas</motion.p>
+            <div className="mb-6 flex items-center justify-center gap-4 lg:justify-start">
+              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-white/80 bg-white shadow-md ring-1 ring-black/5">
+                <Image
+                  src={logoImage}
+                  alt="Logo de Crissel Studio"
+                  width={56}
+                  height={56}
+                  className="h-full w-full object-contain p-1"
+                  priority
+                />
               </div>
-            </motion.div>
-            
-            <motion.h2
-              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
+              <div className="text-left">
+                <p className="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-neutral-500">
+                  Crissel Studio
+                </p>
+                <p className="text-sm text-neutral-500">By Cris Pestañas</p>
+              </div>
+            </div>
+
+            <motion.h1
+              className="font-display text-4xl sm:text-5xl lg:text-[3.25rem] font-semibold text-neutral-900"
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={prefersReducedMotion ? { duration: 0.6 } : { delay: 0.4, duration: 0.8, ease: 'easeOut' }}
-              className="text-2xl lg:text-3xl text-[#E57373] font-semibold drop-shadow-[0_2px_8px_rgba(229,115,115,0.15)]"
+              transition={
+                prefersReducedMotion ? undefined : { delay: 0.05, duration: 0.55, ease: [0.22, 1, 0.36, 1] }
+              }
             >
-              ¡Realza el poder de tu mirada!
-            </motion.h2>
-            
+              Mirada, cejas y maquillaje{' '}
+              <span className="bg-gradient-to-r from-[#c45c5c] via-[#E57373] to-rose-400 bg-clip-text text-transparent">
+                con estilo editorial
+              </span>
+            </motion.h1>
+
             <motion.p
-              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
+              className="mt-5 text-lg text-neutral-600 leading-relaxed max-w-lg mx-auto lg:mx-0"
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={prefersReducedMotion ? { duration: 0.6 } : { delay: 0.6, duration: 0.8, ease: 'easeOut' }}
-              className="text-lg text-gray-700 max-w-lg"
+              transition={
+                prefersReducedMotion ? undefined : { delay: 0.12, duration: 0.55, ease: [0.22, 1, 0.36, 1] }
+              }
             >
-              En Crissel Studio, nos especializamos en realzar tu belleza natural a través de servicios profesionales de maquillaje, diseño de cejas y extensiones de pestañas en Ambato. Nuestro equipo está comprometido con la excelencia, utilizando técnicas avanzadas y productos de alta calidad para ofrecerte resultados espectaculares y personalizados. Disfruta de una experiencia única en un ambiente cálido y acogedor, donde tu confianza y satisfacción son nuestra prioridad.
+              Especialistas en extensiones de pestañas, diseño de cejas y maquillaje profesional en Ambato.
+              Técnicas actuales, productos de calidad y un espacio pensado para que te sientas cómoda.
             </motion.p>
-            
-            {/* Button row - jumbotron style */}
+
             <motion.div
-              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={prefersReducedMotion ? { duration: 0.6 } : { delay: 0.8, duration: 0.8, ease: 'easeOut' }}
-              className="flex flex-col sm:flex-row flex-wrap gap-6 w-full max-w-2xl mt-8 justify-center lg:justify-start"
+              transition={
+                prefersReducedMotion ? undefined : { delay: 0.2, duration: 0.55, ease: [0.22, 1, 0.36, 1] }
+              }
+              className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 justify-center lg:justify-start"
             >
               <motion.a
                 href="https://bit.ly/crisselstudio"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-                className="flex-1 min-w-[180px] whitespace-nowrap px-8 py-4 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white rounded-full font-semibold text-lg shadow-lg transition-all duration-300 text-center flex items-center justify-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373] will-change-transform"
+                whileHover={prefersReducedMotion ? undefined : { y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#E57373] to-[#e8899f] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-rose-300/40 transition-all hover:brightness-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
                 aria-label="Reservar una cita en Crissel Studio (se abre en una nueva pestaña)"
               >
-                <Calendar className="w-5 h-5" />
-                Reservar Cita
+                <Calendar className="h-4 w-4 shrink-0" aria-hidden />
+                Reservar cita
               </motion.a>
 
               <motion.button
                 type="button"
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
+                whileHover={prefersReducedMotion ? undefined : { y: -2 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' })}
-                className="flex-1 min-w-[180px] whitespace-nowrap px-8 py-4 border-2 border-[#E57373] text-[#E57373] rounded-full font-semibold text-lg hover:bg-[#E57373] hover:text-white transition-all duration-300 flex items-center justify-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373] will-change-transform"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-neutral-200 bg-white/90 px-7 py-3.5 text-sm font-semibold text-neutral-800 shadow-sm backdrop-blur transition-colors hover:border-neutral-300 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-400"
                 aria-label="Desplazarse a la sección de servicios"
               >
-                <Sparkles className="w-5 h-5" />
-                Ver Servicios
+                <Sparkles className="h-4 w-4 shrink-0 text-[#E57373]" aria-hidden />
+                Ver servicios
               </motion.button>
 
               <Link
-                to="/galeria"
-                className="flex-1 min-w-[180px] whitespace-nowrap px-8 py-4 border-2 border-[#F8BBD9] text-[#E57373] rounded-full font-semibold text-lg hover:bg-[#F8BBD9] hover:text-white transition-all duration-300 flex items-center justify-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F8BBD9] will-change-transform"
+                href="/galeria"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl px-7 py-3.5 text-sm font-semibold text-[#b85c5c] transition-colors hover:text-[#9e4e4e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
                 aria-label="Ir a la galería de trabajos"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
-                Ver Galería
+                Galería
               </Link>
             </motion.div>
 
-            {/* Location info */}
-            <motion.div
-              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={prefersReducedMotion ? { duration: 0.6 } : { delay: 1.0, duration: 0.8, ease: 'easeOut' }}
-              className="text-sm text-gray-600 mt-8"
-            >
-              📍 Centro Comercial La Galería, Mera entre Rocafuerte y Bolívar, Ambato
-            </motion.div>
-          </motion.div>
-
-          {/* Right side - Beauty visual */}
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={prefersReducedMotion ? { duration: 0.6 } : { delay: 0.4, duration: 1, ease: 'easeOut' }}
-            className="flex-1 flex items-center justify-center"
-          >
-            <motion.div
-              className="relative w-full h-96 lg:h-[500px] rounded-3xl overflow-hidden shadow-[0_35px_80px_-40px_rgba(229,115,115,0.55)]"
-              animate={
-                prefersReducedMotion
-                  ? undefined
-                  : { scale: [1, 1.05, 1] }
-              }
-              transition={
-                prefersReducedMotion
-                  ? undefined
-                  : { duration: 10, repeat: Infinity, ease: 'easeInOut' }
-              }
-            >
-              {/* Hero image */}
-              <img 
-                src={heroImage} 
-                alt="Crissel Studio Beauty Salon" 
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-              {/* Animated overlay */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-tr from-[#E57373]/20 to-[#F8BBD9]/20 pointer-events-none"
-                animate={
-                  prefersReducedMotion
-                    ? { opacity: 0.75 }
-                    : { opacity: [0.7, 0.9, 0.7] }
-                }
-                transition={
-                  prefersReducedMotion
-                    ? undefined
-                    : { duration: 6, repeat: Infinity, ease: 'easeInOut' }
-                }
-                aria-hidden="true"
-              />
-              {/* Floating service icons */}
-              <motion.div
-                animate={
-                  prefersReducedMotion
-                    ? undefined
-                    : { y: [-20, 20, -20], rotate: [0, 10, -10, 0] }
-                }
-                transition={
-                  prefersReducedMotion
-                    ? undefined
-                    : { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                }
-                className="absolute top-1/4 left-1/4 w-20 h-20 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg text-[#E57373]"
-                aria-hidden="true"
-              >
-                <span className="text-2xl" role="img" aria-label="Maquillaje">💄</span>
-              </motion.div>
-              <motion.div
-                animate={
-                  prefersReducedMotion
-                    ? undefined
-                    : { y: [20, -20, 20], rotate: [0, -10, 10, 0] }
-                }
-                transition={
-                  prefersReducedMotion
-                    ? undefined
-                    : { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }
-                }
-                className="absolute bottom-1/4 right-1/4 w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg text-[#E57373]"
-                aria-hidden="true"
-              >
-                <span className="text-xl" role="img" aria-label="Mirada">👁️</span>
-              </motion.div>
-              <motion.div
-                animate={
-                  prefersReducedMotion
-                    ? undefined
-                    : { y: [-15, 15, -15], rotate: [0, 10, -10, 0] }
-                }
-                transition={
-                  prefersReducedMotion
-                    ? undefined
-                    : { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }
-                }
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg"
-                aria-hidden="true"
-              >
-                <Sparkles className="w-8 h-8 text-[#E57373]" aria-hidden="true" focusable="false" />
-              </motion.div>
-
-              <motion.div
-                aria-hidden="true"
-                className="absolute -inset-1 rounded-[28px] border border-white/40"
-                animate={
-                  prefersReducedMotion
-                    ? { opacity: 0.35 }
-                    : { opacity: [0.25, 0.5, 0.25] }
-                }
-                transition={
-                  prefersReducedMotion
-                    ? undefined
-                    : { duration: 4, repeat: Infinity, ease: 'easeInOut' }
-                }
-              />
-            </motion.div>
+            <p className="mt-8 inline-flex items-center justify-center gap-2 text-sm text-neutral-500 lg:justify-start">
+              <MapPin className="h-4 w-4 shrink-0 text-[#E57373]" aria-hidden />
+              Centro Comercial La Galería, Mera entre Rocafuerte y Bolívar, Ambato
+            </p>
           </motion.div>
 
           <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={prefersReducedMotion ? { duration: 0.6 } : { duration: 0.8, delay: 1, ease: 'easeOut' }}
-            className="w-full lg:basis-full mt-10 lg:mt-12"
+            transition={
+              prefersReducedMotion ? { duration: 0.4 } : { delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+            }
+            className="flex-1 w-full max-w-xl mx-auto lg:max-w-none"
           >
-            <div className="mx-auto flex flex-col sm:flex-row justify-center gap-4 rounded-3xl border border-[#F8BBD9]/50 bg-white/75 px-6 py-5 shadow-lg backdrop-blur max-w-4xl">
-              {highlightMetrics.map((metric, index) => (
-                <motion.div
-                  key={metric.label}
-                  className="flex flex-1 items-center gap-4 rounded-2xl bg-white/80 px-4 py-3 shadow-sm"
-                  initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={
-                    prefersReducedMotion
-                      ? { duration: 0.5, delay: index * 0.1 }
-                      : { duration: 0.6, ease: 'easeOut', delay: 0.1 + index * 0.1 }
-                  }
-                >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#E57373] to-[#F8BBD9] text-white shadow-md">
-                    <metric.icon className="h-6 w-6" aria-hidden="true" focusable="false" />
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold text-gray-800">{metric.value}</p>
-                    <p className="text-sm text-gray-500">{metric.label}</p>
-                  </div>
-                </motion.div>
-              ))}
+            <div className="relative aspect-[4/5] sm:aspect-[5/6] lg:aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-neutral-200 shadow-[0_32px_64px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5">
+              <Image
+                src={heroImage}
+                alt="Interior y ambiente de Crissel Studio en Ambato"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+              <div
+                className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-[#E57373]/10 via-transparent to-rose-100/25"
+                aria-hidden
+              />
+              <div className="pointer-events-none absolute bottom-5 left-5 right-5 rounded-2xl border border-white/40 bg-white/75 px-4 py-3 text-left shadow-lg backdrop-blur-md">
+                <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Experiencia</p>
+                <p className="font-display text-lg text-neutral-900">Belleza natural, resultado profesional</p>
+              </div>
             </div>
           </motion.div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      <motion.div
+        initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={prefersReducedMotion ? { duration: 0.4 } : { delay: 0.35, duration: 0.6 }}
+        className="relative z-10 w-full px-4 pb-10 sm:px-6 lg:px-8"
+      >
+        <div className="mx-auto grid max-w-5xl grid-cols-1 divide-y divide-neutral-200/80 rounded-2xl border border-neutral-200/60 bg-white/60 px-6 py-5 shadow-sm backdrop-blur-xl sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          {highlightMetrics.map((metric) => (
+            <div
+              key={metric.label}
+              className="flex flex-col items-center justify-center py-4 text-center sm:py-2"
+            >
+              <p className="font-display text-2xl font-semibold tabular-nums text-neutral-900">{metric.value}</p>
+              <p className="mt-1 text-sm text-neutral-500">{metric.label}</p>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={prefersReducedMotion ? { duration: 0.6 } : { delay: 2, duration: 1, ease: 'easeOut' }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30"
+        transition={prefersReducedMotion ? { duration: 0.4 } : { delay: 0.8, duration: 0.6 }}
+        className="absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 lg:flex flex-col items-center gap-1 text-neutral-400"
+        aria-hidden
       >
-        <motion.div
-          animate={
-            prefersReducedMotion
-              ? undefined
-              : { y: [0, 10, 0], scale: [1, 1.1, 1] }
-          }
-          transition={
-            prefersReducedMotion
-              ? undefined
-              : { duration: 2, repeat: Infinity, ease: "easeInOut" }
-          }
-          className="flex flex-col items-center space-y-2 text-[#E57373]"
+        <span className="text-xs font-medium uppercase tracking-widest">Scroll</span>
+        <motion.span
+          animate={prefersReducedMotion ? undefined : { y: [0, 6, 0] }}
+          transition={prefersReducedMotion ? undefined : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          className="block h-8 w-5 rounded-full border border-neutral-300/80 p-1"
         >
-          <span className="text-sm font-medium">Descubre más</span>
-          <svg
-            className={`w-6 h-6 ${prefersReducedMotion ? '' : 'animate-bounce'}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-        </motion.div>
+          <span className="block mx-auto h-1.5 w-1 rounded-full bg-neutral-400" />
+        </motion.span>
       </motion.div>
     </section>
   )

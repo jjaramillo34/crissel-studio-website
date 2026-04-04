@@ -1,32 +1,51 @@
-import { motion, useReducedMotion } from 'framer-motion'
+'use client'
+
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { Heart, Eye, Star, Award, Sparkles } from 'lucide-react'
-import heroImage from '../../assets/images/hero.jpg'
+// Use public folder path for static image
+const heroImage = '/assets/images/hero.jpeg'
 import { SectionHeader } from './SectionHeader'
 
 const About = () => {
   const prefersReducedMotion = useReducedMotion()
 
-  const containerVariants = {
-    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 20 }) },
-    visible: {
-      opacity: 1,
-      ...(prefersReducedMotion ? {} : { y: 0 }),
-      transition: {
-        ...(prefersReducedMotion
-          ? { duration: 0 }
-          : { staggerChildren: 0.2, duration: 0.6, ease: 'easeOut' })
+  const containerVariants: Variants = prefersReducedMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { duration: 0 }
+        }
       }
-    }
-  }
+    : {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            staggerChildren: 0.2,
+            duration: 0.6,
+            ease: 'easeOut'
+          }
+        }
+      }
 
-  const itemVariants = {
-    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 30 }) },
-    visible: {
-      opacity: 1,
-      ...(prefersReducedMotion ? {} : { y: 0 }),
-      transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' }
-    }
-  }
+  const itemVariants: Variants = prefersReducedMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { duration: 0 }
+        }
+      }
+    : {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.6, ease: 'easeOut' }
+        }
+      }
 
   const highlights = [
     {
@@ -52,7 +71,7 @@ const About = () => {
   ]
 
   return (
-    <section id="sobre-nosotros" className="py-20 bg-gradient-to-br from-pink-50 to-white relative overflow-hidden">
+    <section id="sobre-nosotros" className="section-brand py-20 relative">
       {/* Animated background elements */}
       <motion.div
         aria-hidden="true"
@@ -159,7 +178,7 @@ const About = () => {
                 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-3 bg-[#E57373] text-white rounded-full font-semibold hover:shadow-lg transition-all duration-300 relative overflow-hidden group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+                className="px-8 py-3 bg-gradient-to-r from-[#E57373] to-[#e8899f] text-white rounded-2xl font-semibold hover:shadow-lg hover:shadow-rose-200/50 transition-all duration-300 relative overflow-hidden group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
                 aria-label="Ver nuestros servicios"
               >
                 <motion.span
@@ -173,7 +192,7 @@ const About = () => {
               </motion.button>
               <a
                 href="/galeria"
-                className="mt-4 inline-flex items-center gap-2 px-8 py-3 border-2 border-[#F8BBD9] text-[#E57373] rounded-full font-semibold text-lg hover:bg-[#F8BBD9] hover:text-white transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F8BBD9]"
+                className="mt-4 inline-flex items-center gap-2 px-8 py-3 border-2 border-rose-200 bg-white/80 text-[#c45c5c] rounded-2xl font-semibold text-lg hover:bg-rose-50 hover:border-[#F8BBD9] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F8BBD9]"
                 aria-label="Ver galería de trabajos"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
@@ -190,8 +209,8 @@ const About = () => {
             <div className="relative">
               {/* Main beauty studio image */}
               <motion.div 
-                className="relative w-full h-96 rounded-3xl overflow-hidden border-2 border-pink-100"
-                whileHover={{ scale: 1.02 }}
+                className="relative w-full h-96 rounded-[2rem] overflow-hidden border border-rose-200/70 bg-white shadow-[0_24px_60px_-28px_rgba(229,115,115,0.35)] ring-1 ring-rose-100/60"
+                whileHover={{ scale: 1.01 }}
                 transition={{ duration: 0.3 }}
               >
                 <img 
@@ -200,110 +219,13 @@ const About = () => {
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-br from-[#E57373]/10 to-[#F8BBD9]/10"
-                  aria-hidden="true"
-                  animate={
-                    prefersReducedMotion
-                      ? { opacity: 0.6 }
-                      : {
-                          opacity: [0.5, 0.8, 0.5]
-                        }
-                  }
-                  transition={
-                    prefersReducedMotion
-                      ? undefined
-                      : {
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }
-                  }
+                <div 
+                  className="absolute inset-0 bg-gradient-to-tr from-[#E57373]/15 via-transparent to-[#F8BBD9]/20 pointer-events-none"
+                  aria-hidden
                 />
-                
-                {/* Floating elements */}
-                <motion.div
-                  aria-hidden="true"
-                  animate={
-                    prefersReducedMotion
-                      ? { scale: 1 }
-                      : { 
-                          y: [-10, 10, -10],
-                          rotate: [0, 5, 0]
-                        }
-                  }
-                  transition={
-                    prefersReducedMotion
-                      ? undefined
-                      : { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                  }
-                  className="absolute top-1/4 left-1/4 w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg text-pink-500"
-                >
-                  <span className="text-2xl" role="img" aria-label="Maquillaje">💄</span>
-                </motion.div>
-                
-                <motion.div
-                  aria-hidden="true"
-                  animate={
-                    prefersReducedMotion
-                      ? { scale: 1 }
-                      : { 
-                          y: [10, -10, 10],
-                          rotate: [0, -5, 0]
-                        }
-                  }
-                  transition={
-                    prefersReducedMotion
-                      ? undefined
-                      : { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }
-                  }
-                  className="absolute bottom-1/4 right-1/4 w-14 h-14 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg text-pink-500"
-                >
-                  <span className="text-xl" role="img" aria-label="Brillo">✨</span>
-                </motion.div>
-                
-                {/* Center element */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <motion.div
-                    aria-hidden="true"
-                    animate={
-                      prefersReducedMotion
-                        ? { scale: 1 }
-                        : { 
-                            scale: [1, 1.1, 1],
-                            rotate: [0, 5, 0]
-                          }
-                    }
-                    transition={
-                      prefersReducedMotion
-                        ? undefined
-                        : { duration: 3, repeat: Infinity, ease: "easeInOut" }
-                    }
-                    className="w-24 h-24 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center shadow-xl"
-                  >
-                    <motion.div
-                      aria-hidden="true"
-                      animate={
-                        prefersReducedMotion
-                          ? { scale: 1, rotate: 0 }
-                          : {
-                              scale: [1, 1.2, 1],
-                              rotate: [0, 360]
-                            }
-                      }
-                      transition={
-                        prefersReducedMotion
-                          ? undefined
-                          : {
-                              duration: 4,
-                              repeat: Infinity,
-                              ease: "easeInOut"
-                            }
-                      }
-                    >
-                      <Eye className="w-10 h-10 text-[#E57373]" aria-hidden="true" focusable="false" />
-                    </motion.div>
-                  </motion.div>
+                <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/50 bg-white/85 px-4 py-3 shadow-lg backdrop-blur-md">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#E57373]">Especialidad</p>
+                  <p className="font-display text-lg text-neutral-900">Pestañas · Cejas · Maquillaje pro</p>
                 </div>
               </motion.div>
             </div>
@@ -330,7 +252,7 @@ const About = () => {
                     ? "0 10px 15px -3px rgba(229, 115, 115, 0.1), 0 4px 6px -4px rgba(229, 115, 115, 0.1)"
                     : "0 20px 25px -5px rgba(229, 115, 115, 0.12), 0 10px 10px -5px rgba(229, 115, 115, 0.06)"
                 }}
-                className="text-center p-8 rounded-3xl bg-white/90 backdrop-blur-sm border border-pink-100 shadow-lg hover:shadow-xl transition-all duration-300"
+                className="text-center p-8 rounded-2xl bg-white/95 backdrop-blur-sm border border-rose-100/90 shadow-md hover:shadow-lg hover:border-rose-200/80 transition-all duration-300"
                 aria-labelledby={`highlight-title-${index}`}
                 aria-describedby={`highlight-description-${index}`}
               >

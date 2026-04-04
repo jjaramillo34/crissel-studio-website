@@ -1,30 +1,38 @@
+'use client'
+
 import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { X, Menu, Sparkles, Calendar, PhoneCall } from 'lucide-react'
-import { Link, useLocation } from 'react-router-dom'
-import logoImage from '../assets/images/logo_photo.png'
+import { X, Menu, Calendar } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import Image from 'next/image'
+// Use public folder path for static image
+const logoImage = '/assets/images/logo_photo.png'
 
 const Navigation = () => {
   const prefersReducedMotion = useReducedMotion()
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('hero')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const location = useLocation()
+  const pathname = usePathname()
 
   const navItems = [
     { id: 'hero', label: 'Inicio', path: '/' },
     { id: 'sobre-nosotros', label: 'Sobre Nosotros', path: '/' },
     { id: 'servicios', label: 'Servicios', path: '/' },
     { id: 'productos', label: 'Productos', path: '/productos' },
+    { id: 'tienda', label: 'Tienda', path: '/tienda' },
     { id: 'galeria', label: 'Galería', path: '/' },
     { id: 'contacto', label: 'Contacto', path: '/' }
   ]
 
+  const isStandaloneRoute = (path: string) => path !== '/' && path.startsWith('/')
+
   const gradientBackground = useMemo(
     () =>
       isScrolled
-        ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-pink-100'
-        : 'bg-white/80 backdrop-blur-sm',
+        ? 'bg-white/92 backdrop-blur-xl shadow-[0_1px_0_0_rgba(229,115,115,0.12)] border-b border-rose-100/80'
+        : 'bg-white/75 backdrop-blur-md',
     [isScrolled]
   )
 
@@ -51,23 +59,27 @@ const Navigation = () => {
   }, [])
 
   const handleNavigation = (item: { id: string; path: string }) => {
-    if (item.path === '/productos') {
-      // Navigate to products page
+    // Validate item properties
+    const itemId = String(item?.id || '')
+    const itemPath = String(item?.path || '/')
+    
+    if (isStandaloneRoute(itemPath)) {
       setIsMobileMenuOpen(false)
       return
     }
     
-    if (location.pathname !== '/') {
+    if (pathname !== '/') {
       // If not on home page, navigate to home first
-      window.location.href = `/${item.id === 'hero' ? '' : '#' + item.id}`
+      const targetPath = itemId === 'hero' ? '/' : `/#${itemId}`
+      window.location.href = targetPath
       return
     }
     
     // Scroll to section on current page
-    if (item.id === 'hero') {
+    if (itemId === 'hero') {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } else {
-      const element = document.getElementById(item.id)
+      const element = document.getElementById(itemId)
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' })
       }
@@ -90,14 +102,16 @@ const Navigation = () => {
               whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
               className="flex items-center gap-2"
             >
-              <img 
+              <Image 
                 src={logoImage} 
                 alt="Crissel Studio Logo" 
-                className="w-9 h-9 object-contain rounded-full border border-[#E57373]/40 shadow-sm"
+                width={36}
+                height={36}
+                className="w-9 h-9 object-contain rounded-2xl border border-neutral-200/90 bg-white shadow-sm"
               />
               <Link 
-                to="/"
-                className="text-lg sm:text-xl font-bold text-[#E57373] hover:opacity-80 transition-opacity"
+                href="/"
+                className="font-display text-lg sm:text-xl font-semibold tracking-tight bg-gradient-to-r from-[#c45c5c] to-[#E57373] bg-clip-text text-transparent hover:opacity-85 transition-opacity"
               >
                 Crissel Studio
               </Link>
@@ -107,19 +121,20 @@ const Navigation = () => {
             <div className="hidden md:block">
               <div className="ml-10 flex items-center space-x-3">
                 {navItems.map((item) => {
-                  const isActive = (item.path === '/productos' && location.pathname === '/productos') ||
-                                 (item.path === '/' && location.pathname === '/' && activeSection === item.id)
-                  
-                  if (item.path === '/productos') {
+                  const isActive =
+                    (isStandaloneRoute(item.path) && pathname === item.path) ||
+                    (item.path === '/' && pathname === '/' && activeSection === item.id)
+
+                  if (isStandaloneRoute(item.path)) {
                     return (
-                      <Link key={item.id} to="/productos">
+                      <Link key={item.id} href={item.path}>
                         <motion.div
                           whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                          className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                             isActive
-                              ? 'bg-[#E57373] text-white shadow-lg'
-                              : 'text-gray-700 hover:text-[#E57373] hover:bg-pink-50'
+                              ? 'bg-gradient-to-r from-[#E57373] to-[#ec9aaa] text-white shadow-md shadow-rose-200/50'
+                              : 'text-neutral-600 hover:text-[#c45c5c] hover:bg-rose-50/90'
                           }`}
                         >
                           {item.label}
@@ -134,10 +149,10 @@ const Navigation = () => {
                       whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleNavigation(item)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                      className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                         isActive
-                          ? 'bg-[#E57373] text-white shadow-lg'
-                          : 'text-gray-700 hover:text-[#E57373] hover:bg-pink-50'
+                          ? 'bg-gradient-to-r from-[#E57373] to-[#ec9aaa] text-white shadow-md shadow-rose-200/50'
+                          : 'text-neutral-600 hover:text-[#c45c5c] hover:bg-rose-50/90'
                       }`}
                     >
                       {item.label}
@@ -155,7 +170,7 @@ const Navigation = () => {
                 rel="noopener noreferrer"
                 whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#E57373] to-[#F8BBD9] px-4 py-2 text-sm font-medium text-white shadow-lg transition-all duration-300 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#E57373] to-[#F8BBD9] px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-rose-200/40 transition-all hover:brightness-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
                 aria-label="Reservar cita en Crissel Studio"
               >
                 <Calendar className="h-4 w-4" aria-hidden="true" />
@@ -168,7 +183,7 @@ const Navigation = () => {
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="rounded-lg bg-[#E57373] p-2 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
+                className="rounded-xl bg-gradient-to-br from-[#E57373] to-[#d65f7a] p-2 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-300"
                 aria-label={isMobileMenuOpen ? 'Cerrar menú móvil' : 'Abrir menú móvil'}
               >
                 {isMobileMenuOpen ? (
@@ -190,25 +205,26 @@ const Navigation = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="fixed top-16 left-0 right-0 z-40 bg-white/95 backdrop-blur-md shadow-lg border-b border-pink-100 md:hidden"
+            className="fixed top-16 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl shadow-lg border-b border-rose-100/80 md:hidden"
           >
             <div className="px-4 py-6 space-y-4">
               {navItems.map((item, index) => {
-                const isActive = (item.path === '/productos' && location.pathname === '/productos') ||
-                               (item.path === '/' && location.pathname === '/' && activeSection === item.id)
-                
-                if (item.path === '/productos') {
+                const isActive =
+                  (isStandaloneRoute(item.path) && pathname === item.path) ||
+                  (item.path === '/' && pathname === '/' && activeSection === item.id)
+
+                if (isStandaloneRoute(item.path)) {
                   return (
-                    <Link key={item.id} to="/productos">
+                    <Link key={item.id} href={item.path}>
                       <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className={`block w-full text-left px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 ${
+                        className={`block w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-all duration-300 ${
                           isActive
-                            ? 'bg-[#E57373] text-white'
-                            : 'text-gray-700 hover:text-[#E57373] hover:bg-pink-50'
+                            ? 'bg-gradient-to-r from-[#E57373] to-[#ec9aaa] text-white'
+                            : 'text-neutral-700 hover:text-[#c45c5c] hover:bg-rose-50'
                         }`}
                       >
                         {item.label}
@@ -224,10 +240,10 @@ const Navigation = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                     onClick={() => handleNavigation(item)}
-                    className={`block w-full text-left px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 ${
+                    className={`block w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-all duration-300 ${
                       isActive
-                        ? 'bg-[#E57373] text-white'
-                        : 'text-gray-700 hover:text-[#E57373] hover:bg-pink-50'
+                        ? 'bg-gradient-to-r from-[#E57373] to-[#ec9aaa] text-white'
+                        : 'text-neutral-700 hover:text-[#c45c5c] hover:bg-rose-50'
                     }`}
                   >
                     {item.label}
@@ -243,7 +259,7 @@ const Navigation = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: navItems.length * 0.1 }}
-                className="block w-full rounded-lg bg-gradient-to-r from-[#E57373] to-[#F8BBD9] px-4 py-3 text-center font-medium text-white shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
+                className="block w-full rounded-xl bg-gradient-to-r from-[#E57373] to-[#F8BBD9] px-4 py-3 text-center font-semibold text-white shadow-md shadow-rose-200/40 transition-all hover:brightness-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
                 onClick={() => setIsMobileMenuOpen(false)}
                 aria-label="Reservar cita en Crissel Studio"
               >
