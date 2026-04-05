@@ -9,3 +9,5 @@ dist
 .env.*.local
 .vscode/
 *.log
+.vercel
+.env*.local
