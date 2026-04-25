@@ -22,6 +22,7 @@ const Navigation = () => {
     { id: 'servicios', label: 'Servicios', path: '/' },
     { id: 'productos', label: 'Productos', path: '/productos' },
     { id: 'tienda', label: 'Tienda', path: '/tienda' },
+    { id: 'promos', label: 'Promos', path: '/promos' },
     { id: 'galeria', label: 'Galería', path: '/' },
     { id: 'contacto', label: 'Contacto', path: '/' }
   ]

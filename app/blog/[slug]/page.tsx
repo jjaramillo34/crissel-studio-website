@@ -1,4 +1,4 @@
-import BlogPostPage from '@/pages/BlogPostPage'
+import BlogPostPage from '@/components/blog/BlogPostPage'
 import { generateMetadata as generateMetadataHelper } from '@/lib/metadata'
 import { payload, getMediaUrl } from '@/lib/payload'
 

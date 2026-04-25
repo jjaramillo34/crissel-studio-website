@@ -9,6 +9,7 @@ import { Service } from './src/collections/Service'
 import { Gallery } from './src/collections/Gallery'
 import { Team } from './src/collections/Team'
 import { Testimonial } from './src/collections/Testimonial'
+import { RaffleEntry } from './src/collections/RaffleEntry'
 import { Users } from './src/collections/Users'
 import { Media } from './src/collections/Media'
 
@@ -28,6 +29,7 @@ const configPromise = buildConfig({
     Gallery,
     Team,
     Testimonial,
+    RaffleEntry,
   ],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

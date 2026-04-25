@@ -74,6 +74,7 @@ export interface Config {
     gallery: Gallery;
     team: Team;
     testimonials: Testimonial;
+    'raffle-entries': RaffleEntry;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -88,6 +89,7 @@ export interface Config {
     gallery: GallerySelect<false> | GallerySelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    'raffle-entries': RaffleEntriesSelect<false> | RaffleEntriesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -96,12 +98,14 @@ export interface Config {
   db: {
     defaultIDType: string;
   };
+  fallbackLocale: null;
   globals: {};
   globalsSelect: {};
   locale: null;
-  user: User & {
-    collection: 'users';
+  widgets: {
+    collections: CollectionsWidget;
   };
+  user: User;
   jobs: {
     tasks: unknown;
     workflows: unknown;
@@ -149,6 +153,7 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -335,6 +340,37 @@ export interface Testimonial {
   createdAt: string;
 }
 /**
+ * Inscripciones al sorteo de maquillaje (web). Altas públicas vía API; también puedes crear desde admin.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "raffle-entries".
+ */
+export interface RaffleEntry {
+  id: string;
+  /**
+   * Campaña / promo asociada
+   */
+  promoSlug: string;
+  /**
+   * Nombre o cómo te gusta que te llamemos
+   */
+  firstName: string;
+  /**
+   * Teléfono tal como lo escribió la clienta
+   */
+  phone: string;
+  /**
+   * 593… para deduplicar
+   */
+  phoneNormalized: string;
+  /**
+   * Aceptó ser contactada si gana
+   */
+  consent: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -385,6 +421,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'testimonials';
         value: string | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'raffle-entries';
+        value: string | RaffleEntry;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -570,6 +610,19 @@ export interface TestimonialsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "raffle-entries_select".
+ */
+export interface RaffleEntriesSelect<T extends boolean = true> {
+  promoSlug?: T;
+  firstName?: T;
+  phone?: T;
+  phoneNormalized?: T;
+  consent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -607,6 +660,16 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections_widget".
+ */
+export interface CollectionsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

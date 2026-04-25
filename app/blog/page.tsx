@@ -1,4 +1,4 @@
-import BlogIndexPage from '@/pages/BlogIndexPage'
+import BlogIndexPage from '@/components/blog/BlogIndexPage'
 import { generateMetadata } from '@/lib/metadata'
 
 export const metadata = generateMetadata({
