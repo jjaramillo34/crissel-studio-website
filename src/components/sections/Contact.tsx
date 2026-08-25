@@ -10,7 +10,7 @@ const Contact = () => {
     name: '',
     email: '',
     message: '',
-    subject: 'commission'
+    subject: 'appointment'
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -21,16 +21,26 @@ const Contact = () => {
     e.preventDefault()
     setIsSubmitting(true)
     setStatusMessage('')
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // Reset form
-    setFormData({ name: '', email: '', message: '', subject: 'commission' })
-    setIsSubmitting(false)
-    
-    // Provide accessible success feedback
-    setStatusMessage('¡Mensaje enviado! Te responderemos pronto 💕')
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      const result = (await response.json()) as { ok: boolean; message: string }
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.message || 'No pudimos enviar tu mensaje.')
+      }
+
+      setFormData({ name: '', email: '', message: '', subject: 'appointment' })
+      setStatusMessage(result.message)
+    } catch (error) {
+      setStatusMessage(error instanceof Error ? error.message : 'No pudimos enviar tu mensaje.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

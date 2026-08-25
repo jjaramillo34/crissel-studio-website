@@ -5,6 +5,7 @@ export const metadata = generateMetadata({
   title: 'Tienda Nagaraku | Extensiones, parches y más | Crissel Studio',
   description:
     'Compra productos Nagaraku en Ambato: extensiones de pestañas, parches de hidrogel y accesorios profesionales. Consulta stock por WhatsApp.',
+  url: '/tienda',
 })
 
 export default function TiendaPageRoute() {
