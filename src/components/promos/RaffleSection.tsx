@@ -3,7 +3,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Loader2, PartyPopper, UserRound, Smartphone } from 'lucide-react'
-import { RAFFLE_PROMO_SLUG } from '@/data/raffle'
+import {
+  RAFFLE_PROMO_SLUG,
+  SORTEO_ANUNCIO_REDES_DIA,
+  SORTEO_COPY_FORM_INTRO,
+  SORTEO_SERVICIO_PREMIO_DIA,
+} from '@/data/raffle'
 
 type Stats = { total: number | null; loading: boolean }
 
@@ -82,8 +87,7 @@ export function RaffleSection() {
             Gana un maquillaje
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-neutral-600">
-            Deja tu nombre y celular para entrar al sorteo. El lunes anunciamos a la ganadora y te
-            llamamos o escribimos para agendar.
+            {SORTEO_COPY_FORM_INTRO}
           </p>
         </div>
         <div className="shrink-0 rounded-2xl border border-rose-100 bg-white/90 px-4 py-3 text-center sm:text-right">
@@ -155,7 +159,8 @@ export function RaffleSection() {
             />
             <span className="text-sm leading-relaxed text-neutral-700">
               Acepto participar en el sorteo y que Crissel Studio use este número para contactarme si
-              soy la ganadora del maquillaje, según lo anunciado en esta página.
+              soy la ganadora del maquillaje, según lo indicado en esta página y en redes (anuncio el{' '}
+              {SORTEO_ANUNCIO_REDES_DIA}; servicio premio el {SORTEO_SERVICIO_PREMIO_DIA}).
             </span>
           </label>
         </div>

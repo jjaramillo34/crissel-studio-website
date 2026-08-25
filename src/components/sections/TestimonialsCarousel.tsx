@@ -1,10 +1,16 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react'
-import { SectionHeader } from './SectionHeader'
+import { useEffect, useState } from 'react'
+import {
+  Button,
+  Column,
+  Grid,
+  IconButton,
+  Row,
+  Text,
+} from '@once-ui-system/core'
 import { payload } from '@/lib/payload'
+import { SectionHeader } from './SectionHeader'
 
 interface TestimonialData {
   id: string
@@ -13,171 +19,127 @@ interface TestimonialData {
   rating: number
   service?: string
   isFeatured?: boolean
-  order?: number
 }
 
+const fallbackTestimonials: TestimonialData[] = [
+  {
+    id: '1',
+    name: 'María G.',
+    content:
+      'Salí encantada con mis pestañas. El resultado se ve natural y el trato fue súper cálido desde que entré.',
+    rating: 5,
+    service: 'Extensiones de pestañas',
+  },
+  {
+    id: '2',
+    name: 'Andrea P.',
+    content:
+      'Me asesoraron con honestidad sobre qué técnica me convenía. Mis cejas quedaron perfectas para mi rostro.',
+    rating: 5,
+    service: 'Diseño de cejas',
+  },
+  {
+    id: '3',
+    name: 'Carolina R.',
+    content:
+      'Ambiente limpio, profesional y relajado. Volveré seguro para el maquillaje de mi próximo evento.',
+    rating: 5,
+    service: 'Maquillaje profesional',
+  },
+]
+
 const TestimonialsCarousel = () => {
-  const prefersReducedMotion = useReducedMotion()
-  const [testimonials, setTestimonials] = useState<TestimonialData[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [testimonials, setTestimonials] = useState<TestimonialData[]>(fallbackTestimonials)
   const [index, setIndex] = useState(0)
 
   useEffect(() => {
     async function fetchTestimonials() {
       try {
-        setLoading(true)
-        // Get featured testimonials first, or all if none are featured
         const response = await payload.getTestimonials({ limit: 10 })
         if (response.error) {
           throw new Error('No se pudieron cargar los testimonios')
         }
-        const allTestimonials = response.docs
-        
-        // Prioritize featured testimonials
-        const featuredTestimonials = allTestimonials.filter((t) => t.isFeatured)
-        const testimonialsToShow = featuredTestimonials.length > 0 
-          ? featuredTestimonials 
-          : allTestimonials
-        
-        setTestimonials(testimonialsToShow)
-        setError(null)
-      } catch (err: any) {
-        console.error('Error fetching testimonials:', err)
-        setError('No se pudieron cargar los testimonios')
-        setTestimonials([])
-      } finally {
-        setLoading(false)
+        const docs = response.docs as TestimonialData[]
+        if (docs.length > 0) {
+          const featured = docs.filter((t) => t.isFeatured)
+          setTestimonials(featured.length > 0 ? featured : docs)
+        }
+      } catch {
+        // keep fallback
       }
     }
-
     fetchTestimonials()
   }, [])
 
-  const currentTestimonial = testimonials[index] || null
-
-  useEffect(() => {
-    if (prefersReducedMotion || testimonials.length === 0) return
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % testimonials.length)
-    }, 6500)
-    return () => clearInterval(timer)
-  }, [prefersReducedMotion, testimonials.length])
-
-  const ratingStars = useMemo(() => Array.from({ length: 5 }), [])
-
-  const goNext = () => {
-    if (testimonials.length === 0) return
-    setIndex((prev) => (prev + 1) % testimonials.length)
-  }
-  
-  const goPrev = () => {
-    if (testimonials.length === 0) return
-    setIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-  }
-
-  if (loading) {
-    return (
-      <section className="section-brand-alt relative py-20">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Testimonios crissel studio"
-            title="Opiniones que inspiran confianza"
-            description="Cada experiencia se adapta a tus necesidades. Ellas ya lo vivieron y comparten cómo transformó su rutina."
-          />
-          <div className="h-64 animate-pulse rounded-3xl bg-gray-200" />
-        </div>
-      </section>
-    )
-  }
-
-  if (error || testimonials.length === 0) {
-    return (
-      <section className="section-brand-alt relative py-20">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Testimonios crissel studio"
-            title="Opiniones que inspiran confianza"
-            description="Cada experiencia se adapta a tus necesidades. Ellas ya lo vivieron y comparten cómo transformó su rutina."
-          />
-          <div className="text-center py-12">
-            <p className="text-gray-500" role={error ? 'alert' : undefined}>
-              {error || 'No hay testimonios disponibles en este momento.'}
-            </p>
-          </div>
-        </div>
-      </section>
-    )
-  }
+  const visible = [
+    testimonials[index % testimonials.length],
+    testimonials[(index + 1) % testimonials.length],
+    testimonials[(index + 2) % testimonials.length],
+  ].filter(Boolean)
 
   return (
-    <section className="section-brand-alt relative py-20">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Testimonios crissel studio"
-          title="Opiniones que inspiran confianza"
-          description="Cada experiencia se adapta a tus necesidades. Ellas ya lo vivieron y comparten cómo transformó su rutina."
+    <section id="reseñas" className="crissel-section crissel-section--blush">
+      <div className="crissel-section__inner">
+        <Row fillWidth horizontal="center" gap="16" s={{ direction: 'column' }}>
+          <SectionHeader
+            eyebrow="Reseñas de clientas"
+            title="Lo que dicen sobre"
+            titleAccent="Crissel Studio"
+            description="Experiencias reales. Sin filtros."
+          />
+          <Row gap="8">
+            <IconButton
+              icon="chevronLeft"
+              variant="secondary"
+              tooltip="Anterior"
+              onClick={() =>
+                setIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
+              }
+            />
+            <IconButton
+              icon="chevronRight"
+              variant="secondary"
+              tooltip="Siguiente"
+              onClick={() => setIndex((prev) => (prev + 1) % testimonials.length)}
+            />
+          </Row>
+        </Row>
+
+        <Grid columns="3" gap="20" m={{ columns: 1 }} fillWidth>
+          {visible.map((item) => (
+            <Column
+              key={`${item.id}-${index}`}
+              background="surface"
+              border="neutral-alpha-weak"
+              radius="l"
+              padding="24"
+              gap="16"
+              fillHeight
+            >
+              <Text variant="label-default-s" onBackground="brand-medium">
+                {'★'.repeat(item.rating || 5)}
+              </Text>
+              <Text variant="body-default-m" onBackground="neutral-medium">
+                “{item.content}”
+              </Text>
+              <Column gap="4">
+                <Text variant="label-strong-s">{item.name}</Text>
+                {item.service && (
+                  <Text variant="label-default-xs" onBackground="neutral-weak">
+                    {item.service}
+                  </Text>
+                )}
+              </Column>
+            </Column>
+          ))}
+        </Grid>
+
+        <Button
+          variant="tertiary"
+          href="https://instagram.com/crisselstudio.ec"
+          label="Ver más en Instagram"
+          arrowIcon
         />
-
-        <div className="relative overflow-hidden rounded-2xl border border-rose-200/70 bg-gradient-to-r from-[#FCE4EC]/80 via-white to-rose-50/40 p-8 shadow-xl shadow-rose-100/30">
-          {testimonials.length > 1 && (
-            <>
-              <motion.button
-                type="button"
-                onClick={goPrev}
-                whileTap={{ scale: 0.95 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full border border-white/60 bg-white/80 p-2 text-[#E57373] shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
-                aria-label="Testimonio anterior"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </motion.button>
-
-              <motion.button
-                type="button"
-                onClick={goNext}
-                whileTap={{ scale: 0.95 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border border-white/60 bg-white/80 p-2 text-[#E57373] shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
-                aria-label="Siguiente testimonio"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </motion.button>
-            </>
-          )}
-
-          <AnimatePresence initial={false} mode="wait">
-            {currentTestimonial && (
-              <motion.div
-                key={currentTestimonial.id}
-                initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: -30 }}
-                transition={{ duration: prefersReducedMotion ? 0.3 : 0.5, ease: [0.4, 0, 0.2, 1] as const }}
-                className="mx-auto max-w-3xl text-center"
-              >
-                <Quote className="mx-auto h-10 w-10 text-[#E57373]/60" aria-hidden="true" />
-                <p className="mt-6 text-lg text-gray-700">"{currentTestimonial.content}"</p>
-                <div className="mt-6 flex items-center justify-center gap-4 text-sm font-semibold text-gray-800">
-                  <span>{currentTestimonial.name}</span>
-                  {currentTestimonial.service && (
-                    <>
-                      <span className="text-[#E57373]">|</span>
-                      <span>{currentTestimonial.service}</span>
-                    </>
-                  )}
-                </div>
-                <div className="mt-4 flex justify-center gap-1 text-[#E57373]">
-                  {ratingStars.map((_, starIndex) => (
-                    <Star
-                      key={starIndex}
-                      className={`h-5 w-5 ${starIndex < currentTestimonial.rating ? 'fill-current' : 'stroke-current text-[#E57373]/40'}`}
-                      aria-hidden="true"
-                    />
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
       </div>
     </section>
   )

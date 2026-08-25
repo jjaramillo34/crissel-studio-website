@@ -62,3 +62,4 @@ export default async function BlogPostPageRoute({
   
   return <BlogPostPage slug={slug} />
 }
+

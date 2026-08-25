@@ -50,6 +50,10 @@ const nextConfig = {
       },
     ]
   },
+
+  sassOptions: {
+    silenceDeprecations: ['legacy-js-api'],
+  },
   
   // Image optimization
   images: {

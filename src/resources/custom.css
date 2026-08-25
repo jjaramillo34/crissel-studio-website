@@ -1,0 +1,583 @@
+/* Crissel Studio — Once UI token overrides (coral brand from #E57373) */
+:root {
+  --scheme-brand-100: #2a0f14;
+  --scheme-brand-200: #4a1a22;
+  --scheme-brand-300: #7a2e3a;
+  --scheme-brand-400: #a84452;
+  --scheme-brand-500: #c45c5c;
+  --scheme-brand-600: #e57373;
+  --scheme-brand-700: #ec9aaa;
+  --scheme-brand-800: #f4b8c4;
+  --scheme-brand-900: #f8bbd9;
+  --scheme-brand-1000: #fce4ec;
+  --scheme-brand-1100: #fff0f4;
+  --scheme-brand-1200: #fff8f9;
+  --scheme-brand-600-10: rgba(229, 115, 115, 0.1);
+  --scheme-brand-600-30: rgba(229, 115, 115, 0.3);
+  --scheme-brand-600-50: rgba(229, 115, 115, 0.5);
+
+  --crissel-blush: #fff8f9;
+  --crissel-rose: #f8bbd9;
+  --crissel-coral: #e57373;
+  --crissel-ink: #3d1c24;
+}
+
+.font-display,
+[data-theme] h1,
+[data-theme] h2,
+[data-theme] h3 {
+  font-family: var(--font-heading), Georgia, serif;
+}
+
+.crissel-italic {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--crissel-coral);
+}
+
+/* —— La Femme section titles —— */
+.crissel-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 40rem;
+  margin-bottom: 0.5rem;
+}
+
+.crissel-section-header--center {
+  align-items: center;
+  text-align: center;
+  margin-inline: auto;
+}
+
+.crissel-section-header--start {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.crissel-section-header__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 22rem;
+}
+
+.crissel-section-header--center .crissel-section-header__eyebrow {
+  justify-content: center;
+}
+
+.crissel-section-header__rule {
+  flex: 1 1 auto;
+  height: 1px;
+  min-width: 2rem;
+  background: rgba(196, 92, 92, 0.35);
+}
+
+.crissel-section-header__eyebrow-text {
+  flex: 0 0 auto;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase;
+  color: #8a5a5a !important;
+  white-space: nowrap;
+}
+
+.crissel-section-header__title {
+  color: #2d1a1f !important;
+  text-wrap: balance;
+  line-height: 1.12 !important;
+}
+
+.crissel-section-header__desc {
+  color: #6b5258 !important;
+  max-width: 32rem;
+}
+
+.crissel-section-header--dark .crissel-section-header__eyebrow-text {
+  color: rgba(255, 245, 247, 0.8) !important;
+}
+
+.crissel-section-header--dark .crissel-section-header__rule {
+  background: rgba(248, 187, 217, 0.4);
+}
+
+.crissel-section-header--dark .crissel-section-header__title {
+  color: #fff8f9 !important;
+}
+
+.crissel-section-header--dark .crissel-italic {
+  color: #f8bbd9;
+}
+
+.crissel-section-header--dark .crissel-section-header__desc {
+  color: rgba(255, 245, 247, 0.82) !important;
+}
+
+/* —— Pastel section surfaces —— */
+.crissel-section {
+  width: 100%;
+  padding: 5.5rem 1.5rem;
+}
+
+.crissel-section--blush {
+  background:
+    radial-gradient(at 12% 20%, rgba(248, 187, 217, 0.35) 0, transparent 45%),
+    radial-gradient(at 88% 80%, rgba(252, 228, 236, 0.7) 0, transparent 50%),
+    #fff8f9;
+}
+
+.crissel-section--rose {
+  background:
+    radial-gradient(at 80% 10%, rgba(229, 115, 115, 0.12) 0, transparent 40%),
+    radial-gradient(at 10% 90%, rgba(248, 187, 217, 0.28) 0, transparent 45%),
+    #fce4ec;
+}
+
+.crissel-section--cream {
+  background:
+    radial-gradient(at 50% 0%, rgba(255, 240, 244, 0.9) 0, transparent 55%),
+    #fffaf7;
+}
+
+.crissel-section--soft {
+  background:
+    linear-gradient(180deg, #ffffff 0%, #fff5f7 100%);
+}
+
+.crissel-section__inner {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+/* —— 3-column marquee hero (La Femme motion, Crissel pastels) —— */
+.crissel-hero--columns {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #3d1c24;
+}
+
+.crissel-hero__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100svh;
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .crissel-hero__grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.5fr) minmax(0, 1.05fr);
+  }
+}
+
+.crissel-hero__col {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  border-color: rgba(248, 187, 217, 0.18);
+  border-style: solid;
+  border-width: 0;
+}
+
+.crissel-hero__col--side {
+  display: none;
+}
+
+.crissel-hero__col--side:first-child {
+  border-right-width: 1px;
+}
+
+.crissel-hero__col--side:last-child {
+  border-left-width: 1px;
+}
+
+.crissel-hero__col--center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 900px) {
+  .crissel-hero__col--side {
+    display: block;
+  }
+}
+
+.crissel-marquee {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.crissel-marquee__track {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  will-change: transform;
+}
+
+.crissel-marquee__track--up {
+  animation: crissel-marquee-up 42s linear infinite;
+}
+
+.crissel-marquee__track--down {
+  animation: crissel-marquee-down 48s linear infinite;
+}
+
+.crissel-marquee--slow .crissel-marquee__track--up {
+  animation-duration: 52s;
+}
+
+.crissel-marquee__track.is-paused,
+.crissel-hero__col:hover .crissel-marquee__track {
+  animation-play-state: paused;
+}
+
+@keyframes crissel-marquee-up {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+@keyframes crissel-marquee-down {
+  from {
+    transform: translate3d(0, -50%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.crissel-marquee__item {
+  position: relative;
+  width: 100%;
+  height: 50svh;
+  min-height: 18rem;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background: #4a2430;
+}
+
+.crissel-marquee__tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    160deg,
+    rgba(229, 115, 115, 0.28) 0%,
+    rgba(61, 28, 36, 0.35) 45%,
+    rgba(61, 28, 36, 0.5) 100%
+  );
+}
+
+.crissel-hero__center-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(61, 28, 36, 0.55) 0%, rgba(61, 28, 36, 0.72) 50%, rgba(61, 28, 36, 0.85) 100%),
+    linear-gradient(135deg, rgba(229, 115, 115, 0.35) 0%, rgba(248, 187, 217, 0.18) 55%, transparent 100%);
+}
+
+.crissel-hero__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 7rem 1.5rem 4rem;
+}
+
+.crissel-hero__eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  max-width: 22rem;
+}
+
+.crissel-hero__rule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: rgba(248, 187, 217, 0.45);
+}
+
+.crissel-hero__eyebrow {
+  flex: 0 0 auto;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase;
+  color: rgba(255, 245, 247, 0.9) !important;
+  white-space: nowrap;
+}
+
+.crissel-hero__title {
+  color: #fff8f9 !important;
+  text-wrap: balance;
+  line-height: 1.08 !important;
+}
+
+.crissel-hero__accent {
+  font-style: italic;
+  font-weight: 500;
+  color: #f8bbd9;
+  background: rgba(45, 24, 30, 0.4);
+  padding: 0.06em 0.28em;
+  border-radius: 0.15em;
+}
+
+.crissel-hero__lede {
+  color: rgba(255, 245, 247, 0.9) !important;
+  max-width: 30rem;
+}
+
+.crissel-hero__cta-ghost {
+  background: rgba(255, 248, 249, 0.12) !important;
+  border-color: rgba(255, 248, 249, 0.55) !important;
+  color: #fff8f9 !important;
+}
+
+.crissel-hero__cta-ghost:hover {
+  background: rgba(255, 248, 249, 0.22) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crissel-marquee__track--up,
+  .crissel-marquee__track--down {
+    animation: none;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* —— Zigzag / treatment rows (CSS grid — reliable with next/image) —— */
+.crissel-treatments {
+  gap: 4.5rem !important;
+}
+
+.crissel-treatment {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+  width: 100%;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .crissel-treatment {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 3.5rem;
+  }
+
+  .crissel-treatment--reverse .crissel-treatment__media {
+    order: 2;
+  }
+
+  .crissel-treatment--reverse .crissel-treatment__copy {
+    order: 1;
+  }
+}
+
+.crissel-treatment__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  min-height: 20rem;
+  overflow: hidden;
+  background: linear-gradient(145deg, #fce4ec, #fff0f4);
+}
+
+.crissel-treatment__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.85rem;
+  max-width: 28rem;
+}
+
+.crissel-treatment__number {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: #e57373;
+}
+
+.crissel-treatment__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  font-weight: 600;
+  line-height: 1.15;
+  color: #2d1a1f;
+}
+
+.crissel-treatment__subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: #8a5a5a;
+}
+
+.crissel-treatment__desc {
+  margin: 0.25rem 0 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #4a343a;
+}
+
+.crissel-treatment__points {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.crissel-treatment__points li {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.95rem;
+  color: #3d1c24;
+}
+
+.crissel-treatment__check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: #e57373;
+  color: #fff8f9;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.crissel-treatment__link {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #c45c5c;
+  text-decoration: none;
+}
+
+.crissel-treatment__link:hover {
+  color: #e57373;
+}
+
+.crissel-zigzag__media {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.crissel-zigzag__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  min-height: 20rem;
+  overflow: hidden;
+  background: linear-gradient(145deg, #fce4ec, #fff0f4);
+}
+
+.crissel-zigzag__frame--portrait {
+  aspect-ratio: 4 / 5;
+}
+
+/* —— Full-width photo bands (CTA / contact) —— */
+.crissel-band {
+  position: relative;
+  width: 100%;
+  min-height: 28rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #3d1c24;
+}
+
+.crissel-band__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.crissel-band__media > span,
+.crissel-band__media > img {
+  position: absolute !important;
+  inset: 0;
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.crissel-band__wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(61, 28, 36, 0.55) 0%, rgba(61, 28, 36, 0.75) 100%),
+    linear-gradient(90deg, rgba(229, 115, 115, 0.25) 0%, transparent 60%);
+}
+
+.crissel-band__content {
+  position: relative;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding-block: 5rem;
+}
+
+.crissel-band__card {
+  background: rgba(255, 248, 249, 0.94) !important;
+  border: 1px solid rgba(248, 187, 217, 0.55);
+  backdrop-filter: blur(10px);
+}
+
+/* —— Soft nav over hero —— */
+.crissel-nav--over-hero header {
+  background: rgba(255, 248, 249, 0.55) !important;
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(229, 115, 115, 0.16) !important;
+}
+
+.crissel-nav--scrolled header {
+  background: rgba(255, 248, 249, 0.92) !important;
+}
+
+/* —— Footer (rose-ink, La Femme rhythm) —— */
+.crissel-footer {
+  background: #3d1c24 !important;
+  color: #fff8f9;
+}
+
+.crissel-footer__title {
+  color: #fff8f9 !important;
+}
+
+.crissel-footer__muted {
+  color: rgba(255, 245, 247, 0.65) !important;
+}
+
+.crissel-footer__link {
+  color: rgba(255, 245, 247, 0.82) !important;
+}
+
+.crissel-footer__link:hover {
+  color: #f8bbd9 !important;
+}
+
+.crissel-footer__bottom {
+  border-top: 1px solid rgba(248, 187, 217, 0.18);
+}

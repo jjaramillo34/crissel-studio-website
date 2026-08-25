@@ -45,7 +45,7 @@ const PromosPage = () => {
     <>
       <Seo
         title="Promociones y cupones | Crissel Studio Ambato"
-        description="Promos, 20 cupones orden de llegada, sorteo de maquillaje y cupón MADRE (5%) al reservar por WhatsApp. Crissel Studio Ambato."
+        description="Promos, 20 cupones orden de llegada, sorteo de maquillaje (anuncio en redes lunes 11 de mayo de 2026; servicio premio viernes 15 de mayo de 2026) y cupón MADRE (5%). Crissel Studio Ambato."
         type="website"
       />
       <div className="relative min-h-screen overflow-hidden px-4 pb-20 pt-20">

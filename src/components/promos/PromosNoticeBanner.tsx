@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from 'framer-motion'
 import { Crown, Ticket, Wand2 } from 'lucide-react'
-import { COUPON_FCFS_LIMIT } from '@/data/raffle'
+import { COUPON_FCFS_LIMIT, SORTEO_COPY_BANNER } from '@/data/raffle'
 
 export function PromosNoticeBanner() {
   const prefersReducedMotion = useReducedMotion()
@@ -46,8 +46,7 @@ export function PromosNoticeBanner() {
                 Sorteo: maquillaje
               </p>
               <p className="mt-1.5 text-sm leading-relaxed text-neutral-700">
-                Participa con tu número abajo. <strong>El lunes</strong> publicamos a la ganadora y
-                <strong> nos pondremos en contacto</strong> por teléfono para coordinar tu cita.
+                Participa con tu número abajo. {SORTEO_COPY_BANNER}
               </p>
             </div>
           </div>

@@ -11,3 +11,4 @@ export const metadata = generateMetadata({
 export default function BlogPage() {
   return <BlogIndexPage />
 }
+

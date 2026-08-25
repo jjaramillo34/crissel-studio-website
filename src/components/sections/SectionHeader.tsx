@@ -1,101 +1,89 @@
 'use client'
 
-import { type ReactNode, type ComponentType } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
-import { cn } from '@/lib/utils'
+import type { ComponentType, ReactNode } from 'react'
+import { Heading, Text } from '@once-ui-system/core'
 
 interface SectionHeaderProps {
   eyebrow?: string
+  /** Kept for older pages; not rendered in the editorial style. */
   eyebrowIcon?: ComponentType<{ className?: string }>
   title: ReactNode
+  /** Word or phrase rendered in italic coral accent */
+  titleAccent?: string
+  titleEnd?: string
   description?: ReactNode
   align?: 'start' | 'center' | 'end'
-  className?: string
-  descriptionClassName?: string
-  /** Use h1 for standalone pages (e.g. /productos); default h2 for sections */
+  tone?: 'light' | 'dark'
   titleAs?: 'h1' | 'h2'
+  className?: string
   titleClassName?: string
+  descriptionClassName?: string
 }
 
-const alignMap: Record<NonNullable<SectionHeaderProps['align']>, string> = {
-  start: 'items-start text-left',
-  center: 'items-center text-center',
-  end: 'items-end text-right',
-}
-
-const descriptionWidth: Record<NonNullable<SectionHeaderProps['align']>, string> = {
-  start: 'max-w-3xl',
-  center: 'max-w-2xl',
-  end: 'max-w-3xl',
-}
-
+/**
+ * La Femme–style section title:
+ * eyebrow with hairline rules · serif headline · italic accent · soft lede
+ */
 export const SectionHeader = ({
   eyebrow,
-  eyebrowIcon: EyebrowIcon,
   title,
+  titleAccent,
+  titleEnd = '.',
   description,
   align = 'center',
-  className,
-  descriptionClassName,
+  tone = 'light',
   titleAs = 'h2',
-  titleClassName,
+  className = '',
 }: SectionHeaderProps) => {
-  const prefersReducedMotion = useReducedMotion()
-  const Title = titleAs === 'h1' ? motion.h1 : motion.h2
-
-  const containerClasses = cn(
-    'mb-12 flex flex-col gap-4',
-    alignMap[align],
-    align === 'center' ? 'mx-auto' : '',
-    className
-  )
+  const isCenter = align !== 'start'
+  const isDark = tone === 'dark'
 
   return (
-    <div className={containerClasses}>
-      {eyebrow && (
-        <motion.span
-          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={prefersReducedMotion ? { duration: 0.4 } : { duration: 0.5, ease: 'easeOut' }}
-          className="inline-flex items-center gap-2 rounded-full border border-rose-200/90 bg-gradient-to-r from-white via-rose-50/80 to-pink-50/70 px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#c45c5c] shadow-sm backdrop-blur-sm"
-        >
-          {EyebrowIcon ? <EyebrowIcon className="h-4 w-4 text-[#E57373]" aria-hidden="true" /> : null}
-          {eyebrow}
-        </motion.span>
-      )}
+    <div
+      className={[
+        'crissel-section-header',
+        isCenter ? 'crissel-section-header--center' : 'crissel-section-header--start',
+        isDark ? 'crissel-section-header--dark' : '',
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      {eyebrow ? (
+        <div className="crissel-section-header__eyebrow">
+          <span className="crissel-section-header__rule" aria-hidden />
+          <Text variant="label-default-s" className="crissel-section-header__eyebrow-text">
+            {eyebrow}
+          </Text>
+          <span className="crissel-section-header__rule" aria-hidden />
+        </div>
+      ) : null}
 
-      <Title
-        initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-        className={cn(
-          'font-display font-semibold tracking-tight text-neutral-900 text-3xl sm:text-4xl',
-          titleClassName
-        )}
+      <Heading
+        as={titleAs}
+        variant="display-strong-s"
+        align={isCenter ? 'center' : 'left'}
+        className="font-display crissel-section-header__title"
       >
         {title}
-      </Title>
-      <span
-        className={cn(
-          'mt-2 block h-1 w-14 shrink-0 rounded-full bg-gradient-to-r from-[#E57373] to-[#F8BBD9]',
-          align === 'center' && 'mx-auto',
-          align === 'end' && 'self-end'
-        )}
-        aria-hidden
-      />
+        {titleAccent ? (
+          <>
+            {' '}
+            <em className="crissel-italic">{titleAccent}</em>
+            {titleEnd}
+          </>
+        ) : null}
+      </Heading>
 
       {description ? (
-        <motion.p
-          initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={prefersReducedMotion ? { duration: 0.4 } : { duration: 0.5, ease: 'easeOut', delay: 0.15 }}
-          className={cn('text-sm text-neutral-600 sm:text-base leading-relaxed', descriptionWidth[align], descriptionClassName)}
+        <Text
+          variant="body-default-m"
+          align={isCenter ? 'center' : 'left'}
+          wrap="balance"
+          className="crissel-section-header__desc"
         >
           {description}
-        </motion.p>
+        </Text>
       ) : null}
     </div>
   )

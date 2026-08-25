@@ -10,3 +10,4 @@ export const metadata = generateMetadata({
 export default function GaleriaPage() {
   return <GalleryPage />
 }
+

@@ -1,25 +1,41 @@
 'use client'
 
-import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { useState } from 'react'
-import { Mail, MapPin, Instagram, Calendar, MessageCircle, Send, Heart, Star } from 'lucide-react'
+import Image from 'next/image'
+import {
+  Button,
+  Column,
+  Feedback,
+  Input,
+  Row,
+  Select,
+  SmartLink,
+  Text,
+  Textarea,
+} from '@once-ui-system/core'
 import { SectionHeader } from './SectionHeader'
 
 type FormField = 'name' | 'email' | 'message' | 'subject'
 type FormErrors = Partial<Record<FormField, string>>
+
+const subjectOptions = [
+  { value: 'appointment', label: 'Reserva de cita' },
+  { value: 'makeup', label: 'Consulta maquillaje' },
+  { value: 'eyebrows', label: 'Consulta cejas' },
+  { value: 'lashes', label: 'Consulta pestañas' },
+  { value: 'other', label: 'Otro' },
+]
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
-    subject: 'appointment'
+    subject: 'appointment',
   })
-
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState<FormErrors>({})
   const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
-  const prefersReducedMotion = useReducedMotion()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -62,436 +78,166 @@ const Contact = () => {
     } catch (error) {
       setStatus({
         type: 'error',
-        message: error instanceof Error ? error.message : 'No pudimos enviar tu mensaje.'
+        message: error instanceof Error ? error.message : 'No pudimos enviar tu mensaje.',
       })
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const field = e.target.name as FormField
-    setFormData({
-      ...formData,
-      [field]: e.target.value
-    })
+  const handleChange = (field: FormField, value: string) => {
+    setFormData((current) => ({ ...current, [field]: value }))
     setErrors((currentErrors) => ({ ...currentErrors, [field]: undefined }))
     setStatus(null)
   }
 
-  const socialLinks = [
-    {
-      name: 'Instagram',
-      icon: Instagram,
-      url: 'https://instagram.com/crisselstudio.ec',
-      color: 'from-pink-400 to-purple-600',
-      description: 'Síguenos para ver nuestro trabajo diario'
-    },
-    {
-      name: 'WhatsApp',
-      icon: MessageCircle,
-      url: 'https://wa.me/593992950683',
-      color: 'from-green-400 to-green-600',
-      description: 'Contáctanos directamente'
-    },
-    {
-      name: 'Reservas Online',
-      icon: Calendar,
-      url: 'https://bit.ly/crisselstudio',
-      color: 'from-purple-400 to-pink-600',
-      description: 'Agenda tu cita fácilmente'
-    }
-  ]
-
-  const contactInfo = [
-    {
-      icon: MapPin,
-      title: 'Ubicación',
-      info: 'Centro Comercial La Galería',
-      description: 'Mera entre Rocafuerte y Bolívar, Ambato, Ecuador'
-    },
-    {
-      icon: Mail,
-      title: 'Reservas Online',
-      info: 'bit.ly/crisselstudio',
-      description: 'Agenda tu cita fácilmente'
-    }
-  ]
-
-  const containerVariants: Variants = prefersReducedMotion
-    ? {
-        hidden: { opacity: 0 },
-        visible: {
-          opacity: 1,
-          transition: { duration: 0 }
-        }
-      }
-    : {
-        hidden: { opacity: 0, y: 24 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: {
-            staggerChildren: 0.2,
-            duration: 0.6,
-            ease: 'easeOut'
-          }
-        }
-      }
-
-  const itemVariants: Variants = prefersReducedMotion
-    ? {
-        hidden: { opacity: 0 },
-        visible: {
-          opacity: 1,
-          transition: { duration: 0 }
-        }
-      }
-    : {
-        hidden: { opacity: 0, y: 30 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.6, ease: 'easeOut' }
-        }
-      }
-
   return (
-    <section id="contacto" className="section-brand py-20 relative">
-      <motion.div
-        aria-hidden="true"
-        className="absolute -top-24 -left-16 h-64 w-64 rounded-full bg-[#E57373]/10 blur-3xl"
-        animate={
-          prefersReducedMotion
-            ? undefined
-            : {
-                scale: [1, 1.15, 1],
-                rotate: [0, 8, 0]
-              }
-        }
-        transition={
-          prefersReducedMotion
-            ? undefined
-            : {
-                duration: 10,
-                repeat: Infinity,
-                ease: 'easeInOut'
-              }
-        }
-      />
-      <motion.div
-        aria-hidden="true"
-        className="absolute -bottom-32 -right-10 h-72 w-72 rounded-full bg-[#F8BBD9]/10 blur-3xl"
-        animate={
-          prefersReducedMotion
-            ? undefined
-            : {
-                scale: [1.1, 0.95, 1.1],
-                rotate: [5, -5, 5]
-              }
-        }
-        transition={
-          prefersReducedMotion
-            ? undefined
-            : {
-                duration: 12,
-                repeat: Infinity,
-                ease: 'easeInOut'
-              }
-        }
-      />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Reserva y contacto"
-          title="Ubicación estratégica y canales directos"
-          description="Visítanos en Centro Comercial La Galería o agenda tu cita online. Estamos listas para asesorarte por WhatsApp, redes sociales o formulario."
+    <section id="contacto" className="crissel-band crissel-band--contact" aria-labelledby="contacto-title">
+      <div className="crissel-band__media">
+        <Image
+          src="/assets/images/hero.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover"
         />
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Contact form */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-          >
-            <motion.div variants={itemVariants} className="mb-8">
-              <h3 className="text-3xl font-bold text-gray-800 mb-4">
-                Contáctanos
-              </h3>
-              <p className="text-gray-600">
-                Completa el formulario para consultas o usa nuestro sistema de reservas online
-              </p>
-            </motion.div>
-
-            <motion.form
-              variants={itemVariants}
-              onSubmit={handleSubmit}
-              className="space-y-6"
-              aria-describedby="contact-form-description"
-              aria-busy={isSubmitting}
-            >
-              <p id="contact-form-description" className="sr-only">
-                Formulario de contacto para enviar consultas o reservar servicios.
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <motion.div
-                  whileHover={prefersReducedMotion ? undefined : { scale: 1.01 }}
-                  className="space-y-2 rounded-2xl border-2 border-transparent focus-within:border-[#E57373] focus-within:shadow-lg transition-all bg-white/60 backdrop-blur-sm p-4"
-                >
-                  <label htmlFor="contact-name" className="text-gray-800 font-medium">
-                    Nombre
-                  </label>
-                  <input
-                    id="contact-name"
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    autoComplete="name"
-                    maxLength={80}
-                    aria-invalid={Boolean(errors.name)}
-                    aria-describedby={errors.name ? 'contact-name-error' : undefined}
-                    className="w-full px-4 py-3 rounded-xl border border-pink-100 focus:border-[#E57373] focus:outline-none transition-colors bg-white"
-                    placeholder="Tu nombre completo"
-                  />
-                  {errors.name && <p id="contact-name-error" className="text-sm text-red-700">{errors.name}</p>}
-                </motion.div>
-
-                <motion.div
-                  whileHover={prefersReducedMotion ? undefined : { scale: 1.01 }}
-                  className="space-y-2 rounded-2xl border-2 border-transparent focus-within:border-[#E57373] focus-within:shadow-lg transition-all bg-white/60 backdrop-blur-sm p-4"
-                >
-                  <label htmlFor="contact-email" className="text-gray-800 font-medium">
-                    Email
-                  </label>
-                  <input
-                    id="contact-email"
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    autoComplete="email"
-                    aria-invalid={Boolean(errors.email)}
-                    aria-describedby={errors.email ? 'contact-email-error' : undefined}
-                    className="w-full px-4 py-3 rounded-xl border border-pink-100 focus:border-[#E57373] focus:outline-none transition-colors bg-white"
-                    placeholder="tu@email.com"
-                  />
-                  {errors.email && <p id="contact-email-error" className="text-sm text-red-700">{errors.email}</p>}
-                </motion.div>
-              </div>
-
-              <motion.div
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.005 }}
-                className="space-y-2 rounded-2xl border-2 border-transparent focus-within:border-[#E57373] focus-within:shadow-lg transition-all bg-white/60 backdrop-blur-sm p-4"
-              >
-                <label htmlFor="contact-subject" className="text-gray-800 font-medium">
-                  Asunto
-                </label>
-                <select
-                  id="contact-subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-pink-100 focus:border-[#E57373] focus:outline-none transition-colors bg-white"
-                >
-                  <option value="appointment">Reserva de Cita</option>
-                  <option value="makeup">Consulta Maquillaje</option>
-                  <option value="eyebrows">Consulta Cejas</option>
-                  <option value="lashes">Consulta Pestañas</option>
-                  <option value="other">Otro</option>
-                </select>
-              </motion.div>
-
-              <motion.div
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.005 }}
-                className="space-y-2 rounded-2xl border-2 border-transparent focus-within:border-[#E57373] focus-within:shadow-lg transition-all bg-white/60 backdrop-blur-sm p-4"
-              >
-                <label htmlFor="contact-message" className="text-gray-800 font-medium">
-                  Mensaje
-                </label>
-                <textarea
-                  id="contact-message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={5}
-                  maxLength={2000}
-                  aria-invalid={Boolean(errors.message)}
-                  aria-describedby={errors.message ? 'contact-message-error' : undefined}
-                  className="w-full px-4 py-3 rounded-xl border border-pink-100 focus:border-[#E57373] focus:outline-none transition-colors bg-white resize-none"
-                  placeholder="Cuéntanos sobre el servicio que necesitas o cualquier consulta..."
-                />
-                <div className="flex items-start justify-between gap-4">
-                  {errors.message ? (
-                    <p id="contact-message-error" className="text-sm text-red-700">{errors.message}</p>
-                  ) : (
-                    <span />
-                  )}
-                  <p className="text-right text-xs text-gray-500" aria-live="polite">
-                    {formData.message.length}/2000
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.button
-                type="submit"
-                disabled={isSubmitting}
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="w-full py-4 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                aria-label="Enviar mensaje de contacto"
-              >
-                {isSubmitting ? (
-                  <>
-                    <motion.div
-                      aria-hidden="true"
-                      animate={
-                        prefersReducedMotion
-                          ? { rotate: 0 }
-                          : { rotate: 360 }
-                      }
-                      transition={
-                        prefersReducedMotion
-                          ? undefined
-                          : { duration: 1, repeat: Infinity, ease: "linear" }
-                      }
-                      className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
-                    />
-                    <span>Enviando...</span>
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-5 h-5" />
-                    <span>Enviar Mensaje</span>
-                  </>
-                )}
-              </motion.button>
-              <div
-                role="status"
-                aria-live="polite"
-                aria-atomic="true"
-                className={`min-h-[1.5rem] text-center text-sm font-medium ${
-                  status?.type === 'success' ? 'text-green-700' : 'text-red-700'
-                }`}
-              >
-                {status?.message}
-              </div>
-            </motion.form>
-          </motion.div>
-
-          {/* Contact info and social */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-            className="space-y-8"
-          >
-            {/* Contact info */}
-            <motion.div variants={itemVariants}>
-              <h3 className="text-3xl font-bold text-gray-800 mb-6">
-                Información de Contacto
-              </h3>
-              <div className="space-y-6">
-                {contactInfo.map((info, index) => (
-                  <motion.article
-                    key={index}
-                    whileHover={
-                      prefersReducedMotion ? undefined : { scale: 1.02, x: 5 }
-                    }
-                    className="flex items-start gap-4 rounded-2xl border border-rose-200/70 bg-white/90 p-5 shadow transition-shadow hover:shadow-lg"
-                    aria-labelledby={`contact-info-title-${index}`}
-                    aria-describedby={`contact-info-description-${index}`}
-                  >
-                    <div className="w-12 h-12 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] rounded-xl flex items-center justify-center flex-shrink-0">
-                      <info.icon className="w-6 h-6 text-white" aria-hidden="true" focusable="false" />
-                    </div>
-                    <div>
-                      <h4 id={`contact-info-title-${index}`} className="font-semibold text-gray-800">
-                        {info.title}
-                      </h4>
-                      <p className="text-[#E57373] font-medium">{info.info}</p>
-                      <p id={`contact-info-description-${index}`} className="text-gray-600 text-sm">
-                        {info.description}
-                      </p>
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Social media */}
-            <motion.div variants={itemVariants}>
-              <h3 className="text-3xl font-bold text-gray-800 mb-6">
-                Síguenos en Redes
-              </h3>
-              <div className="space-y-4">
-                {socialLinks.map((social, index) => {
-                  const url = String(social.url || '')
-                  return (
-                  <motion.a
-                    key={index}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={
-                      prefersReducedMotion ? undefined : { scale: 1.05, x: 10 }
-                    }
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-4 p-4 rounded-2xl bg-white/90 backdrop-blur-sm border border-pink-100 hover:shadow-lg transition-all duration-300 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
-                    aria-label={`Visitar ${social.name}`}
-                  >
-                    <div className={`w-12 h-12 bg-gradient-to-r ${social.color} rounded-xl flex items-center justify-center`}>
-                      <social.icon className="w-6 h-6 text-white" aria-hidden="true" focusable="false" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-gray-800 group-hover:text-[#E57373] transition-colors">
-                        {social.name}
-                      </h4>
-                      <p className="text-gray-600 text-sm">{social.description}</p>
-                    </div>
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">
-                      <svg className="w-5 h-5 text-[#E57373]" fill="none" stroke="currentColor" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
-                  </motion.a>
-                  )
-                })}
-              </div>
-            </motion.div>
-
-            {/* Studio note */}
-            <motion.div
-              variants={itemVariants}
-              className="bg-gradient-to-r from-[#E57373]/10 to-[#F8BBD9]/10 rounded-3xl p-6 border border-pink-100"
-            >
-              <div className="flex items-start space-x-3 mb-4">
-                <Heart className="w-6 h-6 text-[#E57373] flex-shrink-0 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">
-                    Nuestro Compromiso
-                  </h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    "En Crissel Studio Ambato, cada cliente es especial. Nos comprometemos a 
-                    realzar tu belleza natural con técnicas profesionales y productos de calidad."
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-1 text-[#E57373]">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current" />
-                ))}
-                <span className="text-sm ml-2">- Crissel Studio Team</span>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
+        <div className="crissel-band__wash" aria-hidden />
       </div>
+
+      <Row
+        className="crissel-band__content"
+        fillWidth
+        maxWidth="l"
+        gap="48"
+        paddingX="l"
+        paddingY="80"
+        vertical="center"
+        s={{ direction: 'column', gap: '32' }}
+        zIndex={1}
+      >
+        <Column gap="24" fillWidth>
+          <SectionHeader
+            tone="dark"
+            align="start"
+            eyebrow="Contacto y ubicación"
+            title="Visítanos en el"
+            titleAccent="estudio"
+            description="Espacio tranquilo y céntrico. En el corazón de Ambato."
+          />
+          <Column gap="8">
+            <Text variant="heading-strong-s" className="crissel-hero__title">
+              Centro Comercial La Galería
+            </Text>
+            <Text variant="body-default-m" className="crissel-hero__lede">
+              Mera entre Rocafuerte y Bolívar
+              <br />
+              Ambato, Ecuador
+            </Text>
+          </Column>
+          <Column gap="4">
+            <SmartLink href="https://bit.ly/crisselstudio">
+              <Text variant="body-default-m" className="crissel-hero__lede">
+                bit.ly/crisselstudio
+              </Text>
+            </SmartLink>
+            <SmartLink href="https://instagram.com/crisselstudio.ec">
+              <Text variant="body-default-s" className="crissel-hero__lede">
+                @crisselstudio.ec
+              </Text>
+            </SmartLink>
+          </Column>
+          <Row gap="12" s={{ direction: 'column' }}>
+            <Button href="https://bit.ly/crisselstudio" label="Reservar cita" prefixIcon="calendar" />
+            <Button
+              variant="secondary"
+              href="https://wa.me/593992950683"
+              label="WhatsApp"
+              className="crissel-hero__cta-ghost"
+            />
+          </Row>
+        </Column>
+
+        <Column
+          as="form"
+          fillWidth
+          className="crissel-band__card"
+          padding="32"
+          gap="16"
+          radius="l"
+          onSubmit={handleSubmit}
+        >
+          <Text variant="label-default-s" onBackground="brand-medium">
+            Escríbenos
+          </Text>
+          <Text variant="heading-strong-l" className="font-display">
+            Tu cita te espera
+          </Text>
+          <Text variant="body-default-s" onBackground="neutral-weak">
+            Agenda en línea o déjanos un mensaje. Te orientamos para elegir el tratamiento ideal.
+          </Text>
+          <Input
+            id="contact-name"
+            name="name"
+            label="Nombre"
+            placeholder="Tu nombre completo"
+            value={formData.name}
+            onChange={(event) => handleChange('name', event.target.value)}
+            autoComplete="name"
+            maxLength={80}
+            error={Boolean(errors.name)}
+            errorMessage={errors.name}
+            required
+          />
+          <Input
+            id="contact-email"
+            name="email"
+            type="email"
+            label="Email"
+            placeholder="tu@email.com"
+            value={formData.email}
+            onChange={(event) => handleChange('email', event.target.value)}
+            autoComplete="email"
+            error={Boolean(errors.email)}
+            errorMessage={errors.email}
+            required
+          />
+          <Select
+            id="contact-subject"
+            label="Asunto"
+            value={formData.subject}
+            options={subjectOptions}
+            onSelect={(value) => handleChange('subject', Array.isArray(value) ? value[0] : value)}
+          />
+          <Textarea
+            id="contact-message"
+            name="message"
+            label="Mensaje"
+            placeholder="Cuéntanos sobre el servicio que necesitas..."
+            value={formData.message}
+            onChange={(event) => handleChange('message', event.target.value)}
+            lines={4}
+            maxLength={2000}
+            characterCount
+            resize="none"
+            error={Boolean(errors.message)}
+            errorMessage={errors.message}
+            required
+          />
+          <Button
+            type="submit"
+            label={isSubmitting ? 'Enviando...' : 'Enviar mensaje'}
+            fillWidth
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          />
+          {status && (
+            <Feedback
+              variant={status.type === 'success' ? 'success' : 'danger'}
+              description={status.message}
+            />
+          )}
+        </Column>
+      </Row>
     </section>
   )
 }
