@@ -366,6 +366,10 @@ export interface RaffleEntry {
    */
   phoneNormalized: string;
   /**
+   * Clave única de campaña y teléfono
+   */
+  dedupeKey: string;
+  /**
    * Aceptó ser contactada si gana
    */
   consent: boolean;
@@ -637,6 +641,7 @@ export interface RaffleEntriesSelect<T extends boolean = true> {
   firstName?: T;
   phone?: T;
   phoneNormalized?: T;
+  dedupeKey?: T;
   consent?: T;
   updatedAt?: T;
   createdAt?: T;

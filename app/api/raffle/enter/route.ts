@@ -71,6 +71,7 @@ export async function POST(req: Request) {
         phone,
         phoneNormalized,
         promoSlug,
+        dedupeKey: `${promoSlug}:${phoneNormalized}`,
         consent: true,
       },
       overrideAccess: true,
