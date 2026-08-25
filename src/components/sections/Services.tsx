@@ -207,7 +207,7 @@ const Services = () => {
               const description = service.shortDescription || service.description
 
               return (
-                <motion.div
+                <motion.article
                   key={service.id}
                   variants={cardVariants}
                   whileHover={
@@ -230,7 +230,7 @@ const Services = () => {
                     </motion.div>
                   )}
 
-                  <div className="h-full p-8 rounded-2xl bg-gradient-to-br from-white to-rose-50/50 border border-rose-200/70 shadow-md hover:shadow-xl transition-all duration-300 group-hover:border-[#E57373]/45">
+                  <div className="flex h-full min-h-[33rem] flex-col rounded-2xl border border-rose-200/70 bg-gradient-to-br from-white to-rose-50/50 p-8 shadow-md transition-all duration-300 group-hover:border-[#E57373]/45 group-hover:shadow-xl">
                     {/* Icon and header */}
                     <div className="flex items-start space-x-4 mb-6">
                       <motion.div
@@ -290,18 +290,15 @@ const Services = () => {
                     )}
 
                     {/* CTA Button */}
-                    <Link href={`/productos#${String(service.slug || '')}`}>
-                      <motion.div
-                        whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={`block w-full py-3.5 rounded-2xl bg-gradient-to-r ${categoryStyle.color} text-white font-semibold shadow-md shadow-rose-200/40 hover:shadow-lg transition-all duration-300 text-center`}
-                        aria-label={`Ver detalles del servicio ${service.name}`}
-                      >
-                        Ver Detalles
-                      </motion.div>
+                    <Link
+                      href={`/productos#${String(service.slug || '')}`}
+                      className={`mt-auto block w-full rounded-2xl bg-gradient-to-r ${categoryStyle.color} py-3.5 text-center font-semibold text-white shadow-md shadow-rose-200/40 transition-all duration-300 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]`}
+                      aria-label={`Ver detalles del servicio ${service.name}`}
+                    >
+                      Ver Detalles
                     </Link>
                   </div>
-                </motion.div>
+                </motion.article>
               )
             })}
           </motion.div>

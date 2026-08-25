@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname, useRouter } from 'next/navigation'
 // Use public folder path for static image
 const logoImage = '/assets/images/logo_photo.png'
 import { Heart, Instagram, MapPin, MessageCircle, Calendar, Sparkles, Eye } from 'lucide-react'
@@ -10,6 +11,8 @@ import { Heart, Instagram, MapPin, MessageCircle, Calendar, Sparkles, Eye } from
 const Footer = () => {
   const prefersReducedMotion = useReducedMotion()
   const currentYear = new Date().getFullYear()
+  const pathname = usePathname()
+  const router = useRouter()
 
   const quickLinks = [
     { name: 'Inicio', href: '#hero' },
@@ -33,6 +36,11 @@ const Footer = () => {
   }
 
   const scrollToSection = (href: string) => {
+    if (pathname !== '/') {
+      router.push(`/${href}`)
+      return
+    }
+
     const element = document.querySelector(href)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
