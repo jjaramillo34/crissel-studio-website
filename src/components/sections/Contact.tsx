@@ -403,11 +403,9 @@ const Contact = () => {
                     whileHover={
                       prefersReducedMotion ? undefined : { scale: 1.02, x: 5 }
                     }
-                    className="flex items-start gap-4 p-5 rounded-2xl bg-white/90 backdrop-blur-sm border border-rose-200/70 shadow transition-shadow hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]/70 focus-visible:shadow-lg"
+                    className="flex items-start gap-4 rounded-2xl border border-rose-200/70 bg-white/90 p-5 shadow transition-shadow hover:shadow-lg"
                     aria-labelledby={`contact-info-title-${index}`}
                     aria-describedby={`contact-info-description-${index}`}
-                    role="group"
-                    tabIndex={0}
                   >
                     <div className="w-12 h-12 bg-gradient-to-r from-[#E57373] to-[#F8BBD9] rounded-xl flex items-center justify-center flex-shrink-0">
                       <info.icon className="w-6 h-6 text-white" aria-hidden="true" focusable="false" />
