@@ -19,6 +19,7 @@ const ensureNormalizedAndDedupe: CollectionBeforeChangeHook = async ({
   }
   data.phoneNormalized = normalized
   data.promoSlug = promoSlug
+  data.dedupeKey = `${promoSlug}:${normalized}`
 
   const skipId = operation === 'update' && originalDoc?.id ? String(originalDoc.id) : undefined
   const existing = await req.payload.find({
@@ -87,6 +88,13 @@ export const RaffleEntry: CollectionConfig = {
       required: true,
       index: true,
       admin: { description: '593… para deduplicar', readOnly: true },
+    },
+    {
+      name: 'dedupeKey',
+      type: 'text',
+      required: true,
+      unique: true,
+      admin: { description: 'Clave única de campaña y teléfono', readOnly: true },
     },
     {
       name: 'consent',
