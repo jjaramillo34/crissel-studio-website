@@ -3,9 +3,35 @@ import { getPayload } from 'payload'
 import configPromise from '../../../../payload.config'
 import { RAFFLE_PROMO_SLUG } from '@/data/raffle'
 import { normalizeEcuadorMobile } from '@/lib/phoneEcuador'
+import { checkRateLimit } from '@/lib/rateLimit'
+
+const maxRequestBytes = 5_000
 
 export async function POST(req: Request) {
   try {
+    const forwardedFor = req.headers.get('x-forwarded-for')
+    const clientIp =
+      forwardedFor?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'unknown'
+    const rateLimit = checkRateLimit(`raffle-entry:${clientIp}`, 3, 10 * 60 * 1000)
+
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { ok: false, message: 'Demasiados intentos. Intenta de nuevo más tarde.' },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(rateLimit.retryAfterSeconds) },
+        },
+      )
+    }
+
+    const contentLength = Number(req.headers.get('content-length') || 0)
+    if (contentLength > maxRequestBytes) {
+      return NextResponse.json(
+        { ok: false, message: 'La solicitud es demasiado grande.' },
+        { status: 413 },
+      )
+    }
+
     const body = (await req.json()) as Record<string, unknown>
     const firstName = String(body.firstName ?? '')
       .trim()
