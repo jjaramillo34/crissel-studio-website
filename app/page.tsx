@@ -18,6 +18,7 @@ import { generateMetadata } from '@/lib/metadata'
 export const metadata = generateMetadata({
   title: 'Crissel Studio | Expertas en mirada, cejas y maquillaje en Ambato',
   description: 'Somos especialistas en extensiones de pestañas, diseño de cejas, maquillaje profesional y paquetes de belleza personalizada en Ambato.',
+  url: '/',
 })
 
 export default function HomePage() {
@@ -43,4 +44,3 @@ export default function HomePage() {
     </div>
   )
 }
-

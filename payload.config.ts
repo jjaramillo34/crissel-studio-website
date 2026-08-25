@@ -12,6 +12,7 @@ import { Testimonial } from './src/collections/Testimonial'
 import { RaffleEntry } from './src/collections/RaffleEntry'
 import { Users } from './src/collections/Users'
 import { Media } from './src/collections/Media'
+import { ContactSubmission } from './src/collections/ContactSubmission'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -30,6 +31,7 @@ const configPromise = buildConfig({
     Team,
     Testimonial,
     RaffleEntry,
+    ContactSubmission,
   ],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
@@ -51,4 +53,3 @@ const configPromise = buildConfig({
 })
 
 export default configPromise
-

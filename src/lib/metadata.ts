@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
-// Use public folder path for static image
+
 const ogImage = '/assets/images/logo_photo.png'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://crisselstudio.com'
 
 export type SeoProps = {
   title?: string
@@ -28,10 +29,12 @@ export function generateMetadata({
   const resolvedTitle = title ?? defaultMeta.title
   const resolvedDescription = description ?? defaultMeta.description
   const resolvedImage = image ?? defaultMeta.image
-  const resolvedUrl = url ?? 'https://crisselstudio.com'
+  const resolvedUrl = url
+    ? new URL(url, siteUrl).toString()
+    : new URL('/', siteUrl).toString()
 
   return {
-    metadataBase: new URL(resolvedUrl),
+    metadataBase: new URL(siteUrl),
     title: resolvedTitle,
     description: resolvedDescription,
     openGraph: {
@@ -52,4 +55,3 @@ export function generateMetadata({
     },
   }
 }
-

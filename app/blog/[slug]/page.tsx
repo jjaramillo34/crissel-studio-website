@@ -36,6 +36,7 @@ export async function generateMetadata({
       description: post.excerpt,
       image: imageUrl || undefined,
       type: 'article',
+      url: `/blog/${encodeURIComponent(slug)}`,
     })
   } catch (error) {
     console.error('Error generating metadata:', error)
@@ -61,4 +62,3 @@ export default async function BlogPostPageRoute({
   
   return <BlogPostPage slug={slug} />
 }
-
