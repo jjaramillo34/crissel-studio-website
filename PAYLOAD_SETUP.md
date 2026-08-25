@@ -1,98 +1,108 @@
 # Payload CMS Setup Guide
 
-This project has been configured with Payload CMS for content management.
+Payload CMS is integrated into the Next.js application. The website, admin panel, REST API, and GraphQL API run from the same server.
 
 ## Quick Start
 
-1. **Install MongoDB** (if not already installed)
-   - Local: Install MongoDB locally or use MongoDB Atlas (cloud)
-   - Update `DATABASE_URI` in `.env` file
+1. Install MongoDB locally or use MongoDB Atlas.
+2. Create a `.env` file in the repository root:
 
-2. **Create `.env` file** in the root directory:
    ```env
-   PAYLOAD_SECRET=your-secret-key-here
+   PAYLOAD_SECRET=your-secure-secret
    PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3000
    DATABASE_URI=mongodb://localhost:27017/crissel-studio
-   PORT=3000
    ```
 
-3. **Generate a secure secret**:
+   Generate a secret with:
+
    ```bash
    openssl rand -base64 32
    ```
 
-4. **Start the Payload server**:
+3. Install dependencies and start the application:
+
    ```bash
-   pnpm dev:payload
+   pnpm install
+   pnpm dev
    ```
 
-5. **Access the admin panel**:
-   - Open `http://localhost:3000/admin`
-   - Create your first admin user
-   - Start managing content!
+4. Open `http://localhost:3000/admin` and create the first admin user.
 
-## Collections Available
+`PAYLOAD_SECRET` and `DATABASE_URI` are required in production. Local development uses the MongoDB URI above when `DATABASE_URI` is omitted.
 
-- **Blogs** - Manage blog posts with rich content sections
-- **Services** - Manage service offerings, pricing, and features
-- **Gallery** - Upload and organize gallery images by category
-- **Team** - Manage team member profiles
-- **Testimonials** - Manage client testimonials
-- **Media** - File uploads for images and assets
-- **Users** - Admin user accounts
+## Collections
+
+- **Blogs** — Blog posts and rich content
+- **Services** — Service offerings, pricing, and features
+- **Gallery** — Portfolio images and categories
+- **Team** — Team member profiles
+- **Testimonials** — Client testimonials
+- **Media** — Uploaded images and assets
+- **Contact submissions** — Messages sent through the public contact form
+- **Raffle entries** — Promotional campaign entries
+- **Users** — Admin accounts
 
 ## Development Workflow
 
-### Run Frontend and Payload Together
+Run the complete application:
+
 ```bash
-pnpm dev:all
+pnpm dev
 ```
 
-This runs both:
-- Frontend (Vite) on `http://localhost:5173`
-- Payload CMS on `http://localhost:3000`
+The `dev:all` script is retained as a compatibility alias for `pnpm dev`; there is no separate Vite or Payload server.
 
-### Run Separately
+Available commands:
+
 ```bash
-# Terminal 1: Frontend
-pnpm dev
-
-# Terminal 2: Payload CMS
-pnpm dev:payload
+pnpm build
+pnpm start
+pnpm lint
+pnpm generate:types
+pnpm generate:importmap
 ```
 
 ## API Access
 
-Payload CMS provides REST and GraphQL APIs automatically:
+With the application running:
 
-- **REST API**: `http://localhost:3000/api`
-- **GraphQL**: `http://localhost:3000/api/graphql`
+- Admin panel: `http://localhost:3000/admin`
+- REST API: `http://localhost:3000/api`
+- GraphQL API: `http://localhost:3000/api/graphql`
+- Contact form endpoint: `POST http://localhost:3000/api/contact`
 
-### Example: Fetch Blogs
+Example:
+
 ```typescript
-const response = await fetch('http://localhost:3000/api/blogs')
+const response = await fetch('/api/blogs')
 const blogs = await response.json()
 ```
 
-## Notes
+## Production Notes
 
-- Payload 3.x requires React 19, but the project currently uses React 18. The admin panel may show peer dependency warnings, but should still function.
-- For production, ensure MongoDB connection string is properly configured
-- Set a strong `PAYLOAD_SECRET` in production
-- File uploads are limited to 5MB by default (configurable in `payload.config.ts`)
+- Set a unique, securely generated `PAYLOAD_SECRET`.
+- Set `DATABASE_URI` to the production MongoDB connection string.
+- Set `PAYLOAD_PUBLIC_SERVER_URL` to the public application origin.
+- Set `NEXT_PUBLIC_SITE_URL` for canonical and social metadata.
+- Set `NEXT_PUBLIC_PAYLOAD_SERVER_URL` only when browser requests use a separate Payload origin.
+- File uploads are limited to 5 MB by default in `payload.config.ts`.
 
 ## Troubleshooting
 
-### MongoDB Connection Issues
-- Ensure MongoDB is running locally, or
-- Update `DATABASE_URI` to point to your MongoDB Atlas cluster
+### MongoDB connection issues
 
-### Port Already in Use
-- Change `PORT` in `.env` file
-- Update `PAYLOAD_PUBLIC_SERVER_URL` accordingly
+Confirm that MongoDB is running locally or update `DATABASE_URI` to your MongoDB Atlas connection string.
 
-### Admin Panel Not Loading
-- Check that Payload server is running
-- Verify `PAYLOAD_SECRET` is set in `.env`
-- Check browser console for errors
+### Port already in use
 
+Start Next.js on another port:
+
+```bash
+pnpm exec next dev -p 3001
+```
+
+Update `PAYLOAD_PUBLIC_SERVER_URL` if the application origin changes.
+
+### Admin panel not loading
+
+Check that the application is running, `PAYLOAD_SECRET` is set, and the browser console contains no configuration errors.
