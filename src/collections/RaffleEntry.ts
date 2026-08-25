@@ -93,7 +93,6 @@ export const RaffleEntry: CollectionConfig = {
       name: 'dedupeKey',
       type: 'text',
       required: true,
-      unique: true,
       admin: { description: 'Clave única de campaña y teléfono', readOnly: true },
     },
     {

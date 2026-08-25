@@ -13,6 +13,7 @@ import { RaffleEntry } from './src/collections/RaffleEntry'
 import { Users } from './src/collections/Users'
 import { Media } from './src/collections/Media'
 import { ContactSubmission } from './src/collections/ContactSubmission'
+import raffleDedupeKey from './src/migrations/20260825000000-raffle-dedupe-key'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -56,6 +57,7 @@ const configPromise = buildConfig({
   editor: lexicalEditor(),
   db: mongooseAdapter({
     url: databaseUri,
+    prodMigrations: [raffleDedupeKey],
   }),
   sharp,
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
