@@ -86,6 +86,7 @@ const Navigation = () => {
     if (pathname !== '/') {
       // If not on home page, navigate to home first
       const targetPath = itemId === 'hero' ? '/' : `/#${itemId}`
+      setIsMobileMenuOpen(false)
       router.push(targetPath)
       return
     }
