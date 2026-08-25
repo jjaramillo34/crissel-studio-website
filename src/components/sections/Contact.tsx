@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { useState } from 'react'
-import { Mail, MapPin, Instagram, Youtube, MessageCircle, Send, Heart, Star } from 'lucide-react'
+import { Mail, MapPin, Instagram, Calendar, MessageCircle, Send, Heart, Star } from 'lucide-react'
 import { SectionHeader } from './SectionHeader'
 
 const Contact = () => {
@@ -61,13 +61,13 @@ const Contact = () => {
     {
       name: 'WhatsApp',
       icon: MessageCircle,
-      url: 'https://wa.me/593123456789',
+      url: 'https://wa.me/593992950683',
       color: 'from-green-400 to-green-600',
       description: 'Contáctanos directamente'
     },
     {
       name: 'Reservas Online',
-      icon: Youtube,
+      icon: Calendar,
       url: 'https://bit.ly/crisselstudio',
       color: 'from-purple-400 to-pink-600',
       description: 'Agenda tu cita fácilmente'
