@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowLeft, Eye, Heart, Sparkles, Crown, X } from 'lucide-react'
 import { SectionHeader } from './sections/SectionHeader'
 import { Seo } from '@/components/Seo'
@@ -283,11 +284,12 @@ const GalleryPage = () => {
                     className="relative block h-full w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
                     aria-label={`Ver imagen ${title}`}
                   >
-                    <img
+                    <Image
                       src={src}
                       alt={title}
+                      width={600}
+                      height={400}
                       className="h-40 w-full object-cover transition-transform duration-300 sm:h-48 md:h-56 group-hover:scale-105"
-                      loading="lazy"
                     />
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-3 text-left text-white">
                       <p className="text-sm font-semibold">{categoryLabel}</p>
@@ -339,9 +341,11 @@ const GalleryPage = () => {
                   </motion.button>
 
                   <figure className="flex w-full flex-col items-center gap-4">
-                    <img
+                    <Image
                       src={currentItem.src}
                       alt={title}
+                      width={1600}
+                      height={1200}
                       className="max-h-[70vh] w-auto rounded-2xl object-contain shadow-2xl"
                     />
                     <figcaption className="text-center text-white">

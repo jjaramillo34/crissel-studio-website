@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, Variants } from 'framer-motion';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Eye, Sparkles, Star, Heart, Crown } from 'lucide-react';
 import { SectionHeader } from './SectionHeader';
 
@@ -302,11 +303,12 @@ const Gallery = () => {
                 <div className="relative overflow-hidden rounded-2xl border border-rose-200/50 shadow-md shadow-rose-100/25 transition-all duration-500 hover:shadow-xl hover:border-rose-200/70">
                   {/* Actual Beauty Work Image */}
                   <div className="aspect-square relative">
-                    <img 
+                    <Image
                       src={img.src}
                       alt={title}
+                      width={800}
+                      height={800}
                       className="w-full h-full object-cover"
-                      loading="lazy"
                     />
                     
                     {/* Overlay */}
@@ -421,9 +423,11 @@ const Gallery = () => {
               ×
             </motion.button>
             <figure className="w-full flex flex-col items-center gap-4">
-              <img
+              <Image
                 src={activeImage.src}
                 alt={getImageTitle(activeImage.name)}
+                width={1600}
+                height={1600}
                 className="max-h-[70vh] w-auto rounded-2xl object-contain shadow-2xl"
               />
               <figcaption className="text-center text-white">
