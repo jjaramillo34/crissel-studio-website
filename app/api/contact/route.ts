@@ -1,12 +1,37 @@
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import configPromise from '../../../payload.config'
+import { checkRateLimit } from '../../../src/lib/rateLimit'
 
 const subjects = ['appointment', 'makeup', 'eyebrows', 'lashes', 'other'] as const
 type Subject = (typeof subjects)[number]
+const maxRequestBytes = 10_000
 
 export async function POST(request: Request) {
   try {
+    const forwardedFor = request.headers.get('x-forwarded-for')
+    const clientIp =
+      forwardedFor?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown'
+    const rateLimit = checkRateLimit(`contact:${clientIp}`, 5, 10 * 60 * 1000)
+
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { ok: false, message: 'Demasiados intentos. Intenta de nuevo más tarde.' },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(rateLimit.retryAfterSeconds) },
+        },
+      )
+    }
+
+    const contentLength = Number(request.headers.get('content-length') || 0)
+    if (contentLength > maxRequestBytes) {
+      return NextResponse.json(
+        { ok: false, message: 'La solicitud es demasiado grande.' },
+        { status: 413 },
+      )
+    }
+
     const body = (await request.json()) as Record<string, unknown>
     const name = typeof body.name === 'string' ? body.name.trim() : ''
     const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
