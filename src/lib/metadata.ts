@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 
 const ogImage = '/assets/images/logo_photo.png'
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://crisselstudio.com'
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://crisselstudio.com'
 
 export type SeoProps = {
   title?: string
