@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 // Use public folder path for static image
 const logoImage = '/assets/images/logo_photo.png'
 import { Heart, Instagram, MapPin, MessageCircle, Calendar, Sparkles, Eye } from 'lucide-react'
@@ -100,11 +101,12 @@ const Footer = () => {
             >
               <div className="mb-4 flex flex-col items-start gap-4">
                 <div className="flex items-center gap-3">
-                  <img 
+                  <Image
                     src={logoImage} 
                     alt="Crissel Studio Logo" 
+                    width={48}
+                    height={48}
                     className="h-12 w-12 rounded-full border border-[#E57373]/30 shadow-lg"
-                    loading="lazy"
                   />
                   <motion.button
                     onClick={scrollToTop}
