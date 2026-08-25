@@ -7,6 +7,18 @@ import { checkRateLimit } from '@/lib/rateLimit'
 
 const maxRequestBytes = 5_000
 
+function isDuplicateKeyError(error: unknown): boolean {
+  if (error instanceof Error && /E11000|duplicate key|dedupeKey/i.test(error.message)) {
+    return true
+  }
+
+  if (typeof error === 'object' && error !== null && 'code' in error) {
+    return error.code === 11000
+  }
+
+  return false
+}
+
 export async function POST(req: Request) {
   try {
     const forwardedFor = req.headers.get('x-forwarded-for')
@@ -80,7 +92,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, message: '¡Listo! Ya estás en el sorteo.' })
   } catch (e) {
     const msg = e instanceof Error ? e.message : ''
-    if (msg === 'DUPLICATE_PHONE') {
+    if (msg === 'DUPLICATE_PHONE' || isDuplicateKeyError(e)) {
       return NextResponse.json(
         { ok: false, message: 'Este número ya está registrado en el sorteo.' },
         { status: 409 },
