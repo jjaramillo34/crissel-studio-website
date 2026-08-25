@@ -32,6 +32,10 @@ Create a `.env` file in the root directory with the following variables:
 # Payload CMS Configuration
 PAYLOAD_SECRET=your-secret-key-change-this-in-production
 PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3000
+# Optional when the browser reads Payload from another host
+NEXT_PUBLIC_PAYLOAD_SERVER_URL=http://localhost:3000
+# Public site origin used for canonical and social metadata
+NEXT_PUBLIC_SITE_URL=https://crisselstudio.com
 
 # Database Configuration
 DATABASE_URI=mongodb://localhost:27017/crissel-studio
