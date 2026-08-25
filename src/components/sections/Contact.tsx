@@ -5,6 +5,9 @@ import { useState } from 'react'
 import { Mail, MapPin, Instagram, Calendar, MessageCircle, Send, Heart, Star } from 'lucide-react'
 import { SectionHeader } from './SectionHeader'
 
+type FormField = 'name' | 'email' | 'message' | 'subject'
+type FormErrors = Partial<Record<FormField, string>>
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -14,13 +17,33 @@ const Contact = () => {
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [statusMessage, setStatusMessage] = useState('')
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const prefersReducedMotion = useReducedMotion()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const nextErrors: FormErrors = {}
+
+    if (formData.name.trim().length < 1 || formData.name.length > 80) {
+      nextErrors.name = 'Escribe tu nombre (máximo 80 caracteres).'
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      nextErrors.email = 'Escribe un correo electrónico válido.'
+    }
+    if (formData.message.trim().length < 10 || formData.message.length > 2000) {
+      nextErrors.message = 'El mensaje debe tener entre 10 y 2000 caracteres.'
+    }
+
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors)
+      setStatus({ type: 'error', message: 'Revisa los campos marcados para continuar.' })
+      return
+    }
+
+    setErrors({})
     setIsSubmitting(true)
-    setStatusMessage('')
+    setStatus(null)
 
     try {
       const response = await fetch('/api/contact', {
@@ -35,19 +58,25 @@ const Contact = () => {
       }
 
       setFormData({ name: '', email: '', message: '', subject: 'appointment' })
-      setStatusMessage(result.message)
+      setStatus({ type: 'success', message: result.message })
     } catch (error) {
-      setStatusMessage(error instanceof Error ? error.message : 'No pudimos enviar tu mensaje.')
+      setStatus({
+        type: 'error',
+        message: error instanceof Error ? error.message : 'No pudimos enviar tu mensaje.'
+      })
     } finally {
       setIsSubmitting(false)
     }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const field = e.target.name as FormField
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [field]: e.target.value
     })
+    setErrors((currentErrors) => ({ ...currentErrors, [field]: undefined }))
+    setStatus(null)
   }
 
   const socialLinks = [
@@ -221,9 +250,13 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     autoComplete="name"
+                    maxLength={80}
+                    aria-invalid={Boolean(errors.name)}
+                    aria-describedby={errors.name ? 'contact-name-error' : undefined}
                     className="w-full px-4 py-3 rounded-xl border border-pink-100 focus:border-[#E57373] focus:outline-none transition-colors bg-white"
                     placeholder="Tu nombre completo"
                   />
+                  {errors.name && <p id="contact-name-error" className="text-sm text-red-700">{errors.name}</p>}
                 </motion.div>
 
                 <motion.div
@@ -241,9 +274,12 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     autoComplete="email"
+                    aria-invalid={Boolean(errors.email)}
+                    aria-describedby={errors.email ? 'contact-email-error' : undefined}
                     className="w-full px-4 py-3 rounded-xl border border-pink-100 focus:border-[#E57373] focus:outline-none transition-colors bg-white"
                     placeholder="tu@email.com"
                   />
+                  {errors.email && <p id="contact-email-error" className="text-sm text-red-700">{errors.email}</p>}
                 </motion.div>
               </div>
 
@@ -283,9 +319,22 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   rows={5}
+                  maxLength={2000}
+                  aria-invalid={Boolean(errors.message)}
+                  aria-describedby={errors.message ? 'contact-message-error' : undefined}
                   className="w-full px-4 py-3 rounded-xl border border-pink-100 focus:border-[#E57373] focus:outline-none transition-colors bg-white resize-none"
                   placeholder="Cuéntanos sobre el servicio que necesitas o cualquier consulta..."
                 />
+                <div className="flex items-start justify-between gap-4">
+                  {errors.message ? (
+                    <p id="contact-message-error" className="text-sm text-red-700">{errors.message}</p>
+                  ) : (
+                    <span />
+                  )}
+                  <p className="text-right text-xs text-gray-500" aria-live="polite">
+                    {formData.message.length}/2000
+                  </p>
+                </div>
               </motion.div>
 
               <motion.button
@@ -324,9 +373,12 @@ const Contact = () => {
               <div
                 role="status"
                 aria-live="polite"
-                className="min-h-[1.5rem] text-center text-sm font-medium text-[#E57373]"
+                aria-atomic="true"
+                className={`min-h-[1.5rem] text-center text-sm font-medium ${
+                  status?.type === 'success' ? 'text-green-700' : 'text-red-700'
+                }`}
               >
-                {statusMessage}
+                {status?.message}
               </div>
             </motion.form>
           </motion.div>
