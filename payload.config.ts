@@ -16,9 +16,23 @@ import { ContactSubmission } from './src/collections/ContactSubmission'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const payloadSecret =
+  process.env.PAYLOAD_SECRET ||
+  (process.env.NODE_ENV === 'production' ? undefined : 'development-only-secret')
+const databaseUri =
+  process.env.DATABASE_URI ||
+  (process.env.NODE_ENV === 'production' ? undefined : 'mongodb://localhost:27017/crissel-studio')
+
+if (!payloadSecret) {
+  throw new Error('PAYLOAD_SECRET must be set in production.')
+}
+
+if (!databaseUri) {
+  throw new Error('DATABASE_URI must be set in production.')
+}
 
 const configPromise = buildConfig({
-  secret: process.env.PAYLOAD_SECRET || 'your-secret-key-change-this',
+  secret: payloadSecret,
   admin: {
     user: Users.slug,
   },
@@ -41,7 +55,7 @@ const configPromise = buildConfig({
   },
   editor: lexicalEditor(),
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || 'mongodb://localhost:27017/crissel-studio',
+    url: databaseUri,
   }),
   sharp,
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
