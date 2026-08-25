@@ -8,7 +8,7 @@ import { checkRateLimit } from '@/lib/rateLimit'
 const maxRequestBytes = 5_000
 
 function isDuplicateKeyError(error: unknown): boolean {
-  if (error instanceof Error && /E11000|duplicate key|dedupeKey/i.test(error.message)) {
+  if (error instanceof Error && /E11000|duplicate key/i.test(error.message)) {
     return true
   }
 
