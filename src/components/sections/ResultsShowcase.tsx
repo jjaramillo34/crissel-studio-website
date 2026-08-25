@@ -1,6 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion } from 'framer-motion'
+import Image from 'next/image'
 import { SectionHeader } from './SectionHeader'
 // Use public folder paths for images
 const results = [
@@ -53,23 +54,25 @@ const ResultsShowcase = () => {
               className="flex h-full flex-col overflow-hidden rounded-2xl border border-rose-200/70 bg-white shadow-[0_20px_50px_-24px_rgba(229,115,115,0.25)]"
             >
               <div className="grid grid-cols-2">
-                <figure className="relative">
-                  <img
+                <figure className="relative h-48">
+                  <Image
                     src={result.before}
                     alt={`${result.title} antes del servicio`}
-                    className="h-48 w-full object-cover"
-                    loading="lazy"
+                    fill
+                    sizes="(min-width: 1024px) 20vw, 50vw"
+                    className="object-cover"
                   />
                   <span className="absolute left-3 top-3 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
                     Antes
                   </span>
                 </figure>
-                <figure className="relative">
-                  <img
+                <figure className="relative h-48">
+                  <Image
                     src={result.after}
                     alt={`${result.title} después del servicio`}
-                    className="h-48 w-full object-cover"
-                    loading="lazy"
+                    fill
+                    sizes="(min-width: 1024px) 20vw, 50vw"
+                    className="object-cover"
                   />
                   <span className="absolute left-3 top-3 rounded-full bg-[#E57373] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
                     Después
