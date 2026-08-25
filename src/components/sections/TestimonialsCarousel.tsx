@@ -29,6 +29,9 @@ const TestimonialsCarousel = () => {
         setLoading(true)
         // Get featured testimonials first, or all if none are featured
         const response = await payload.getTestimonials({ limit: 10 })
+        if (response.error) {
+          throw new Error('No se pudieron cargar los testimonios')
+        }
         const allTestimonials = response.docs
         
         // Prioritize featured testimonials
@@ -98,7 +101,7 @@ const TestimonialsCarousel = () => {
             description="Cada experiencia se adapta a tus necesidades. Ellas ya lo vivieron y comparten cómo transformó su rutina."
           />
           <div className="text-center py-12">
-            <p className="text-gray-500">
+            <p className="text-gray-500" role={error ? 'alert' : undefined}>
               {error || 'No hay testimonios disponibles en este momento.'}
             </p>
           </div>

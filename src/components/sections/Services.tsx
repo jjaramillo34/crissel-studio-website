@@ -64,6 +64,9 @@ const Services = () => {
         setLoading(true)
         // Get featured services first, or all services if none are featured
         const response = await payload.getServices({ limit: 10 })
+        if (response.error) {
+          throw new Error('No se pudieron cargar los servicios')
+        }
         const allServices = response.docs
         
         // Prioritize featured services, but show all if none are featured
@@ -189,7 +192,7 @@ const Services = () => {
           </div>
         ) : error || services.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">
+            <p className="text-gray-500" role={error ? 'alert' : undefined}>
               {error || 'No hay servicios disponibles en este momento.'}
             </p>
           </div>

@@ -31,6 +31,9 @@ const BlogHighlights = () => {
       try {
         setLoading(true)
         const response = await payload.getBlogs({ limit: 3 })
+        if (response.error) {
+          throw new Error('No se pudieron cargar los artículos del blog')
+        }
         setBlogPosts(response.docs)
         setError(null)
       } catch (err: any) {
@@ -73,9 +76,9 @@ const BlogHighlights = () => {
             title="Consejos para prolongar tu belleza"
             description="Descubre guías rápidas, tendencias y recomendaciones profesionales para que cada servicio se mantenga radiante desde casa."
           />
-          {error && (
-            <p className="text-center text-gray-500">{error}</p>
-          )}
+          <p className="text-center text-gray-500" role={error ? 'alert' : undefined}>
+            {error || 'No hay artículos disponibles en este momento.'}
+          </p>
         </div>
       </section>
     )

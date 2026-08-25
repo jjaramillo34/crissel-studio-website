@@ -32,6 +32,9 @@ const BlogIndexPage = () => {
       try {
         setLoading(true)
         const response = await payload.getBlogs({ limit: 20 })
+        if (response.error) {
+          throw new Error('No se pudieron cargar los artículos del blog')
+        }
         setBlogPosts(response.docs)
         setError(null)
       } catch (err: any) {
@@ -69,7 +72,7 @@ const BlogIndexPage = () => {
           </div>
         ) : error || blogPosts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">
+            <p className="text-gray-500" role={error ? 'alert' : undefined}>
               {error || 'No hay artículos disponibles en este momento.'}
             </p>
           </div>

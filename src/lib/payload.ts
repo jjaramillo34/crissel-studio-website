@@ -9,6 +9,7 @@ export interface PayloadResponse<T> {
   totalDocs: number
   limit: number
   totalPages: number
+  error?: boolean
   page?: number
   pagingCounter?: number
   hasPrevPage?: boolean
@@ -121,6 +122,7 @@ export async function fetchPayload<T = any>(
       limit: 0,
       totalPages: 0,
       page: 1,
+      error: true,
     } as PayloadResponse<T>
   }
 }
@@ -304,4 +306,3 @@ export const payload = {
     }>('gallery', { sort: 'order', ...options })
   },
 }
-

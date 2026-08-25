@@ -28,6 +28,9 @@ const TeamSpotlight = () => {
       try {
         setLoading(true)
         const response = await payload.getTeam({ limit: 10 })
+        if (response.error) {
+          throw new Error('No se pudo cargar el equipo')
+        }
         setTeamMembers(response.docs)
         setError(null)
       } catch (err: any) {
@@ -71,9 +74,9 @@ const TeamSpotlight = () => {
             title="Conoce al equipo certificado de Crissel"
             description="Somos especialistas en mirada, maquillaje y cuidado integral. Cada artista mantiene certificaciones vigentes y actualiza técnicas globales para ofrecerte resultados impecables."
           />
-          {error && (
-            <p className="text-center text-gray-500">No se pudo cargar el equipo. Por favor, inténtalo más tarde.</p>
-          )}
+          <p className="text-center text-gray-500" role={error ? 'alert' : undefined}>
+            {error || 'No hay integrantes del equipo disponibles en este momento.'}
+          </p>
         </div>
       </section>
     )
