@@ -4,10 +4,21 @@ import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { X, Menu, Calendar } from 'lucide-react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
 // Use public folder path for static image
 const logoImage = '/assets/images/logo_photo.png'
+
+const navItems = [
+  { id: 'hero', label: 'Inicio', path: '/' },
+  { id: 'sobre-nosotros', label: 'Sobre Nosotros', path: '/' },
+  { id: 'servicios', label: 'Servicios', path: '/' },
+  { id: 'productos', label: 'Productos', path: '/productos' },
+  { id: 'tienda', label: 'Tienda', path: '/tienda' },
+  { id: 'promos', label: 'Promos', path: '/promos' },
+  { id: 'galeria', label: 'Galería', path: '/' },
+  { id: 'contacto', label: 'Contacto', path: '/' }
+] as const
 
 const Navigation = () => {
   const prefersReducedMotion = useReducedMotion()
@@ -15,17 +26,7 @@ const Navigation = () => {
   const [activeSection, setActiveSection] = useState('hero')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
-
-  const navItems = [
-    { id: 'hero', label: 'Inicio', path: '/' },
-    { id: 'sobre-nosotros', label: 'Sobre Nosotros', path: '/' },
-    { id: 'servicios', label: 'Servicios', path: '/' },
-    { id: 'productos', label: 'Productos', path: '/productos' },
-    { id: 'tienda', label: 'Tienda', path: '/tienda' },
-    { id: 'promos', label: 'Promos', path: '/promos' },
-    { id: 'galeria', label: 'Galería', path: '/' },
-    { id: 'contacto', label: 'Contacto', path: '/' }
-  ]
+  const router = useRouter()
 
   const isStandaloneRoute = (path: string) => path !== '/' && path.startsWith('/')
 
@@ -59,6 +60,19 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isMobileMenuOpen])
+
   const handleNavigation = (item: { id: string; path: string }) => {
     // Validate item properties
     const itemId = String(item?.id || '')
@@ -72,7 +86,7 @@ const Navigation = () => {
     if (pathname !== '/') {
       // If not on home page, navigate to home first
       const targetPath = itemId === 'hero' ? '/' : `/#${itemId}`
-      window.location.href = targetPath
+      router.push(targetPath)
       return
     }
     
@@ -95,6 +109,7 @@ const Navigation = () => {
         animate={{ y: 0 }}
         transition={{ duration: prefersReducedMotion ? 0 : 0.6, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${gradientBackground}`}
+        aria-label="Navegación principal"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-4">
@@ -186,6 +201,8 @@ const Navigation = () => {
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="rounded-xl bg-gradient-to-br from-[#E57373] to-[#d65f7a] p-2 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-300"
                 aria-label={isMobileMenuOpen ? 'Cerrar menú móvil' : 'Abrir menú móvil'}
+                aria-expanded={isMobileMenuOpen}
+                aria-controls="mobile-navigation"
               >
                 {isMobileMenuOpen ? (
                   <X className="h-6 w-6" />
@@ -206,7 +223,10 @@ const Navigation = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
+            id="mobile-navigation"
             className="fixed top-16 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl shadow-lg border-b border-rose-100/80 md:hidden"
+            role="region"
+            aria-label="Menú móvil"
           >
             <div className="px-4 py-6 space-y-4">
               {navItems.map((item, index) => {
@@ -280,6 +300,7 @@ const Navigation = () => {
             exit={{ opacity: 0 }}
             onClick={() => setIsMobileMenuOpen(false)}
             className="fixed inset-0 bg-black/20 z-30 md:hidden"
+            aria-hidden="true"
           />
         )}
       </AnimatePresence>
