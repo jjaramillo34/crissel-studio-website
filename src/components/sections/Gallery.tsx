@@ -86,6 +86,8 @@ const Gallery = () => {
 
   const prefersReducedMotion = useReducedMotion()
   const closeButtonRef = useRef<HTMLButtonElement | null>(null)
+  const dialogRef = useRef<HTMLDivElement | null>(null)
+  const triggerRef = useRef<HTMLElement | null>(null)
 
   const filteredImages = useMemo(() => {
     return activeCategory === 'all'
@@ -102,12 +104,15 @@ const Gallery = () => {
       .replace(/\b\w/g, (char) => char.toUpperCase())
   }, [])
 
-  const openLightbox = useCallback((index: number) => {
+  const openLightbox = useCallback((index: number, trigger?: HTMLElement) => {
+    triggerRef.current = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null)
     setSelected(index)
   }, [])
 
   const closeLightbox = useCallback(() => {
     setSelected(null)
+    triggerRef.current?.focus({ preventScroll: true })
+    triggerRef.current = null
   }, [])
 
   const showPrevious = useCallback(() => {
@@ -143,6 +148,39 @@ const Gallery = () => {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [closeLightbox, selected, showNext, showPrevious])
+
+  useEffect(() => {
+    if (selected === null) return
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    closeButtonRef.current?.focus({ preventScroll: true })
+
+    const handleTabKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab' || !dialogRef.current) return
+
+      const focusableElements = dialogRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+      const firstElement = focusableElements[0]
+      const lastElement = focusableElements[focusableElements.length - 1]
+
+      if (!firstElement || !lastElement) return
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault()
+        lastElement.focus()
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault()
+        firstElement.focus()
+      }
+    }
+
+    window.addEventListener('keydown', handleTabKey)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', handleTabKey)
+    }
+  }, [selected])
 
   useEffect(() => {
     if (selected !== null && selected >= filteredImages.length) {
@@ -292,11 +330,11 @@ const Gallery = () => {
                 role="button"
                 tabIndex={0}
                 aria-label={`${title}. ${category === 'all' ? 'Trabajo destacado' : `Categoría: ${categoryLabel}`}`}
-                onClick={() => openLightbox(index)}
+                onClick={(event) => openLightbox(index, event.currentTarget)}
                 onKeyDown={(event) => {
                   if (event.key === 'Enter' || event.key === ' ') {
                     event.preventDefault()
-                    openLightbox(index)
+                    openLightbox(index, event.currentTarget)
                   }
                 }}
               >
@@ -403,6 +441,7 @@ const Gallery = () => {
         >
           <motion.div
             className="relative max-w-4xl w-full flex flex-col items-center gap-6 rounded-3xl bg-white/5 p-6 backdrop-blur-md"
+            ref={dialogRef}
             onClick={(event) => event.stopPropagation()}
             initial={{ scale: prefersReducedMotion ? 1 : 0.96, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}

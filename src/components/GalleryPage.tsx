@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -86,18 +86,24 @@ const GalleryPage = () => {
   const [selected, setSelected] = useState<number | null>(null)
   const [activeCategory, setActiveCategory] = useState<typeof categories[number]['id']>('all')
   const [isKeyboardNav, setIsKeyboardNav] = useState(false)
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null)
+  const dialogRef = useRef<HTMLDivElement | null>(null)
+  const triggerRef = useRef<HTMLElement | null>(null)
 
   const filteredImages = useMemo(() => {
     if (activeCategory === 'all') return galleryItems
     return galleryItems.filter((item) => item.meta.path === activeCategory)
   }, [activeCategory])
 
-  const openLightbox = useCallback((index: number) => {
+  const openLightbox = useCallback((index: number, trigger?: HTMLElement) => {
+    triggerRef.current = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null)
     setSelected(index)
   }, [])
 
   const closeLightbox = useCallback(() => {
     setSelected(null)
+    triggerRef.current?.focus({ preventScroll: true })
+    triggerRef.current = null
   }, [])
 
   const showPrevious = useCallback(() => {
@@ -132,6 +138,39 @@ const GalleryPage = () => {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [closeLightbox, isKeyboardNav, showNext, showPrevious])
+
+  useEffect(() => {
+    if (selected === null) return
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    closeButtonRef.current?.focus({ preventScroll: true })
+
+    const handleTabKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab' || !dialogRef.current) return
+
+      const focusableElements = dialogRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+      const firstElement = focusableElements[0]
+      const lastElement = focusableElements[focusableElements.length - 1]
+
+      if (!firstElement || !lastElement) return
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault()
+        lastElement.focus()
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault()
+        firstElement.focus()
+      }
+    }
+
+    window.addEventListener('keydown', handleTabKey)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', handleTabKey)
+    }
+  }, [selected])
 
   useEffect(() => {
     if (selected !== null && selected >= filteredImages.length) {
@@ -280,7 +319,7 @@ const GalleryPage = () => {
                 >
                   <button
                     type="button"
-                    onClick={() => openLightbox(index)}
+                    onClick={(event) => openLightbox(index, event.currentTarget)}
                     className="relative block h-full w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
                     aria-label={`Ver imagen ${title}`}
                   >
@@ -321,6 +360,7 @@ const GalleryPage = () => {
               return (
                 <motion.div
                   className="relative flex w-full max-w-4xl flex-col items-center gap-6 rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur-xl"
+                  ref={dialogRef}
                   onClick={(event) => event.stopPropagation()}
                   initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -331,6 +371,7 @@ const GalleryPage = () => {
                 >
                   <motion.button
                     type="button"
+                    ref={closeButtonRef}
                     onClick={closeLightbox}
                     className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-black/45 text-white shadow-lg hover:bg-black/65 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                     whileHover={prefersReducedMotion ? undefined : { rotate: 90 }}
