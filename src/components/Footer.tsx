@@ -22,9 +22,9 @@ const Footer = () => {
 
   const socialLinks = [
     { name: 'Instagram', icon: Instagram, href: 'https://instagram.com/crisselstudio.ec' },
-    { name: 'WhatsApp', icon: MessageCircle, href: 'https://wa.me/593123456789' },
+    { name: 'WhatsApp', icon: MessageCircle, href: 'https://wa.me/593992950683' },
     { name: 'Reservas', icon: Calendar, href: 'https://bit.ly/crisselstudio' },
-    { name: 'Ubicación', icon: MapPin, href: '#contact' }
+    { name: 'Ubicación', icon: MapPin, href: '#contacto' }
   ]
 
   const scrollToTop = () => {
