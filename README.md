@@ -114,6 +114,69 @@ This project uses Payload CMS integrated with Next.js. Access the admin panel at
 
 **Note:** With Next.js integration, everything runs on a single server (port 3000). No need to run separate servers!
 
+## Adding Nail (Uñas) Photos
+
+The nail services launch with placeholders (a hand icon with "Nuevo en Crissel Studio" / "Fotos muy pronto"). Once you have photos, add them in three places. Each placeholder disappears as soon as its image is set.
+
+### 1. Add the image files
+
+Put the photos in `public/assets/gallery/`, named `unas-1.jpg`, `unas-2.jpg`, etc. (lowercase, no spaces or accents, `.jpg` or `.webp`).
+
+- **Size:** about 1600px on the long side, under ~500 KB each. Next.js resizes them for each screen automatically.
+- **Framing:** the homepage treatment crops to a **portrait 4:5**, while the Productos page and Galería crop to a **landscape 4:3**. Keep the nails near the center so both crops work.
+
+### 2. Homepage treatment (`src/components/sections/Treatments.tsx`)
+
+In the `04` / `Uñas` entry, replace the placeholder line (and the comment above it):
+
+```ts
+// No photos yet: drop one in /public/assets/gallery and set `image` to show it
+image: undefined as string | undefined,
+```
+
+with:
+
+```ts
+image: '/assets/gallery/unas-1.jpg',
+```
+
+### 3. Productos page (`src/components/ProductsPage.tsx`)
+
+In the `services` list, find the entry with `id: 'unas'` and add a main image. Optionally, add two smaller images below it:
+
+```ts
+{
+  id: 'unas',
+  title: 'Uñas',
+  // ...
+  mainImage: '/assets/gallery/unas-1.jpg',
+  benefitsImage: '/assets/gallery/unas-2.jpg', // optional
+  detailsImage: '/assets/gallery/unas-3.jpg', // optional, shown next to benefitsImage
+  // ...
+}
+```
+
+### 4. Galería (`src/components/GalleryPage.tsx`)
+
+Add one line per photo to `imageCategories`. The key must match the file name in `public/assets/gallery/`:
+
+```ts
+'unas-1.jpg': { label: 'Uñas', path: 'unas' },
+'unas-2.jpg': { label: 'Uñas', path: 'unas' },
+```
+
+The photos then appear under the **Uñas** filter and in **Todo**, and the "Muy pronto…" message goes away. The lightbox title is generated from the file name (`unas-1.jpg` → "Unas 1").
+
+### 5. Check it
+
+Run `pnpm dev` and check:
+
+- `/` – the "04 Uñas" treatment shows the photo
+- `/productos#unas` – the Uñas service shows the photo(s)
+- `/galeria` – the **Uñas** filter shows the photos, and clicking one opens the lightbox
+
+Then run `pnpm build` before committing.
+
 ## Deployment Notes
 
 - Commit only source files—build output (`dist`) and local environment files (`.env*`) are ignored via `.gitignore`.
