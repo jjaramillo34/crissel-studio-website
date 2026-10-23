@@ -1,18 +1,20 @@
 'use client'
 
-import { useMemo, useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
-import Link from 'next/link'
+import { useState } from 'react'
 import {
-  ArrowLeft,
-  Eye,
-  ShoppingBag,
-  Sparkles,
-  Package,
-  MessageCircle,
-} from 'lucide-react'
+  Background,
+  Button,
+  Column,
+  Grid,
+  Heading,
+  Icon,
+  RevealFx,
+  Row,
+  SegmentedControl,
+  Tag,
+  Text,
+} from '@once-ui-system/core'
 import { SectionHeader } from './sections/SectionHeader'
-import { Seo } from '@/components/Seo'
 
 const WHATSAPP = '593992950683'
 
@@ -87,212 +89,179 @@ const categoryLabels: Record<ShopCategory, string> = {
   otros: 'Más productos',
 }
 
+const categoryIcons: Record<ShopProduct['category'], string> = {
+  pestanas: 'eye',
+  parches: 'sparkle',
+  otros: 'package',
+}
+
 const waLink = (productName: string) => {
   const text = `Hola Crissel Studio 👋 Me interesa: ${productName}. ¿Disponibilidad y precio?`
   return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`
 }
 
-const ShopPage = () => {
-  const prefersReducedMotion = useReducedMotion()
-  const [filter, setFilter] = useState<ShopCategory>('todas')
+const ProductCard = ({ product }: { product: ShopProduct }) => (
+  <Column
+    as="article"
+    fill
+    background="surface"
+    border="neutral-alpha-weak"
+    radius="l"
+    padding="24"
+    gap="12"
+  >
+    <Row horizontal="between" vertical="center" gap="12" wrap>
+      <Row gap="12" vertical="center">
+        <Row center width="48" height="48" radius="m" background="brand-alpha-weak">
+          <Icon name={categoryIcons[product.category]} size="s" onBackground="brand-strong" />
+        </Row>
+        <Tag variant="brand" size="s" label={categoryLabels[product.category]} />
+      </Row>
+      {product.highlight && <Tag variant="accent" size="s" label={product.highlight} />}
+    </Row>
 
-  const filtered = useMemo(() => {
-    if (filter === 'todas') return products
-    return products.filter((p) => p.category === filter)
-  }, [filter])
+    <Heading as="h3" variant="heading-strong-l">
+      {product.name}
+    </Heading>
+    <Text variant="body-strong-s" onBackground="brand-medium">
+      {product.short}
+    </Text>
+    <Column flex={1}>
+      <Text variant="body-default-s" onBackground="neutral-medium">
+        {product.description}
+      </Text>
+    </Column>
+
+    <Button
+      href={waLink(product.name)}
+      variant="secondary"
+      fillWidth
+      prefixIcon="whatsapp"
+      label="Consultar disponibilidad"
+    />
+  </Column>
+)
+
+const ShopPage = () => {
+  const [filter, setFilter] = useState<ShopCategory>('todas')
+  const filtered = filter === 'todas' ? products : products.filter((p) => p.category === filter)
 
   return (
-    <>
-      <Seo
-        title="Tienda Nagaraku | Crissel Studio"
-        description="Compra extensiones de pestañas Nagaraku, parches de hidrogel y accesorios profesionales. Retiro en Ambato o consulta por WhatsApp."
-        type="article"
+    <Column as="main" fillWidth horizontal="center" overflow="hidden">
+      <Background
+        position="absolute"
+        top="0"
+        left="0"
+        fill
+        pointerEvents="none"
+        gradient={{
+          display: true,
+          colorStart: 'brand-alpha-medium',
+          x: 100,
+          y: 0,
+          width: 150,
+          height: 100,
+          opacity: 50,
+        }}
       />
-      <div className="section-brand relative min-h-screen px-4 pb-16 pt-20">
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute -top-20 right-0 h-72 w-72 rounded-full bg-[#F8BBD9]/25 blur-3xl"
-          animate={
-            prefersReducedMotion ? undefined : { opacity: [0.4, 0.65, 0.4], scale: [1, 1.06, 1] }
-          }
-          transition={
-            prefersReducedMotion ? undefined : { duration: 14, repeat: Infinity, ease: 'easeInOut' }
-          }
-        />
-        <div className="relative mx-auto max-w-6xl sm:px-2">
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={
-              prefersReducedMotion ? { duration: 0.4 } : { duration: 0.65, ease: [0.22, 1, 0.36, 1] }
-            }
-            className="mb-12"
-          >
-            <div className="mb-8 flex justify-center sm:justify-start">
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 rounded-2xl border border-rose-200/80 bg-white/90 px-4 py-2.5 text-sm font-medium text-[#c45c5c] shadow-sm backdrop-blur-sm transition-all hover:border-[#E57373]/50 hover:bg-white"
-              >
-                <ArrowLeft className="h-4 w-4 shrink-0" aria-hidden />
-                Volver al inicio
-              </Link>
-            </div>
 
-            <SectionHeader
-              titleAs="h1"
-              titleClassName="text-4xl sm:text-5xl lg:text-[2.75rem] max-w-3xl mx-auto leading-[1.15]"
-              eyebrow="Tienda oficial"
-              title={
-                <>
-                  Productos{' '}
-                  <span className="bg-gradient-to-r from-[#c45c5c] via-[#E57373] to-rose-400 bg-clip-text text-transparent">
-                    Nagaraku
-                  </span>
-                </>
-              }
-              description="Extensiones de pestañas, parches de hidrogel y complementos profesionales de la marca Nagaraku. Compra en el estudio o coordina tu pedido por WhatsApp."
-              align="center"
-              className="mb-0"
-            />
-          </motion.div>
+      <Column
+        zIndex={1}
+        fillWidth
+        maxWidth="l"
+        paddingX="24"
+        paddingTop="104"
+        paddingBottom="80"
+        gap="40"
+      >
+        <Column gap="32" horizontal="center">
+          <Button href="/" variant="tertiary" size="s" prefixIcon="arrowLeft" label="Volver al inicio" />
+          <SectionHeader
+            titleAs="h1"
+            eyebrow="Tienda oficial"
+            title="Productos"
+            titleAccent="Nagaraku"
+            description="Extensiones de pestañas, parches de hidrogel y complementos profesionales de la marca Nagaraku. Compra en el estudio o coordina tu pedido por WhatsApp."
+          />
+        </Column>
 
-          <div className="mb-10 rounded-2xl border border-rose-200/70 bg-white/80 p-6 shadow-sm backdrop-blur-md md:p-8">
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div className="flex items-start gap-3">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#E57373] to-[#F8BBD9] text-white shadow-sm">
-                  <ShoppingBag className="h-6 w-6" aria-hidden />
-                </div>
-                <div>
-                  <p className="font-display text-lg font-semibold text-neutral-900">Calidad profesional</p>
-                  <p className="mt-1 text-sm text-neutral-600 leading-relaxed">
-                    Trabajamos con referencias Nagaraku para nuestros servicios; también puedes llevarte
-                    productos según stock. Precios y formatos te los confirmamos al instante.
-                  </p>
-                </div>
-              </div>
-              <a
-                href={waLink('catálogo Nagaraku')}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-2xl bg-gradient-to-r from-[#E57373] to-[#e8899f] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-rose-200/40 transition-all hover:brightness-105 md:self-center"
-              >
-                <MessageCircle className="h-4 w-4" aria-hidden />
-                Pedir por WhatsApp
-              </a>
-            </div>
-          </div>
+        <Row
+          background="surface"
+          border="neutral-alpha-weak"
+          radius="l"
+          padding="24"
+          gap="24"
+          vertical="center"
+          horizontal="between"
+          s={{ direction: 'column', vertical: 'start' }}
+        >
+          <Row gap="16" vertical="start">
+            <Row center width="48" height="48" radius="l" background="brand-alpha-weak">
+              <Icon name="shoppingBag" onBackground="brand-strong" />
+            </Row>
+            <Column gap="4" flex={1}>
+              <Text variant="heading-strong-m">Calidad profesional</Text>
+              <Text variant="body-default-s" onBackground="neutral-medium">
+                Trabajamos con referencias Nagaraku para nuestros servicios; también puedes llevarte
+                productos según stock. Precios y formatos te los confirmamos al instante.
+              </Text>
+            </Column>
+          </Row>
+          <Button href={waLink('catálogo Nagaraku')} prefixIcon="whatsapp" label="Pedir por WhatsApp" />
+        </Row>
 
-          <div className="mb-10 flex flex-wrap justify-center gap-2">
-            {(Object.keys(categoryLabels) as ShopCategory[]).map((key) => {
-              const active = filter === key
-              return (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => setFilter(key)}
-                  className={`rounded-2xl border-2 px-4 py-2 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373] ${
-                    active
-                      ? 'border-transparent bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white shadow-md shadow-rose-200/35'
-                      : 'border-rose-100 bg-white text-neutral-700 hover:bg-rose-50'
-                  }`}
-                  aria-pressed={active}
-                >
-                  {categoryLabels[key]}
-                </button>
-              )
-            })}
-          </div>
+        <Row horizontal="center">
+          <SegmentedControl
+            fillWidth={false}
+            selected={filter}
+            onToggle={(value) => setFilter(value as ShopCategory)}
+            buttons={(Object.keys(categoryLabels) as ShopCategory[]).map((key) => ({
+              value: key,
+              label: categoryLabels[key],
+            }))}
+          />
+        </Row>
 
-          <ul className="grid gap-6 sm:grid-cols-2">
+        {filtered.length > 0 ? (
+          <Grid columns="2" s={{ columns: 1 }} gap="24">
             {filtered.map((product, index) => (
-              <motion.li
-                key={product.id}
-                initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={
-                  prefersReducedMotion
-                    ? { duration: 0.3 }
-                    : { duration: 0.45, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }
-                }
-                className="flex h-full flex-col rounded-2xl border border-rose-200/70 bg-white/95 p-6 shadow-md shadow-rose-100/20 transition-shadow hover:shadow-lg"
-              >
-                <div className="mb-4 flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-[#E57373] ring-1 ring-rose-100">
-                      {product.category === 'pestanas' ? (
-                        <Eye className="h-5 w-5" aria-hidden />
-                      ) : product.category === 'parches' ? (
-                        <Sparkles className="h-5 w-5" aria-hidden />
-                      ) : (
-                        <Package className="h-5 w-5" aria-hidden />
-                      )}
-                    </span>
-                    <span className="rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#c45c5c]">
-                      {categoryLabels[product.category]}
-                    </span>
-                  </div>
-                  {product.highlight ? (
-                    <span className="shrink-0 rounded-full bg-gradient-to-r from-[#E57373]/15 to-[#F8BBD9]/30 px-3 py-1 text-xs font-semibold text-[#b85c5c]">
-                      {product.highlight}
-                    </span>
-                  ) : null}
-                </div>
-                <h3 className="font-display text-xl font-semibold tracking-tight text-neutral-900">
-                  {product.name}
-                </h3>
-                <p className="mt-2 text-sm font-medium text-[#c45c5c]">{product.short}</p>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-neutral-600">{product.description}</p>
-                <a
-                  href={waLink(product.name)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-[#E57373] bg-white py-3 text-sm font-semibold text-[#c45c5c] transition-all hover:bg-gradient-to-r hover:from-[#E57373] hover:to-[#F8BBD9] hover:text-white hover:border-transparent"
-                >
-                  <MessageCircle className="h-4 w-4" aria-hidden />
-                  Consultar disponibilidad
-                </a>
-              </motion.li>
+              <RevealFx key={product.id} delay={index * 0.05} translateY="8" fill>
+                <ProductCard product={product} />
+              </RevealFx>
             ))}
-          </ul>
+          </Grid>
+        ) : (
+          <Text align="center" onBackground="neutral-medium" paddingY="48">
+            No hay productos en esta categoría por ahora.
+          </Text>
+        )}
 
-          {filtered.length === 0 ? (
-            <p className="py-12 text-center text-neutral-600">No hay productos en esta categoría por ahora.</p>
-          ) : null}
-
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mt-14 rounded-2xl border border-rose-200/80 bg-gradient-to-br from-[#E57373]/10 via-white to-[#F8BBD9]/25 p-8 text-center shadow-sm"
-          >
-            <h2 className="font-display text-2xl font-semibold text-neutral-900 sm:text-3xl">
+        <Column
+          background="surface"
+          border="neutral-alpha-weak"
+          radius="xl"
+          padding="40"
+          s={{ padding: '24' }}
+          gap="24"
+          horizontal="center"
+          marginTop="24"
+        >
+          <Column gap="12" horizontal="center" maxWidth="s">
+            <Heading as="h2" variant="display-strong-xs" align="center">
               ¿Prefieres ver todo en persona?
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-neutral-600">
-              Pasa por Crissel Studio en Ambato o escríbenos para reservar retiro o envío según disponibilidad.
-            </p>
-            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link
-                href="/productos"
-                className="inline-flex rounded-2xl border-2 border-[#E57373] bg-white/90 px-6 py-3 text-sm font-semibold text-[#c45c5c] transition-colors hover:bg-rose-50"
-              >
-                Ver servicios y tarifas
-              </Link>
-              <a
-                href="https://bit.ly/crisselstudio"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex rounded-2xl bg-gradient-to-r from-[#E57373] to-[#F8BBD9] px-6 py-3 text-sm font-semibold text-white shadow-md shadow-rose-200/40 transition-all hover:brightness-105"
-              >
-                Reservar cita
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </>
+            </Heading>
+            <Text variant="body-default-m" onBackground="neutral-medium" align="center">
+              Pasa por Crissel Studio en Ambato o escríbenos para reservar retiro o envío según
+              disponibilidad.
+            </Text>
+          </Column>
+          <Row gap="12" s={{ direction: 'column', fillWidth: true }} horizontal="center">
+            <Button href="/productos" variant="secondary" label="Ver servicios y tarifas" />
+            <Button href="https://bit.ly/crisselstudio" prefixIcon="calendar" label="Reservar cita" />
+          </Row>
+        </Column>
+      </Column>
+    </Column>
   )
 }
 

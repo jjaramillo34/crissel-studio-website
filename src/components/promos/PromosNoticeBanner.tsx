@@ -1,57 +1,52 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
-import { Crown, Ticket, Wand2 } from 'lucide-react'
+import { Column, Icon, Line, Row, Text } from '@once-ui-system/core'
 import { COUPON_FCFS_LIMIT, SORTEO_COPY_BANNER } from '@/data/raffle'
 
+const NoticeIcon = ({ name, tone }: { name: string; tone: 'accent' | 'brand' }) => (
+  <Row center width="56" height="56" radius="l" solid={`${tone}-strong`} style={{ flexShrink: 0 }}>
+    <Icon name={name} size="l" onSolid={`${tone}-strong`} />
+  </Row>
+)
+
 export function PromosNoticeBanner() {
-  const prefersReducedMotion = useReducedMotion()
-
   return (
-    <motion.div
-      initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="mb-10 overflow-hidden rounded-3xl border border-amber-200/70 bg-gradient-to-r from-amber-50/95 via-white to-rose-50/90 p-1 shadow-lg shadow-amber-100/40"
+    <Row
+      fillWidth
+      background="surface"
+      border="accent-alpha-medium"
+      radius="xl"
+      padding="32"
+      gap="40"
+      m={{ direction: 'column', gap: '24' }}
+      s={{ padding: '20' }}
     >
-      <div className="relative rounded-[1.4rem] bg-white/60 px-5 py-6 sm:px-8 sm:py-7">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-8 top-0 h-32 w-32 rounded-full bg-gradient-to-br from-amber-200/40 to-transparent blur-2xl"
-        />
-        <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
-          <div className="flex flex-1 gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-md shadow-amber-300/50">
-              <Ticket className="h-7 w-7" aria-hidden />
-            </div>
-            <div>
-              <p className="font-display text-lg font-bold text-amber-950 sm:text-xl">
-                Solo {COUPON_FCFS_LIMIT} cupones promo — orden de llegada
-              </p>
-              <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-neutral-700">
-                Estamos entregando <strong>{COUPON_FCFS_LIMIT} cupones</strong> para las{' '}
-                <strong>primeras {COUPON_FCFS_LIMIT} personas</strong> que reserven durante esta
-                campaña. <span className="whitespace-nowrap">Primero en llegar, primero en servirse.</span>
-              </p>
-            </div>
-          </div>
+      <Row flex={1} gap="16">
+        <NoticeIcon name="ticket" tone="accent" />
+        <Column gap="8">
+          <Text variant="heading-strong-l">Solo {COUPON_FCFS_LIMIT} cupones promo — orden de llegada</Text>
+          <Text variant="body-default-s" onBackground="neutral-medium">
+            Estamos entregando <strong>{COUPON_FCFS_LIMIT} cupones</strong> para las{' '}
+            <strong>primeras {COUPON_FCFS_LIMIT} personas</strong> que reserven durante esta campaña.
+            Primero en llegar, primero en servirse.
+          </Text>
+        </Column>
+      </Row>
 
-          <div className="flex flex-1 gap-4 border-t border-amber-100/90 pt-6 lg:border-l lg:border-t-0 lg:pt-0 lg:pl-10">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#E57373] to-rose-400 text-white shadow-md shadow-rose-200/50">
-              <Wand2 className="h-7 w-7" aria-hidden />
-            </div>
-            <div>
-              <p className="flex items-center gap-2 font-display text-lg font-bold text-neutral-900 sm:text-xl">
-                <Crown className="h-5 w-5 shrink-0 text-amber-600" aria-hidden />
-                Sorteo: maquillaje
-              </p>
-              <p className="mt-1.5 text-sm leading-relaxed text-neutral-700">
-                Participa con tu número abajo. {SORTEO_COPY_BANNER}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </motion.div>
+      <Line vert background="accent-alpha-medium" m={{ hide: true }} />
+
+      <Row flex={1} gap="16">
+        <NoticeIcon name="wand" tone="brand" />
+        <Column gap="8">
+          <Row gap="8" vertical="center">
+            <Icon name="crown" size="s" onBackground="accent-strong" />
+            <Text variant="heading-strong-l">Sorteo: maquillaje</Text>
+          </Row>
+          <Text variant="body-default-s" onBackground="neutral-medium">
+            Participa con tu número abajo. {SORTEO_COPY_BANNER}
+          </Text>
+        </Column>
+      </Row>
+    </Row>
   )
 }

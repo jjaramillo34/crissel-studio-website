@@ -1,127 +1,91 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
-import Link from 'next/link'
-import Image from 'next/image'
-import { ArrowLeft, Eye, Heart, Sparkles, Crown, X } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
+import {
+  Background,
+  Button,
+  Column,
+  Dialog,
+  Grid,
+  Icon,
+  Media,
+  RevealFx,
+  Row,
+  SegmentedControl,
+  Text,
+} from '@once-ui-system/core'
 import { SectionHeader } from './sections/SectionHeader'
-import { Seo } from '@/components/Seo'
 
-// Use public folder paths for gallery images
-const gallerySourceMap: Record<string, string> = {
-  'extensiones-pestanas-1.jpg': '/assets/gallery/extensiones-pestanas-1.jpg',
-  'extensiones-pestanas-2.jpg': '/assets/gallery/extensiones-pestanas-2.jpg',
-  'extensiones-pestanas-3.jpg': '/assets/gallery/extensiones-pestanas-3.jpg',
-  'extensiones-pestanas-4.jpg': '/assets/gallery/extensiones-pestanas-4.jpg',
-  'maquillaje-fantasia-1.jpg': '/assets/gallery/maquillaje-fantasia-1.jpg',
-  'maquillaje-fantasia-2.jpg': '/assets/gallery/maquillaje-fantasia-2.jpg',
-  'maquillaje-fantasia-3.jpg': '/assets/gallery/maquillaje-fantasia-3.jpg',
-  'maquillaje-fantasia-4.jpg': '/assets/gallery/maquillaje-fantasia-4.jpg',
-  'maquillaje-fantasia-5.jpg': '/assets/gallery/maquillaje-fantasia-5.jpg',
-  'maquillaje-fantasia-6.jpg': '/assets/gallery/maquillaje-fantasia-6.jpg',
-  'maquillaje-fantasia-7.jpg': '/assets/gallery/maquillaje-fantasia-7.jpg',
-  'maquillaje-fantasia-8.jpg': '/assets/gallery/maquillaje-fantasia-8.jpg',
-  'maquillaje-fantasia-9.jpg': '/assets/gallery/maquillaje-fantasia-9.jpg',
-  'maquillaje-fantasia-10.jpg': '/assets/gallery/maquillaje-fantasia-10.jpg',
-  'maquillaje-fantasia-11.jpg': '/assets/gallery/maquillaje-fantasia-11.jpg',
-  'maquillaje-social-1.jpg': '/assets/gallery/maquillaje-social-1.jpg',
-  'microblading-cejas-1.jpg': '/assets/gallery/microblading-cejas-1.jpg',
-  'microblading-cejas-2.jpg': '/assets/gallery/microblading-cejas-2.jpg',
-  'planchado-cejas-1.jpg': '/assets/gallery/planchado-cejas-1.jpg',
-  'planchado-cejas-2.jpg': '/assets/gallery/planchado-cejas-2.jpg',
+type GalleryCategory = 'extensiones' | 'cejas' | 'maquillaje' | 'unas'
+
+const imageCategories: Record<string, { label: string; path: GalleryCategory }> = {
+  'extensiones-pestanas-1.jpg': { label: 'Extensión de pestañas', path: 'extensiones' },
+  'extensiones-pestanas-2.jpg': { label: 'Extensión de pestañas', path: 'extensiones' },
+  'extensiones-pestanas-3.jpg': { label: 'Extensión de pestañas', path: 'extensiones' },
+  'extensiones-pestanas-4.jpg': { label: 'Extensión de pestañas', path: 'extensiones' },
+  'maquillaje-fantasia-1.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje' },
+  'maquillaje-fantasia-2.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje' },
+  'maquillaje-fantasia-3.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje' },
+  'maquillaje-fantasia-4.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje' },
+  'maquillaje-fantasia-5.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje' },
+  'maquillaje-fantasia-6.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje' },
+  'maquillaje-fantasia-7.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje' },
+  'maquillaje-fantasia-8.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje' },
+  'maquillaje-fantasia-9.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje' },
+  'maquillaje-fantasia-10.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje' },
+  'maquillaje-fantasia-11.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje' },
+  'maquillaje-social-1.jpg': { label: 'Maquillaje social', path: 'maquillaje' },
+  'microblading-cejas-1.jpg': { label: 'Microblading de cejas', path: 'cejas' },
+  'microblading-cejas-2.jpg': { label: 'Microblading de cejas', path: 'cejas' },
+  'planchado-cejas-1.jpg': { label: 'Planchado de cejas', path: 'cejas' },
+  'planchado-cejas-2.jpg': { label: 'Planchado de cejas', path: 'cejas' },
 }
 
-type GalleryCategory = 'extensiones' | 'cejas' | 'maquillaje'
+type CategoryFilter = 'all' | GalleryCategory
 
-const imageCategories: Record<string, { label: string; path: GalleryCategory; accent: string }> = {
-  'extensiones-pestanas-1.jpg': { label: 'Extensión de pestañas', path: 'extensiones', accent: 'from-[#E57373] to-[#F8BBD9]' },
-  'extensiones-pestanas-2.jpg': { label: 'Extensión de pestañas', path: 'extensiones', accent: 'from-[#E57373] to-[#F8BBD9]' },
-  'extensiones-pestanas-3.jpg': { label: 'Extensión de pestañas', path: 'extensiones', accent: 'from-[#E57373] to-[#F8BBD9]' },
-  'extensiones-pestanas-4.jpg': { label: 'Extensión de pestañas', path: 'extensiones', accent: 'from-[#E57373] to-[#F8BBD9]' },
-  'maquillaje-fantasia-1.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje', accent: 'from-[#F8BBD9] to-[#FDECF6]' },
-  'maquillaje-fantasia-2.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje', accent: 'from-[#F8BBD9] to-[#FDECF6]' },
-  'maquillaje-fantasia-3.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje', accent: 'from-[#F8BBD9] to-[#FDECF6]' },
-  'maquillaje-fantasia-4.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje', accent: 'from-[#F8BBD9] to-[#FDECF6]' },
-  'maquillaje-fantasia-5.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje', accent: 'from-[#F8BBD9] to-[#FDECF6]' },
-  'maquillaje-fantasia-6.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje', accent: 'from-[#F8BBD9] to-[#FDECF6]' },
-  'maquillaje-fantasia-7.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje', accent: 'from-[#F8BBD9] to-[#FDECF6]' },
-  'maquillaje-fantasia-8.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje', accent: 'from-[#F8BBD9] to-[#FDECF6]' },
-  'maquillaje-fantasia-9.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje', accent: 'from-[#F8BBD9] to-[#FDECF6]' },
-  'maquillaje-fantasia-10.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje', accent: 'from-[#F8BBD9] to-[#FDECF6]' },
-  'maquillaje-fantasia-11.jpg': { label: 'Maquillaje de fantasía', path: 'maquillaje', accent: 'from-[#F8BBD9] to-[#FDECF6]' },
-  'maquillaje-social-1.jpg': { label: 'Maquillaje social', path: 'maquillaje', accent: 'from-[#F8BBD9] to-[#FDECF6]' },
-  'microblading-cejas-1.jpg': { label: 'Microblading de cejas', path: 'cejas', accent: 'from-[#FDECF6] to-[#F8BBD9]' },
-  'microblading-cejas-2.jpg': { label: 'Microblading de cejas', path: 'cejas', accent: 'from-[#FDECF6] to-[#F8BBD9]' },
-  'planchado-cejas-1.jpg': { label: 'Planchado de cejas', path: 'cejas', accent: 'from-[#FDECF6] to-[#F8BBD9]' },
-  'planchado-cejas-2.jpg': { label: 'Planchado de cejas', path: 'cejas', accent: 'from-[#FDECF6] to-[#F8BBD9]' }
-}
-
-const categories = [
-  { id: 'all', label: 'Todo', icon: Sparkles },
-  { id: 'extensiones', label: 'Extensiones de Pestañas', icon: Eye },
-  { id: 'cejas', label: 'Diseño de Cejas', icon: Crown },
-  { id: 'maquillaje', label: 'Maquillaje', icon: Heart },
-] as const
-
-const galleryItems = Object.entries(imageCategories)
-  .map(([name, meta]) => {
-    const src = gallerySourceMap[name]
-    if (!src) return null
-    return { name, src, meta }
-  })
-  .filter((item): item is { name: string; src: string; meta: (typeof imageCategories)[string] } => item !== null)
-
-const categoryIconMap = {
-  extensiones: Eye,
-  cejas: Crown,
-  maquillaje: Heart,
-} as const
+const categories: { id: CategoryFilter; label: string; icon: string }[] = [
+  { id: 'all', label: 'Todo', icon: 'sparkle' },
+  { id: 'extensiones', label: 'Extensiones de Pestañas', icon: 'eye' },
+  { id: 'cejas', label: 'Diseño de Cejas', icon: 'crown' },
+  { id: 'maquillaje', label: 'Maquillaje', icon: 'heart' },
+  { id: 'unas', label: 'Uñas', icon: 'nails' },
+]
 
 const formatTitle = (name: string) =>
   name.replace(/[-_]/g, ' ').replace(/\..+$/, '').replace(/\b\w/g, (char) => char.toUpperCase())
 
+const galleryItems = Object.entries(imageCategories).map(([name, meta]) => ({
+  name,
+  src: `/assets/gallery/${name}`,
+  title: formatTitle(name),
+  meta,
+}))
+
 const GalleryPage = () => {
-  const prefersReducedMotion = useReducedMotion()
   const [selected, setSelected] = useState<number | null>(null)
-  const [activeCategory, setActiveCategory] = useState<typeof categories[number]['id']>('all')
-  const [isKeyboardNav, setIsKeyboardNav] = useState(false)
-  const closeButtonRef = useRef<HTMLButtonElement | null>(null)
-  const dialogRef = useRef<HTMLDivElement | null>(null)
-  const triggerRef = useRef<HTMLElement | null>(null)
+  const [activeCategory, setActiveCategory] = useState<CategoryFilter>('all')
 
-  const filteredImages = useMemo(() => {
-    if (activeCategory === 'all') return galleryItems
-    return galleryItems.filter((item) => item.meta.path === activeCategory)
-  }, [activeCategory])
+  const filteredImages =
+    activeCategory === 'all'
+      ? galleryItems
+      : galleryItems.filter((item) => item.meta.path === activeCategory)
 
-  const openLightbox = useCallback((index: number, trigger?: HTMLElement) => {
-    triggerRef.current = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null)
-    setSelected(index)
-  }, [])
-
-  const closeLightbox = useCallback(() => {
-    setSelected(null)
-    triggerRef.current?.focus({ preventScroll: true })
-    triggerRef.current = null
-  }, [])
+  const activeIcon = categories.find((c) => c.id === activeCategory)?.icon ?? 'sparkle'
+  const current = selected !== null ? filteredImages[selected] : undefined
+  const isFirst = selected === 0
+  const isLast = selected === filteredImages.length - 1
 
   const showPrevious = useCallback(() => {
-    setSelected((prev) => {
-      if (prev === null) return prev
-      return prev > 0 ? prev - 1 : prev
-    })
+    setSelected((prev) => (prev !== null && prev > 0 ? prev - 1 : prev))
   }, [])
 
   const showNext = useCallback(() => {
-    setSelected((prev) => {
-      if (prev === null) return prev
-      return prev < filteredImages.length - 1 ? prev + 1 : prev
-    })
+    setSelected((prev) => (prev !== null && prev < filteredImages.length - 1 ? prev + 1 : prev))
   }, [filteredImages.length])
 
+  // Dialog handles Escape, focus trap, scroll lock and focus restore; add arrow-key paging.
   useEffect(() => {
-    if (!isKeyboardNav) return
+    if (selected === null) return
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowLeft') {
         event.preventDefault()
@@ -129,311 +93,161 @@ const GalleryPage = () => {
       } else if (event.key === 'ArrowRight') {
         event.preventDefault()
         showNext()
-      } else if (event.key === 'Escape') {
-        event.preventDefault()
-        closeLightbox()
       }
     }
-
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [closeLightbox, isKeyboardNav, showNext, showPrevious])
-
-  useEffect(() => {
-    if (selected === null) return
-
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    closeButtonRef.current?.focus({ preventScroll: true })
-
-    const handleTabKey = (event: KeyboardEvent) => {
-      if (event.key !== 'Tab' || !dialogRef.current) return
-
-      const focusableElements = dialogRef.current.querySelectorAll<HTMLElement>(
-        'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      )
-      const firstElement = focusableElements[0]
-      const lastElement = focusableElements[focusableElements.length - 1]
-
-      if (!firstElement || !lastElement) return
-      if (event.shiftKey && document.activeElement === firstElement) {
-        event.preventDefault()
-        lastElement.focus()
-      } else if (!event.shiftKey && document.activeElement === lastElement) {
-        event.preventDefault()
-        firstElement.focus()
-      }
-    }
-
-    window.addEventListener('keydown', handleTabKey)
-    return () => {
-      document.body.style.overflow = previousOverflow
-      window.removeEventListener('keydown', handleTabKey)
-    }
-  }, [selected])
-
-  useEffect(() => {
-    if (selected !== null && selected >= filteredImages.length) {
-      setSelected(filteredImages.length ? filteredImages.length - 1 : null)
-    }
-  }, [filteredImages.length, selected])
-
-  useEffect(() => {
-    if (selected !== null) {
-      setIsKeyboardNav(true)
-    }
-  }, [selected])
+  }, [selected, showNext, showPrevious])
 
   return (
-    <>
-      <Seo
-        title="Galería Crissel Studio"
-        description="Inspírate con nuestros antes y después en extensiones, cejas y maquillaje. Filtra por categoría y conoce el trabajo de nuestras especialistas."
+    <Column as="main" fillWidth horizontal="center" overflow="hidden">
+      <Background
+        position="absolute"
+        top="0"
+        left="0"
+        fill
+        pointerEvents="none"
+        gradient={{
+          display: true,
+          colorStart: 'brand-alpha-medium',
+          x: 0,
+          y: 0,
+          width: 150,
+          height: 100,
+          opacity: 50,
+        }}
       />
-      <motion.section
-        className="section-brand relative min-h-screen overflow-hidden px-4 pb-16 pt-20"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
+
+      <Column
+        zIndex={1}
+        fillWidth
+        maxWidth="l"
+        paddingX="24"
+        paddingTop="104"
+        paddingBottom="80"
+        gap="40"
       >
-        <motion.div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-24 -left-16 h-72 w-72 rounded-full bg-[#E57373]/20 blur-3xl"
-          animate={
-            prefersReducedMotion
-              ? { opacity: 0.35 }
-              : { opacity: [0.25, 0.6, 0.25], scale: [1, 1.1, 1] }
-          }
-          transition={
-            prefersReducedMotion
-              ? undefined
-              : { duration: 14, repeat: Infinity, ease: 'easeInOut' }
-          }
-        />
-        <motion.div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-32 right-10 h-64 w-64 rounded-full bg-[#F8BBD9]/20 blur-3xl"
-          animate={
-            prefersReducedMotion
-              ? { opacity: 0.35 }
-              : { opacity: [0.3, 0.5, 0.3], scale: [0.95, 1.08, 0.95] }
-          }
-          transition={
-            prefersReducedMotion
-              ? undefined
-              : { duration: 16, repeat: Infinity, ease: 'easeInOut', delay: 2 }
-          }
-        />
+        <Column gap="32" horizontal="center">
+          <Button href="/" variant="tertiary" size="s" prefixIcon="arrowLeft" label="Volver al inicio" />
+          <SectionHeader
+            titleAs="h1"
+            eyebrow="Inspiración"
+            title="Galería de"
+            titleAccent="belleza"
+            description="Transformaciones reales: extensiones de pestañas, diseño de cejas y maquillaje. Filtra por categoría y ve el trabajo del estudio en Ambato."
+          />
+        </Column>
 
-        <div className="relative mx-auto max-w-6xl sm:px-2">
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={prefersReducedMotion ? { duration: 0.5 } : { duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-12"
-          >
-            <div className="mb-8 flex justify-center sm:justify-start">
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 rounded-2xl border border-rose-200/80 bg-white/90 px-4 py-2.5 text-sm font-medium text-[#c45c5c] shadow-sm backdrop-blur-sm transition-all hover:border-[#E57373]/50 hover:bg-white"
-              >
-                <ArrowLeft className="h-4 w-4 shrink-0" aria-hidden />
-                Volver al inicio
-              </Link>
-            </div>
-            <SectionHeader
-              titleAs="h1"
-              titleClassName="text-4xl sm:text-5xl lg:text-[2.75rem] max-w-3xl mx-auto leading-[1.15]"
-              eyebrow="Inspiración"
-              title={
-                <>
-                  Galería de{' '}
-                  <span className="bg-gradient-to-r from-[#c45c5c] via-[#E57373] to-rose-400 bg-clip-text text-transparent">
-                    belleza
-                  </span>
-                </>
-              }
-              description="Transformaciones reales: extensiones de pestañas, diseño de cejas y maquillaje. Filtra por categoría y ve el trabajo del estudio en Ambato."
-              align="center"
-              className="mb-0"
-            />
-          </motion.div>
-
-          <div className="mb-10 flex flex-wrap justify-center gap-3">
-            {categories.map((category) => {
-              const isActive = category.id === activeCategory
-              const Icon = category.icon
-              return (
-                <motion.button
-                  key={category.id}
-                  type="button"
-                  onClick={() => setActiveCategory(category.id)}
-                  whileHover={prefersReducedMotion ? undefined : { y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`inline-flex items-center gap-2 rounded-2xl border-2 px-5 py-2.5 text-sm font-semibold transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
-                    isActive
-                      ? 'border-transparent bg-gradient-to-r from-[#E57373] to-[#F8BBD9] text-white shadow-md shadow-rose-200/40 focus-visible:outline-[#E57373]'
-                      : 'border-rose-100 bg-white text-neutral-700 hover:bg-rose-50 focus-visible:outline-[#F8BBD9]'
-                  }`}
-                  aria-pressed={isActive}
-                >
-                  <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-                  {category.label}
-                </motion.button>
-              )
-            })}
-          </div>
-
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 20 }) },
-              visible: {
-                opacity: 1,
-                ...(prefersReducedMotion ? {} : { y: 0 }),
-                transition: prefersReducedMotion
-                  ? { duration: 0.4 }
-                  : { duration: 0.4, staggerChildren: 0.05, ease: 'easeOut' }
-              }
+        <Row horizontal="center">
+          <SegmentedControl
+            fillWidth={false}
+            selected={activeCategory}
+            onToggle={(value) => {
+              setActiveCategory(value as CategoryFilter)
+              setSelected(null)
             }}
-            className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4"
+            buttons={categories.map((category) => ({
+              value: category.id,
+              label: category.label,
+              prefixIcon: category.icon,
+            }))}
+          />
+        </Row>
+
+        {filteredImages.length === 0 ? (
+          <Column
+            fillWidth
+            center
+            gap="12"
+            paddingY="64"
+            radius="l"
+            background="brand-alpha-weak"
+            border="brand-alpha-medium"
           >
-            {filteredImages.map((item, index) => {
-              const { name, src, meta } = item
-              const title = formatTitle(name)
-              const categoryLabel = meta.label
-              const ServiceIcon = categoryIconMap[meta.path] ?? Sparkles
-              return (
-                <motion.article
-                  key={name}
-                  variants={{
-                    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { scale: 0.96 }) },
-                    visible: {
-                      opacity: 1,
-                      ...(prefersReducedMotion ? {} : { scale: 1 }),
-                      transition: prefersReducedMotion ? { duration: 0.3 } : { duration: 0.35, ease: 'easeOut' }
-                    }
-                  }}
-                  className="group relative overflow-hidden rounded-2xl border border-rose-200/60 bg-white shadow-md shadow-rose-100/20 transition-all duration-300 hover:border-rose-200 hover:shadow-lg"
+            <Icon name={activeIcon} size="xl" onBackground="brand-medium" />
+            <Text variant="body-default-m" onBackground="neutral-medium" align="center">
+              {activeCategory === 'unas'
+                ? 'Muy pronto compartiremos fotos de nuestros trabajos de uñas.'
+                : 'No hay fotos en esta categoría por ahora.'}
+            </Text>
+          </Column>
+        ) : (
+          <Grid columns="4" m={{ columns: 3 }} s={{ columns: 2 }} gap="16">
+            {filteredImages.map((item, index) => (
+              <RevealFx key={item.name} delay={Math.min(index, 8) * 0.05} translateY="8" fill>
+                <Column
+                  as="button"
+                  fillWidth
+                  className="crissel-gallery-thumb"
+                  onClick={() => setSelected(index)}
+                  aria-label={`Ver imagen ${item.title}`}
                 >
-                  <button
-                    type="button"
-                    onClick={(event) => openLightbox(index, event.currentTarget)}
-                    className="relative block h-full w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57373]"
-                    aria-label={`Ver imagen ${title}`}
-                  >
-                    <Image
-                      src={src}
-                      alt={title}
-                      width={600}
-                      height={400}
-                      className="h-40 w-full object-cover transition-transform duration-300 sm:h-48 md:h-56 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-3 text-left text-white">
-                      <p className="text-sm font-semibold">{categoryLabel}</p>
-                      <span className="text-xs text-white/70">Crissel Studio</span>
-                    </div>
-                    <span
-                      className="pointer-events-none absolute left-3 top-3 inline-flex items-center gap-2 rounded-full bg-white/85 px-3 py-1 text-xs font-medium text-gray-700 shadow-sm backdrop-blur transition-opacity duration-300 group-hover:opacity-0"
-                    >
-                      <span className={`block h-2 w-2 rounded-full bg-gradient-to-r ${meta.accent}`} />
-                      {categoryLabel}
-                    </span>
-                  </button>
-                </motion.article>
-              )
-            })}
-          </motion.div>
-        </div>
-
-        {selected !== null && filteredImages[selected] && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            onClick={closeLightbox}
-          >
-            {(() => {
-              const currentItem = filteredImages[selected]
-              const title = formatTitle(currentItem.name)
-              return (
-                <motion.div
-                  className="relative flex w-full max-w-4xl flex-col items-center gap-6 rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur-xl"
-                  ref={dialogRef}
-                  onClick={(event) => event.stopPropagation()}
-                  initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={prefersReducedMotion ? { duration: 0.3 } : { duration: 0.4, ease: 'easeOut' }}
-                  role="dialog"
-                  aria-modal="true"
-                  aria-label={`Imagen ${title}`}
-                >
-                  <motion.button
-                    type="button"
-                    ref={closeButtonRef}
-                    onClick={closeLightbox}
-                    className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-black/45 text-white shadow-lg hover:bg-black/65 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                    whileHover={prefersReducedMotion ? undefined : { rotate: 90 }}
-                    whileTap={{ scale: 0.95 }}
-                    aria-label="Cerrar galería ampliada"
-                  >
-                    <X className="h-5 w-5" />
-                  </motion.button>
-
-                  <figure className="flex w-full flex-col items-center gap-4">
-                    <Image
-                      src={currentItem.src}
-                      alt={title}
-                      width={1600}
-                      height={1200}
-                      className="max-h-[70vh] w-auto rounded-2xl object-contain shadow-2xl"
-                    />
-                    <figcaption className="text-center text-white">
-                      <p className="text-lg font-semibold">{title}</p>
-                      <p className="text-sm text-white/80">
-                        {selected + 1} / {filteredImages.length} &nbsp;•&nbsp; Crissel Studio
-                      </p>
-                    </figcaption>
-                  </figure>
-
-                  <div className="flex flex-wrap items-center justify-center gap-3">
-                    <motion.button
-                      type="button"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        showPrevious()
-                      }}
-                      disabled={selected === 0}
-                      className="inline-flex items-center gap-2 rounded-2xl border border-white/40 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-40"
-                      whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      aria-label="Ver imagen anterior"
-                    >
-                      Anterior
-                    </motion.button>
-                    <motion.button
-                      type="button"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        showNext()
-                      }}
-                      disabled={selected === filteredImages.length - 1}
-                      className="inline-flex items-center gap-2 rounded-2xl border border-white/40 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-40"
-                      whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      aria-label="Ver imagen siguiente"
-                    >
-                      Siguiente
-                    </motion.button>
-                  </div>
-                </motion.div>
-              )
-            })()}
-          </motion.div>
+                  <Media
+                    src={item.src}
+                    alt={item.title}
+                    aspectRatio="4 / 3"
+                    radius="l"
+                    border="neutral-alpha-weak"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                  <Column className="crissel-gallery-thumb__caption" gap="2" padding="12">
+                    <Text variant="body-strong-s" onSolid="neutral-strong">
+                      {item.meta.label}
+                    </Text>
+                    <Text variant="body-default-xs" onSolid="neutral-weak">
+                      Crissel Studio
+                    </Text>
+                  </Column>
+                </Column>
+              </RevealFx>
+            ))}
+          </Grid>
         )}
-      </motion.section>
-    </>
+      </Column>
+
+      <Dialog
+        isOpen={current !== undefined}
+        onClose={() => setSelected(null)}
+        title={current?.title ?? ''}
+        description={
+          current ? `${(selected ?? 0) + 1} / ${filteredImages.length} · ${current.meta.label}` : undefined
+        }
+        maxWidth={56}
+        footer={
+          <Row fillWidth horizontal="between" gap="8">
+            <Button
+              variant="secondary"
+              prefixIcon="chevronLeft"
+              label="Anterior"
+              onClick={showPrevious}
+              disabled={isFirst}
+              aria-label="Ver imagen anterior"
+            />
+            <Button
+              variant="secondary"
+              suffixIcon="chevronRight"
+              label="Siguiente"
+              onClick={showNext}
+              disabled={isLast}
+              aria-label="Ver imagen siguiente"
+            />
+          </Row>
+        }
+      >
+        {current && (
+          <Media
+            key={current.src}
+            src={current.src}
+            alt={current.title}
+            aspectRatio="4 / 3"
+            objectFit="contain"
+            radius="l"
+            sizes="(max-width: 960px) 100vw, 900px"
+            style={{ maxHeight: '65vh' }}
+          />
+        )}
+      </Dialog>
+    </Column>
   )
 }
 

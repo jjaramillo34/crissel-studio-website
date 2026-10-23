@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import { useReducedMotion } from 'framer-motion'
 import { Button, Column, Heading, Row, Text } from '@once-ui-system/core'
 
 /** 6 photos: lashes | makeup | lash results — sides scroll up, center scrolls down */
@@ -25,14 +24,12 @@ function MarqueeColumn({
   direction,
   sizes,
   className = '',
-  paused = false,
   eagerCount = 0,
 }: {
   images: string[]
   direction: 'up' | 'down'
   sizes: string
   className?: string
-  paused?: boolean
   /** How many images in the first loop load eagerly (for LCP). */
   eagerCount?: number
 }) {
@@ -44,7 +41,6 @@ function MarqueeColumn({
         className={[
           'crissel-marquee__track',
           direction === 'up' ? 'crissel-marquee__track--up' : 'crissel-marquee__track--down',
-          paused ? 'is-paused' : '',
         ]
           .filter(Boolean)
           .join(' ')}
@@ -72,9 +68,6 @@ function MarqueeColumn({
 }
 
 const Hero = () => {
-  const prefersReducedMotion = useReducedMotion()
-  const paused = Boolean(prefersReducedMotion)
-
   return (
     <section id="hero" className="crissel-hero crissel-hero--columns" aria-label="Inicio Crissel Studio">
       <div className="crissel-hero__grid">
@@ -83,7 +76,6 @@ const Hero = () => {
             images={leftImages}
             direction="up"
             sizes="28vw"
-            paused={paused}
             eagerCount={1}
           />
         </div>
@@ -93,7 +85,6 @@ const Hero = () => {
             images={centerImages}
             direction="down"
             sizes="(max-width: 900px) 100vw, 44vw"
-            paused={paused}
             eagerCount={1}
           />
           <div className="crissel-hero__center-wash" aria-hidden />
@@ -103,7 +94,7 @@ const Hero = () => {
               <div className="crissel-hero__eyebrow-row">
                 <span className="crissel-hero__rule" aria-hidden />
                 <Text variant="label-default-s" className="crissel-hero__eyebrow">
-                  Pestañas · Makeup · Crissel Studio
+                  Pestañas · Makeup · Uñas
                 </Text>
                 <span className="crissel-hero__rule" aria-hidden />
               </div>
@@ -123,7 +114,7 @@ const Hero = () => {
                 wrap="balance"
                 className="crissel-hero__lede"
               >
-                Extensiones de pestañas, maquillaje profesional y productos para tu mirada.
+                Extensiones de pestañas, maquillaje profesional, uñas y productos para tu mirada.
                 Atención personalizada, con detalle en cada cita.
               </Text>
 
@@ -149,7 +140,6 @@ const Hero = () => {
             images={rightImages}
             direction="up"
             sizes="28vw"
-            paused={paused}
             className="crissel-marquee--slow"
           />
         </div>

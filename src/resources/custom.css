@@ -1,4 +1,4 @@
-/* Crissel Studio — Once UI token overrides (coral brand from #E57373) */
+/* Crissel Studio — coral brand scheme (#E57373), read by Once UI via [data-brand=custom] */
 :root {
   --scheme-brand-100: #2a0f14;
   --scheme-brand-200: #4a1a22;
@@ -12,7 +12,7 @@
   --scheme-brand-1000: #fce4ec;
   --scheme-brand-1100: #fff0f4;
   --scheme-brand-1200: #fff8f9;
-  --scheme-brand-600-10: rgba(229, 115, 115, 0.1);
+  --scheme-brand-600-15: rgba(229, 115, 115, 0.15);
   --scheme-brand-600-30: rgba(229, 115, 115, 0.3);
   --scheme-brand-600-50: rgba(229, 115, 115, 0.5);
 
@@ -20,6 +20,72 @@
   --crissel-rose: #f8bbd9;
   --crissel-coral: #e57373;
   --crissel-ink: #3d1c24;
+}
+
+/* —— Base reset —— the parts of Tailwind's preflight the site relied on that
+   Once UI's own reset (box-sizing, h1–h6/p margins) doesn't cover. Element
+   selectors only, so every Once UI class still wins. */
+body {
+  margin: 0;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+blockquote,
+dl,
+dd,
+figure,
+pre,
+hr {
+  margin: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+img,
+svg,
+video,
+canvas,
+picture {
+  display: block;
+  vertical-align: middle;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
 }
 
 .font-display,
@@ -580,4 +646,49 @@
 
 .crissel-footer__bottom {
   border-top: 1px solid rgba(248, 187, 217, 0.18);
+}
+
+/* —— Gallery thumbnails (unstyled button + hover zoom + caption scrim) —— */
+.crissel-gallery-thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  text-align: left;
+}
+
+.crissel-gallery-thumb:focus-visible {
+  outline: 2px solid var(--brand-solid-strong);
+  outline-offset: 2px;
+}
+
+.crissel-gallery-thumb img {
+  transition: transform 0.3s ease;
+}
+
+.crissel-gallery-thumb:hover img {
+  transform: scale(1.05);
+}
+
+.crissel-gallery-thumb__caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3) 60%, transparent);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crissel-gallery-thumb img {
+    transition: none;
+  }
+}
+
+/* next/image `fill` helper (replaces the Tailwind utility) */
+.object-cover {
+  object-fit: cover;
 }

@@ -34,7 +34,7 @@ const Footer = () => {
             </Text>
           </Row>
           <Text variant="body-default-s" className="crissel-footer__muted">
-            Pestañas, cejas y maquillaje profesional en Ambato.
+            Pestañas, cejas, maquillaje y uñas en Ambato.
           </Text>
         </Column>
 

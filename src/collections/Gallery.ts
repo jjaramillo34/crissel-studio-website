@@ -31,6 +31,7 @@ export const Gallery: CollectionConfig = {
         { label: 'Maquillaje Fantasía', value: 'maquillaje-fantasia' },
         { label: 'Microblading', value: 'microblading' },
         { label: 'Planchado de Cejas', value: 'planchado-cejas' },
+        { label: 'Uñas', value: 'unas' },
       ],
     },
     {

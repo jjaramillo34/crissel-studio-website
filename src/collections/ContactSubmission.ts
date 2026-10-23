@@ -28,6 +28,7 @@ export const ContactSubmission: CollectionConfig = {
         { label: 'Consulta maquillaje', value: 'makeup' },
         { label: 'Consulta cejas', value: 'eyebrows' },
         { label: 'Consulta pestañas', value: 'lashes' },
+        { label: 'Consulta uñas', value: 'nails' },
         { label: 'Otro', value: 'other' },
       ],
     },

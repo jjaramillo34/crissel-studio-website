@@ -14,7 +14,7 @@ export type SeoProps = {
 const defaultMeta = {
   title: 'Crissel Studio | Belleza consciente en Ambato',
   description:
-    'Especialistas en extensiones de pestañas, diseño de cejas y maquillaje profesional en Ambato. Vive una experiencia boutique que realza tu mirada.',
+    'Especialistas en extensiones de pestañas, diseño de cejas, maquillaje profesional y uñas en Ambato. Vive una experiencia boutique que realza tu belleza.',
   type: 'website' as const,
   image: ogImage,
 }

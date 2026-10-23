@@ -35,7 +35,8 @@ export const fonts = {
 export const style = {
   theme: 'light' as const,
   neutral: 'rose' as const,
-  brand: 'pink' as const,
+  // 'custom' uses the --scheme-brand-* coral scale in custom.css (not in the Schemes type)
+  brand: 'custom' as string,
   accent: 'orange' as const,
   solid: 'contrast' as const,
   solidStyle: 'flat' as const,

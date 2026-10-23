@@ -6,7 +6,7 @@ import { Button } from '@once-ui-system/core'
 import { SectionHeader } from './SectionHeader'
 
 const credentials = [
-  'Especialistas en mirada y cejas',
+  'Especialistas en mirada, cejas y uñas',
   'Productos profesionales certificados',
   'Consulta personalizada en cada cita',
   '+1.5K clientas felices en Ambato',

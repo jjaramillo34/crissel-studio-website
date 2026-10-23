@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button } from '@once-ui-system/core'
+import { Button, Column, Icon, Text } from '@once-ui-system/core'
 import { SectionHeader } from './SectionHeader'
 
 const treatments = [
@@ -54,6 +54,23 @@ const treatments = [
     href: '/productos',
     reverse: false,
   },
+  {
+    number: '04',
+    title: 'Uñas',
+    subtitle: 'Manicure · Semipermanente · Acrílicas · Nail art',
+    description:
+      'Manos y pies cuidados, con acabados que duran. Desde un manicure clásico hasta uñas acrílicas o polygel con el diseño que imaginas.',
+    points: [
+      'Manicure y pedicure',
+      'Esmaltado semipermanente',
+      'Acrílicas y polygel',
+      'Nail art y diseños',
+    ],
+    // No photos yet: drop one in /public/assets/gallery and set `image` to show it
+    image: undefined as string | undefined,
+    href: '/productos#unas',
+    reverse: true,
+  },
 ]
 
 const Treatments = () => {
@@ -73,13 +90,22 @@ const Treatments = () => {
             className={`crissel-treatment${treatment.reverse ? ' crissel-treatment--reverse' : ''}`}
           >
             <div className="crissel-treatment__media">
-              <Image
-                src={treatment.image}
-                alt={treatment.title}
-                fill
-                sizes="(max-width: 900px) 100vw, 50vw"
-                className="object-cover"
-              />
+              {treatment.image ? (
+                <Image
+                  src={treatment.image}
+                  alt={treatment.title}
+                  fill
+                  sizes="(max-width: 900px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              ) : (
+                <Column fill center gap="12" aria-hidden>
+                  <Icon name="nails" size="xl" onBackground="brand-medium" />
+                  <Text variant="label-default-s" onBackground="brand-medium">
+                    Nuevo en Crissel Studio
+                  </Text>
+                </Column>
+              )}
             </div>
 
             <div className="crissel-treatment__copy">

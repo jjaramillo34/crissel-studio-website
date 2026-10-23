@@ -15,6 +15,11 @@ const faqItems = [
       'Trabajamos con marcas profesionales y fórmulas pensadas para el salón. Ajustamos según sensibilidad de piel y tipo de pestaña.',
   },
   {
+    question: '¿También hacen uñas?',
+    answer:
+      'Sí. Ofrecemos manicure y pedicure, esmaltado semipermanente, uñas acrílicas y polygel, y nail art. Escríbenos por WhatsApp para consultar precios y disponibilidad.',
+  },
+  {
     question: '¿Qué pasa si es mi primera vez?',
     answer:
       'Empezamos con una conversación breve para resolver dudas, evaluar tus rasgos y recomendar el servicio ideal para tu estilo.',

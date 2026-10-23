@@ -23,6 +23,7 @@ const subjectOptions = [
   { value: 'makeup', label: 'Consulta maquillaje' },
   { value: 'eyebrows', label: 'Consulta cejas' },
   { value: 'lashes', label: 'Consulta pestañas' },
+  { value: 'nails', label: 'Consulta uñas' },
   { value: 'other', label: 'Otro' },
 ]
 
