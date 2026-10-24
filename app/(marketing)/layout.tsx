@@ -23,6 +23,8 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
   return (
     <html
       lang="es"
+      // Once UI sets `scroll-behavior: smooth`; this lets Next turn it off during route changes
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       // Server-render the theme attributes ThemeProvider would otherwise set after hydration
       data-theme={style.theme}

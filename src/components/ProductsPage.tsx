@@ -103,6 +103,9 @@ const services: Service[] = [
     title: 'Uñas',
     subtitle: 'Nuevo en Crissel Studio',
     icon: 'nails',
+    mainImage: '/assets/gallery/unas-2.jpg',
+    benefitsImage: '/assets/gallery/unas-1.jpg',
+    detailsImage: '/assets/gallery/unas-3.jpg',
     description:
       'Manos y pies impecables, con el mismo detalle de cada servicio del estudio. Desde un manicure clásico hasta uñas acrílicas o polygel con el diseño que imaginas.',
     options: [

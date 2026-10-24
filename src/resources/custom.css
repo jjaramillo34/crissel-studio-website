@@ -101,13 +101,13 @@ a {
   color: var(--crissel-coral);
 }
 
-/* —— La Femme section titles —— */
+/* —— Section titles: ✦ eyebrow ✦ · big serif title · brush-underlined accent —— */
 .crissel-section-header {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   width: 100%;
-  max-width: 40rem;
+  max-width: 48rem;
   margin-bottom: 0.5rem;
 }
 
@@ -123,49 +123,54 @@ a {
 }
 
 .crissel-section-header__eyebrow {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 1rem;
-  width: 100%;
-  max-width: 22rem;
-}
-
-.crissel-section-header--center .crissel-section-header__eyebrow {
-  justify-content: center;
-}
-
-.crissel-section-header__rule {
-  flex: 1 1 auto;
-  height: 1px;
-  min-width: 2rem;
-  background: rgba(196, 92, 92, 0.35);
-}
-
-.crissel-section-header__eyebrow-text {
-  flex: 0 0 auto;
-  letter-spacing: 0.2em !important;
+  gap: 0.75rem;
+  letter-spacing: 0.22em !important;
   text-transform: uppercase;
-  color: #8a5a5a !important;
-  white-space: nowrap;
+  color: var(--brand-on-background-strong) !important;
+}
+
+.crissel-section-header__spark {
+  font-size: 0.75em;
+  color: var(--brand-solid-strong);
+  letter-spacing: 0;
 }
 
 .crissel-section-header__title {
   color: #2d1a1f !important;
+  font-size: clamp(2.5rem, 5.2vw, 4.25rem) !important;
+  line-height: 1.04 !important;
+  letter-spacing: -0.035em !important;
   text-wrap: balance;
-  line-height: 1.12 !important;
+}
+
+.crissel-section-header--compact .crissel-section-header__title {
+  font-size: clamp(2.1rem, 3.6vw, 3.1rem) !important;
+  line-height: 1.08 !important;
 }
 
 .crissel-section-header__desc {
   color: #6b5258 !important;
-  max-width: 32rem;
+  max-width: 36rem;
 }
 
-.crissel-section-header--dark .crissel-section-header__eyebrow-text {
-  color: rgba(255, 245, 247, 0.8) !important;
+/* Accent: italic coral with a hand-drawn brush underline. A background (not an
+   absolutely positioned SVG) so it wraps with the text, one stroke per line. */
+.crissel-accent {
+  padding-inline: 0.04em;
+  letter-spacing: -0.02em;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20' preserveAspectRatio='none'%3E%3Cpath d='M3 14.5C52 7.5 104 5 152 6.5c45 1.4 92 4.6 145 9' fill='none' stroke='%23f8bbd9' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 0 92%;
+  background-size: 100% 0.3em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
-.crissel-section-header--dark .crissel-section-header__rule {
-  background: rgba(248, 187, 217, 0.4);
+.crissel-section-header--dark .crissel-section-header__eyebrow,
+.crissel-section-header--dark .crissel-section-header__spark {
+  color: rgba(255, 245, 247, 0.85) !important;
 }
 
 .crissel-section-header--dark .crissel-section-header__title {
@@ -176,8 +181,88 @@ a {
   color: #f8bbd9;
 }
 
+.crissel-section-header--dark .crissel-accent {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20' preserveAspectRatio='none'%3E%3Cpath d='M3 14.5C52 7.5 104 5 152 6.5c45 1.4 92 4.6 145 9' fill='none' stroke='%23e57373' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
 .crissel-section-header--dark .crissel-section-header__desc {
   color: rgba(255, 245, 247, 0.82) !important;
+}
+
+/* Scroll reveal (SectionHeader sets data-reveal; `static` = no animation) */
+.crissel-word {
+  display: inline-block;
+}
+
+[data-reveal='hidden'] .crissel-word,
+[data-reveal='hidden'] .crissel-section-header__eyebrow,
+[data-reveal='hidden'] .crissel-section-header__desc {
+  opacity: 0;
+}
+
+[data-reveal='hidden'] .crissel-accent {
+  background-size: 0% 0.3em;
+}
+
+[data-reveal='shown'] .crissel-section-header__eyebrow {
+  animation: crissel-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+[data-reveal='shown'] .crissel-word {
+  animation: crissel-word-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.12s + var(--i, 0) * 0.07s);
+}
+
+[data-reveal='shown'] .crissel-accent {
+  animation: crissel-brush-paint 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.55s both;
+}
+
+[data-reveal='shown'] .crissel-section-header__desc {
+  animation: crissel-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+}
+
+@keyframes crissel-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em) rotate(2deg);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes crissel-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes crissel-brush-paint {
+  from {
+    background-size: 0% 0.3em;
+  }
+  to {
+    background-size: 100% 0.3em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] .crissel-word,
+  [data-reveal] .crissel-section-header__eyebrow,
+  [data-reveal] .crissel-section-header__desc,
+  [data-reveal] .crissel-accent {
+    animation: none !important;
+    opacity: 1 !important;
+    background-size: 100% 0.3em !important;
+  }
 }
 
 /* —— Pastel section surfaces —— */
@@ -211,6 +296,91 @@ a {
     linear-gradient(180deg, #ffffff 0%, #fff5f7 100%);
 }
 
+/* Dark plum band (same ink as hero/footer) with soft coral glows */
+.crissel-section--ink {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(at 12% 0%, rgba(229, 115, 115, 0.28) 0, transparent 45%),
+    radial-gradient(at 92% 100%, rgba(248, 187, 217, 0.16) 0, transparent 50%),
+    #3d1c24;
+  color: #fff8f9;
+}
+
+/* —— Standards cards (Standards.tsx): glass on plum, outlined numbers —— */
+.crissel-standard {
+  position: relative;
+  overflow: hidden;
+  padding: 2rem 1.75rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(248, 187, 217, 0.16);
+  background: rgba(255, 248, 249, 0.05);
+  backdrop-filter: blur(8px);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.45s ease;
+}
+
+.crissel-standard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(248, 187, 217, 0.4);
+  background: rgba(255, 248, 249, 0.09);
+  box-shadow: 0 24px 50px -24px rgba(229, 115, 115, 0.55);
+}
+
+.crissel-standard__number {
+  position: absolute;
+  top: 0.5rem;
+  right: 1.1rem;
+  font-size: 4.75rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(248, 187, 217, 0.35);
+  transition: -webkit-text-stroke-color 0.35s ease;
+  pointer-events: none;
+}
+
+.crissel-standard:hover .crissel-standard__number {
+  -webkit-text-stroke-color: rgba(248, 187, 217, 0.75);
+}
+
+.crissel-standard__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background: rgba(229, 115, 115, 0.2);
+  border: 1px solid rgba(229, 115, 115, 0.45);
+  color: #f8bbd9;
+}
+
+.crissel-standard__title {
+  margin-top: 0.5rem;
+  color: #fff8f9 !important;
+}
+
+.crissel-standard__desc {
+  color: rgba(255, 245, 247, 0.72) !important;
+  line-height: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crissel-standard,
+  .crissel-standard__number {
+    transition: none;
+  }
+
+  .crissel-standard:hover {
+    transform: none;
+  }
+}
+
 .crissel-section__inner {
   width: 100%;
   max-width: 72rem;
@@ -221,190 +391,295 @@ a {
   align-items: center;
 }
 
-/* —— 3-column marquee hero (La Femme motion, Crissel pastels) —— */
-.crissel-hero--columns {
-  position: relative;
-  width: 100%;
-  min-height: 100svh;
+/* —— Hero (Hero.tsx): tilted 3D photo wall + word-by-word title + cycling accent —— */
+.crissel-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
-  background: #3d1c24;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.crissel-hero__grid {
+.crissel-hero2 {
+  --mx: 0;
+  --my: 0;
+  position: relative;
   display: grid;
-  grid-template-columns: 1fr;
-  min-height: 100svh;
+  place-items: center;
   width: 100%;
-}
-
-@media (min-width: 900px) {
-  .crissel-hero__grid {
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.5fr) minmax(0, 1.05fr);
-  }
-}
-
-.crissel-hero__col {
-  position: relative;
   min-height: 100svh;
   overflow: hidden;
-  border-color: rgba(248, 187, 217, 0.18);
-  border-style: solid;
-  border-width: 0;
+  isolation: isolate;
+  background: #2a1218;
 }
 
-.crissel-hero__col--side {
-  display: none;
-}
-
-.crissel-hero__col--side:first-child {
-  border-right-width: 1px;
-}
-
-.crissel-hero__col--side:last-child {
-  border-left-width: 1px;
-}
-
-.crissel-hero__col--center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@media (min-width: 900px) {
-  .crissel-hero__col--side {
-    display: block;
-  }
-}
-
-.crissel-marquee {
+/* The wall: 5 columns on a plane tilted in 3D, nudged toward the mouse */
+.crissel-wall {
   position: absolute;
   inset: 0;
+  z-index: -2;
+  perspective: 1600px;
+}
+
+.crissel-wall__plane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  grid-template-columns: repeat(5, 17rem);
+  gap: 1.25rem;
+  transform: translate(-50%, -50%) rotateX(calc(24deg - var(--my) * 6deg))
+    rotateY(calc(var(--mx) * 8deg)) rotateZ(-14deg) scale(1.08);
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.crissel-wall__col {
+  height: 175vh;
   overflow: hidden;
 }
 
-.crissel-marquee__track {
+.crissel-wall__track {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  will-change: transform;
+  animation: crissel-wall-up var(--speed, 50s) linear infinite;
 }
 
-.crissel-marquee__track--up {
-  animation: crissel-marquee-up 42s linear infinite;
+.crissel-wall__col[data-direction='down'] .crissel-wall__track {
+  animation-direction: reverse;
 }
 
-.crissel-marquee__track--down {
-  animation: crissel-marquee-down 48s linear infinite;
-}
-
-.crissel-marquee--slow .crissel-marquee__track--up {
-  animation-duration: 52s;
-}
-
-.crissel-marquee__track.is-paused,
-.crissel-hero__col:hover .crissel-marquee__track {
-  animation-play-state: paused;
-}
-
-@keyframes crissel-marquee-up {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(0, -50%, 0);
-  }
-}
-
-@keyframes crissel-marquee-down {
-  from {
-    transform: translate3d(0, -50%, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.crissel-marquee__item {
+.crissel-wall__item {
   position: relative;
-  width: 100%;
-  height: 50svh;
-  min-height: 18rem;
-  flex: 0 0 auto;
+  flex-shrink: 0;
+  aspect-ratio: 3 / 4;
+  margin-bottom: 1.25rem;
   overflow: hidden;
+  border-radius: 1.1rem;
   background: #4a2430;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
 }
 
-.crissel-marquee__tint {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    160deg,
-    rgba(229, 115, 115, 0.28) 0%,
-    rgba(61, 28, 36, 0.35) 45%,
-    rgba(61, 28, 36, 0.5) 100%
-  );
+/* items use margin (not gap) so -50% lands exactly on the start of the copy */
+@keyframes crissel-wall-up {
+  to {
+    transform: translateY(-50%);
+  }
 }
 
-.crissel-hero__center-wash {
+/* Plum glow: dark in the middle for legible text, wall visible around the edges */
+.crissel-hero2__glow {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(61, 28, 36, 0.55) 0%, rgba(61, 28, 36, 0.72) 50%, rgba(61, 28, 36, 0.85) 100%),
-    linear-gradient(135deg, rgba(229, 115, 115, 0.35) 0%, rgba(248, 187, 217, 0.18) 55%, transparent 100%);
+    radial-gradient(ellipse 55% 50% at 50% 50%, rgba(42, 18, 24, 0.9) 0%, rgba(42, 18, 24, 0.72) 45%, rgba(42, 18, 24, 0.25) 80%, rgba(42, 18, 24, 0.35) 100%),
+    linear-gradient(180deg, rgba(42, 18, 24, 0.55) 0%, transparent 25%, transparent 70%, rgba(42, 18, 24, 0.8) 100%),
+    radial-gradient(circle at 50% 120%, rgba(229, 115, 115, 0.35) 0, transparent 50%);
 }
 
-.crissel-hero__content {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 34rem;
-  margin: 0 auto;
-  padding: 7rem 1.5rem 4rem;
-}
-
-.crissel-hero__eyebrow-row {
+.crissel-hero2__content {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.85rem;
+  gap: 1.5rem;
   width: 100%;
-  max-width: 22rem;
+  max-width: 66rem;
+  padding: 8rem 1.5rem 7rem;
+  text-align: center;
+  color: #fff8f9;
 }
 
-.crissel-hero__rule {
-  flex: 1 1 auto;
-  height: 1px;
-  background: rgba(248, 187, 217, 0.45);
-}
-
-.crissel-hero__eyebrow {
-  flex: 0 0 auto;
-  letter-spacing: 0.18em !important;
+.crissel-hero2__eyebrow {
+  margin: 0;
+  font-family: var(--font-label), system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(255, 245, 247, 0.9) !important;
-  white-space: nowrap;
+  color: rgba(255, 245, 247, 0.85);
+  animation: crissel-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
 }
 
-.crissel-hero__title {
-  color: #fff8f9 !important;
-  text-wrap: balance;
-  line-height: 1.08 !important;
+.crissel-hero2__eyebrow span {
+  color: #f8bbd9;
+  letter-spacing: 0;
 }
 
-.crissel-hero__accent {
+.crissel-hero2__title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: clamp(3rem, 7.2vw, 6.25rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  color: #fff8f9;
+}
+
+.crissel-hero2__line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  column-gap: 0.25em;
+}
+
+/* Words rise in on page load — pure CSS, so no flash before hydration */
+.crissel-hero2__word {
+  display: inline-block;
+  animation: crissel-word-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.25s + var(--i, 0) * 0.09s);
+}
+
+.crissel-hero2__accent-slot {
+  display: inline-block;
+  padding-bottom: 0.08em;
+}
+
+/* Cycling accent: italic pink with a coral brush; re-mounts (and re-animates) on each change */
+.crissel-hero2__accent {
+  display: inline-block;
   font-style: italic;
   font-weight: 500;
   color: #f8bbd9;
-  background: rgba(45, 24, 30, 0.4);
-  padding: 0.06em 0.28em;
-  border-radius: 0.15em;
+  padding-inline: 0.04em;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20' preserveAspectRatio='none'%3E%3Cpath d='M3 14.5C52 7.5 104 5 152 6.5c45 1.4 92 4.6 145 9' fill='none' stroke='%23e57373' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 0 95%;
+  background-size: 100% 0.22em;
+  animation:
+    crissel-accent-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) both,
+    crissel-brush-paint-hero 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.25s both;
 }
 
-.crissel-hero__lede {
-  color: rgba(255, 245, 247, 0.9) !important;
-  max-width: 30rem;
+/* "Ambato" (first word) waits for the headline to rise in; later words swap in immediately */
+.crissel-hero2__accent.is-initial {
+  animation-delay: 0.55s, 0.8s;
+}
+
+@keyframes crissel-accent-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em) rotate(-3deg);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes crissel-brush-paint-hero {
+  from {
+    background-size: 0% 0.22em;
+  }
+  to {
+    background-size: 100% 0.22em;
+  }
+}
+
+.crissel-hero2__lede {
+  margin: 0;
+  max-width: 36rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(255, 245, 247, 0.85);
+  animation: crissel-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.75s both;
+}
+
+.crissel-hero2__ctas {
+  animation: crissel-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
+}
+
+.crissel-hero2__scroll {
+  position: absolute !important;
+  bottom: 1.75rem;
+  left: 50%;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 245, 247, 0.7);
+  text-decoration: none;
+}
+
+.crissel-hero2__scroll-line {
+  position: relative;
+  width: 1px;
+  height: 2.75rem;
+  overflow: hidden;
+  background: rgba(255, 245, 247, 0.25);
+}
+
+.crissel-hero2__scroll-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #f8bbd9;
+  animation: crissel-scroll-cue 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes crissel-scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  60%,
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@media (max-width: 700px) {
+  .crissel-wall__plane {
+    grid-template-columns: repeat(5, 9.5rem);
+    gap: 0.75rem;
+    transform: translate(-50%, -50%) rotateX(20deg) rotateZ(-14deg) scale(1.1);
+  }
+
+  .crissel-wall__item {
+    margin-bottom: 0.75rem;
+    border-radius: 0.8rem;
+  }
+
+  .crissel-hero2__content {
+    padding: 7rem 1.25rem 6rem;
+  }
+
+  .crissel-hero2__lede {
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crissel-wall__track,
+  .crissel-hero2__scroll-line::after {
+    animation: none;
+  }
+
+  .crissel-wall__plane {
+    transition: none;
+  }
+
+  .crissel-hero2__eyebrow,
+  .crissel-hero2__word,
+  .crissel-hero2__accent,
+  .crissel-hero2__lede,
+  .crissel-hero2__ctas {
+    animation: none;
+  }
 }
 
 .crissel-hero__cta-ghost {
@@ -415,14 +690,6 @@ a {
 
 .crissel-hero__cta-ghost:hover {
   background: rgba(255, 248, 249, 0.22) !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .crissel-marquee__track--up,
-  .crissel-marquee__track--down {
-    animation: none;
-    transform: translate3d(0, 0, 0);
-  }
 }
 
 /* —— Zigzag / treatment rows (CSS grid — reliable with next/image) —— */
@@ -543,6 +810,1224 @@ a {
   color: #e57373;
 }
 
+/* —— About: editorial collage (About.tsx) ——
+   Arched photo + offset coral outline, rotating text badge, floating count-up stat. */
+.crissel-about {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  width: 100%;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .crissel-about {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 5rem;
+  }
+}
+
+.crissel-about__collage {
+  position: relative;
+  width: 100%;
+  max-width: 26rem;
+  margin-inline: auto;
+  /* room for the offset outline and the overlapping badge/card */
+  padding: 0 1.25rem 1.25rem 0;
+}
+
+.crissel-about__frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  /* salon-mirror arch: round top, soft bottom corners */
+  border-radius: 999px 999px 1.5rem 1.5rem;
+  background: linear-gradient(145deg, #fce4ec, #fff0f4);
+  box-shadow: 0 40px 70px -40px rgba(61, 28, 36, 0.55);
+}
+
+.crissel-about__frame img {
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.crissel-about__collage:hover .crissel-about__frame img {
+  transform: scale(1.04);
+}
+
+/* Offset coral outline behind the arch */
+.crissel-about__collage::before {
+  content: '';
+  position: absolute;
+  inset: 1.25rem 0 0 1.25rem;
+  border: 1.5px solid var(--crissel-coral);
+  border-radius: 999px 999px 1.5rem 1.5rem;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.crissel-about__badge {
+  position: absolute;
+  top: 8%;
+  right: -1.75rem;
+  width: 7.5rem;
+  height: 7.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #fff8f9;
+  box-shadow: 0 18px 40px -20px rgba(61, 28, 36, 0.45);
+}
+
+.crissel-about__badge-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: crissel-spin 22s linear infinite;
+}
+
+.crissel-about__badge-ring text {
+  font-family: var(--font-label), system-ui, sans-serif;
+  font-size: 9.5px;
+  font-weight: 600;
+  fill: #c45c5c;
+}
+
+.crissel-about__badge-center {
+  font-size: 1.25rem;
+  color: var(--crissel-coral);
+}
+
+@keyframes crissel-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.crissel-about__stat {
+  position: absolute;
+  left: -1.5rem;
+  bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 1rem 1.35rem;
+  border-radius: 1.1rem;
+  background: rgba(255, 248, 249, 0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(248, 187, 217, 0.7);
+  box-shadow: 0 24px 50px -24px rgba(61, 28, 36, 0.5);
+}
+
+.crissel-about__stat-value {
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #c45c5c;
+  font-variant-numeric: tabular-nums;
+}
+
+.crissel-about__stat-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #6b5258;
+}
+
+.crissel-about__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.crissel-about__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.crissel-about__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.95rem 0.5rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(248, 187, 217, 0.8);
+  font-size: 0.9rem;
+  color: #3d1c24;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease;
+}
+
+.crissel-about__chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--crissel-coral);
+}
+
+.crissel-about__chip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  background: var(--crissel-coral);
+  color: #fff8f9;
+}
+
+.crissel-about__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+@media (max-width: 599px) {
+  .crissel-about__collage {
+    max-width: 19rem;
+  }
+
+  .crissel-about__badge {
+    width: 5.75rem;
+    height: 5.75rem;
+    right: -1rem;
+  }
+
+  .crissel-about__stat {
+    left: -0.75rem;
+    bottom: -0.5rem;
+  }
+
+  .crissel-about__stat-value {
+    font-size: 1.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crissel-about__badge-ring {
+    animation: none;
+  }
+
+  .crissel-about__frame img,
+  .crissel-about__chip {
+    transition: none;
+  }
+}
+
+/* —— Reviews wall (TestimonialsCarousel.tsx): two full-bleed rows gliding in opposite directions —— */
+.crissel-section--clip {
+  overflow: hidden;
+}
+
+.crissel-reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  /* break out of the 72rem column to the full viewport width */
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  padding-block: 0.75rem;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
+}
+
+.crissel-reviews__row {
+  overflow: hidden;
+}
+
+.crissel-reviews__track {
+  display: flex;
+  width: max-content;
+  animation: crissel-marquee-x var(--duration, 54s) linear infinite;
+}
+
+.crissel-reviews__row[data-direction='right'] .crissel-reviews__track {
+  animation-direction: reverse;
+}
+
+.crissel-reviews:hover .crissel-reviews__track,
+.crissel-reviews:focus-within .crissel-reviews__track,
+.crissel-reviews.is-paused .crissel-reviews__track {
+  animation-play-state: paused;
+}
+
+/* Cards use margin (not gap) so -50% lands exactly on the start of the copy */
+@keyframes crissel-marquee-x {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.crissel-review {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  width: 21rem;
+  margin: 0 1.25rem 0 0;
+  padding: 1.75rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(248, 187, 217, 0.75);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 20px 40px -28px rgba(61, 28, 36, 0.35);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease;
+}
+
+.crissel-review:hover {
+  transform: translateY(-4px);
+  border-color: var(--crissel-coral);
+}
+
+.crissel-review__mark {
+  position: absolute;
+  top: 0.35rem;
+  right: 1.25rem;
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--crissel-coral);
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+.crissel-review__stars {
+  color: var(--crissel-coral);
+  letter-spacing: 0.12em;
+  font-size: 0.95rem;
+}
+
+.crissel-review__text {
+  margin: 0;
+  flex: 1;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #4a343a;
+}
+
+.crissel-review__author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.crissel-review__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #e57373, #f48fb1);
+  color: #fff8f9;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.crissel-review__who {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.crissel-review__name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #2d1a1f;
+}
+
+.crissel-review__service {
+  align-self: flex-start;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(229, 115, 115, 0.12);
+  color: #c45c5c;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+@media (max-width: 599px) {
+  .crissel-review {
+    width: 17.5rem;
+    padding: 1.4rem;
+  }
+}
+
+/* Reduced motion: one static, wrapping row of the unique reviews */
+@media (prefers-reduced-motion: reduce) {
+  .crissel-reviews {
+    width: 100%;
+    margin-inline: 0;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .crissel-reviews__row[data-decorative],
+  .crissel-reviews__toggle,
+  .crissel-review[data-dup] {
+    display: none !important;
+  }
+
+  .crissel-reviews__track {
+    animation: none;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 1.25rem;
+  }
+
+  .crissel-review,
+  .crissel-review:hover {
+    transform: none;
+    transition: none;
+  }
+}
+
+/* —— FAQ (FaqQuick.tsx): pinned intro + help card left, numbered accordion right —— */
+.crissel-faq {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .crissel-faq {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .crissel-faq__intro {
+    position: sticky;
+    top: 7rem;
+  }
+}
+
+.crissel-faq__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Phones: show the help card after the questions, not before */
+@media (max-width: 899px) {
+  .crissel-faq__intro {
+    display: contents;
+  }
+
+  .crissel-faq__list {
+    order: 1;
+  }
+
+  .crissel-faq__help {
+    order: 2;
+  }
+}
+
+.crissel-faq__help {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1.75rem;
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(at 100% 0%, rgba(229, 115, 115, 0.35) 0, transparent 55%),
+    #3d1c24;
+  color: #fff8f9;
+  box-shadow: 0 30px 60px -35px rgba(61, 28, 36, 0.7);
+}
+
+.crissel-faq__help-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.crissel-faq__help-text {
+  margin: 0 0 0.5rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(255, 245, 247, 0.75);
+}
+
+.crissel-faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.crissel-faq__item {
+  border-radius: 1.1rem;
+  border: 1px solid transparent;
+  border-bottom-color: rgba(196, 92, 92, 0.18);
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.crissel-faq__item.is-open {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(248, 187, 217, 0.8);
+  box-shadow: 0 24px 50px -32px rgba(61, 28, 36, 0.4);
+}
+
+.crissel-faq__heading {
+  margin: 0;
+  font: inherit;
+  letter-spacing: normal;
+}
+
+.crissel-faq__question {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.35rem 1.25rem;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: #2d1a1f;
+}
+
+.crissel-faq__question:focus-visible {
+  outline: 2px solid var(--brand-solid-strong);
+  outline-offset: 2px;
+  border-radius: 1rem;
+}
+
+.crissel-faq__number {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--crissel-coral);
+}
+
+.crissel-faq__text {
+  font-size: clamp(1.1rem, 1.7vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  transition: color 0.3s ease;
+}
+
+.crissel-faq__question:hover .crissel-faq__text,
+.crissel-faq__item.is-open .crissel-faq__text {
+  color: #c45c5c;
+}
+
+/* "+" drawn with two bars; rotates into "×" when open */
+.crissel-faq__toggle {
+  position: relative;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(229, 115, 115, 0.45);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.crissel-faq__toggle::before,
+.crissel-faq__toggle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.8rem;
+  height: 1.5px;
+  border-radius: 2px;
+  background: #c45c5c;
+  transform: translate(-50%, -50%);
+  transition: background-color 0.3s ease;
+}
+
+.crissel-faq__toggle::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.crissel-faq__item.is-open .crissel-faq__toggle {
+  transform: rotate(45deg);
+  background: var(--crissel-coral);
+  border-color: var(--crissel-coral);
+}
+
+.crissel-faq__item.is-open .crissel-faq__toggle::before,
+.crissel-faq__item.is-open .crissel-faq__toggle::after {
+  background: #fff8f9;
+}
+
+/* Height animation via grid rows 0fr → 1fr */
+.crissel-faq__answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.crissel-faq__item.is-open .crissel-faq__answer {
+  grid-template-rows: 1fr;
+}
+
+.crissel-faq__answer-inner {
+  overflow: hidden;
+}
+
+.crissel-faq__answer-inner p {
+  margin: 0;
+  padding: 0 1.25rem 1.5rem calc(1.25rem + 1rem + 1.6rem);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #4a343a;
+  opacity: 0;
+  transform: translateY(-0.35rem);
+  transition:
+    opacity 0.35s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.crissel-faq__item.is-open .crissel-faq__answer-inner p {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.08s;
+}
+
+@media (max-width: 599px) {
+  .crissel-faq__question {
+    padding: 1.1rem 0.9rem;
+    gap: 0.75rem;
+  }
+
+  .crissel-faq__answer-inner p {
+    padding: 0 0.9rem 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crissel-faq__item,
+  .crissel-faq__text,
+  .crissel-faq__toggle,
+  .crissel-faq__answer,
+  .crissel-faq__answer-inner p {
+    transition: none;
+  }
+}
+
+/* —— Consultation (ConsultationCta.tsx): crossing service ribbons + 3 steps —— */
+.crissel-consult {
+  padding-top: 0;
+}
+
+.crissel-consult__ribbons {
+  position: relative;
+  /* full-bleed: break out of the section's side padding */
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  height: 8.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+.crissel-ribbon {
+  position: absolute;
+  top: 50%;
+  left: -5%;
+  width: 110%;
+  overflow: hidden;
+  padding-block: 0.9rem;
+}
+
+.crissel-ribbon--coral {
+  background: var(--crissel-coral);
+  color: #fff8f9;
+  transform: translateY(-50%) rotate(-2.5deg);
+  box-shadow: 0 18px 36px -22px rgba(61, 28, 36, 0.6);
+  z-index: 1;
+}
+
+.crissel-ribbon--blush {
+  background: #f8bbd9;
+  color: #7a2e3a;
+  transform: translateY(-50%) rotate(2deg);
+  opacity: 0.85;
+}
+
+.crissel-ribbon__track {
+  display: flex;
+  width: max-content;
+  animation: crissel-marquee-x 38s linear infinite;
+}
+
+.crissel-ribbon--blush .crissel-ribbon__track {
+  animation-direction: reverse;
+  animation-duration: 46s;
+}
+
+.crissel-ribbon__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-right: 1.5rem;
+  font-family: var(--font-label), system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.crissel-ribbon__spark {
+  font-size: 0.8em;
+  letter-spacing: 0;
+}
+
+/* Steps: horizontal on desktop with a line that draws between the circles */
+.crissel-steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: 60rem;
+  counter-reset: none;
+}
+
+/* Phones: a short connector from each circle down to the next one */
+.crissel-steps__item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 3.5rem;
+  bottom: -2.5rem;
+  left: calc(1.75rem - 1px);
+  width: 2px;
+  background: linear-gradient(var(--crissel-coral), #f8bbd9);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  transition-delay: calc(var(--i, 0) * 0.35s);
+}
+
+.crissel-steps.is-inview .crissel-steps__item::after {
+  transform: scaleY(1);
+}
+
+.crissel-steps__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  column-gap: 1.25rem;
+  row-gap: 0.35rem;
+  align-items: start;
+}
+
+.crissel-steps__circle {
+  grid-row: 1 / span 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  background: #fff8f9;
+  border: 1.5px solid var(--crissel-coral);
+  color: #c45c5c;
+  box-shadow: 0 0 0 6px rgba(252, 228, 236, 0.9);
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+  transition-delay: calc(0.3s + var(--i, 0) * 0.35s);
+}
+
+.crissel-steps.is-inview .crissel-steps__circle {
+  background: var(--crissel-coral);
+  color: #fff8f9;
+}
+
+.crissel-steps__label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--crissel-coral);
+}
+
+.crissel-steps__title {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #2d1a1f;
+}
+
+.crissel-steps__text {
+  margin: 0.25rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #6b5258;
+}
+
+@media (min-width: 900px) {
+  .crissel-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  .crissel-steps__item:not(:last-child)::after {
+    display: none;
+  }
+
+  /* Desktop: one line from the first circle's center to the last one's */
+  .crissel-steps::before {
+    content: '';
+    position: absolute;
+    top: 1.75rem;
+    left: calc(100% / 6);
+    right: calc(100% / 6);
+    height: 2px;
+    transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+    background: linear-gradient(90deg, var(--crissel-coral), #f8bbd9);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .crissel-steps.is-inview::before {
+    transform: scaleX(1);
+  }
+
+  .crissel-steps__item {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    row-gap: 0.5rem;
+  }
+
+  .crissel-steps__circle {
+    grid-row: auto;
+    margin-bottom: 0.75rem;
+  }
+
+  .crissel-steps__text {
+    max-width: 17rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crissel-ribbon__track {
+    animation: none;
+  }
+
+  .crissel-steps::before,
+  .crissel-steps__item::after,
+  .crissel-steps__circle {
+    transition: none;
+  }
+}
+
+/* —— Contact (Contact.tsx): map + contact tiles left, form card right —— */
+.crissel-contact {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  width: 100%;
+  align-items: start;
+}
+
+@media (min-width: 1000px) {
+  .crissel-contact {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 2.5rem;
+  }
+}
+
+.crissel-contact__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.crissel-contact__map {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(248, 187, 217, 0.8);
+  background: linear-gradient(145deg, #fce4ec, #fff0f4);
+  box-shadow: 0 30px 60px -36px rgba(61, 28, 36, 0.45);
+}
+
+.crissel-contact__map iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: saturate(0.85);
+}
+
+/* Floating place card over the map */
+.crissel-contact__place {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 0.85rem 0.85rem 1rem;
+  border-radius: 1.1rem;
+  background: rgba(255, 248, 249, 0.94);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(248, 187, 217, 0.8);
+  box-shadow: 0 18px 40px -22px rgba(61, 28, 36, 0.5);
+}
+
+.crissel-contact__pin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: var(--crissel-coral);
+  color: #fff8f9;
+}
+
+.crissel-contact__place-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.crissel-contact__place-name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #2d1a1f;
+}
+
+.crissel-contact__place-address {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #6b5258;
+}
+
+.crissel-contact__tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.crissel-contact__tile {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 0.75rem;
+  align-items: center;
+  height: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 1.1rem;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(248, 187, 217, 0.75);
+  text-decoration: none;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease,
+    box-shadow 0.35s ease;
+}
+
+.crissel-contact__tile:hover {
+  transform: translateY(-3px);
+  border-color: var(--crissel-coral);
+  box-shadow: 0 18px 36px -24px rgba(229, 115, 115, 0.6);
+}
+
+.crissel-contact__tile:focus-visible {
+  outline: 2px solid var(--brand-solid-strong);
+  outline-offset: 2px;
+}
+
+.crissel-contact__tile-icon {
+  grid-row: 1 / span 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  background: rgba(229, 115, 115, 0.12);
+  color: #c45c5c;
+}
+
+.crissel-contact__tile-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--crissel-coral);
+}
+
+.crissel-contact__tile-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #2d1a1f;
+}
+
+.crissel-contact__form {
+  padding: 2rem;
+  border-radius: 1.5rem;
+  background: #ffffff;
+  border: 1px solid rgba(248, 187, 217, 0.8);
+  box-shadow: 0 40px 80px -48px rgba(61, 28, 36, 0.55);
+}
+
+@media (max-width: 599px) {
+  .crissel-contact__map {
+    aspect-ratio: 4 / 5;
+  }
+
+  .crissel-contact__place {
+    flex-wrap: wrap;
+    row-gap: 0.65rem;
+  }
+
+  /* text takes the full row next to the pin, so "Cómo llegar" drops below it */
+  .crissel-contact__place-text {
+    flex-basis: calc(100% - 3.4rem);
+  }
+
+  .crissel-contact__place > :last-child {
+    margin-left: 3.35rem;
+  }
+
+  .crissel-contact__tiles {
+    grid-template-columns: 1fr;
+  }
+
+  .crissel-contact__form {
+    padding: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crissel-contact__tile {
+    transition: none;
+  }
+
+  .crissel-contact__tile:hover {
+    transform: none;
+  }
+}
+
+/* —— Interactive treatments list (Treatments.tsx) ——
+   Mobile: accordion (panel moved under the active tab via `order`).
+   Desktop: numbered list left, photo + details right. */
+.crissel-tx {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-top: 1px solid rgba(196, 92, 92, 0.18);
+}
+
+.crissel-tx__tab {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: baseline;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.25rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(196, 92, 92, 0.18);
+  background: none;
+  color: #2d1a1f;
+  text-align: left;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.35s ease;
+}
+
+.crissel-tx__tab:hover,
+.crissel-tx__tab[data-active='true'] {
+  opacity: 1;
+}
+
+.crissel-tx__tab:focus-visible {
+  outline: 2px solid var(--brand-solid-strong);
+  outline-offset: 4px;
+  border-radius: 0.25rem;
+}
+
+/* Coral line that sweeps in under the active tab */
+.crissel-tx__tab::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--crissel-coral);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.crissel-tx__tab[data-active='true']::after {
+  transform: scaleX(1);
+}
+
+.crissel-tx__number {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--crissel-coral);
+}
+
+.crissel-tx__title {
+  font-size: clamp(1.6rem, 3.1vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  transition:
+    color 0.35s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.crissel-tx__tab[data-active='true'] .crissel-tx__title {
+  color: #c45c5c;
+  transform: translateX(0.35rem);
+}
+
+.crissel-tx__badge {
+  align-self: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--crissel-coral);
+  color: #fff8f9;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.crissel-tx__arrow {
+  font-size: 1.4rem;
+  color: var(--crissel-coral);
+  opacity: 0;
+  transform: translateX(-0.5rem);
+  transition:
+    opacity 0.35s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.crissel-tx__tab[data-active='true'] .crissel-tx__arrow {
+  opacity: 1;
+  transform: none;
+}
+
+.crissel-tx__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.25rem 0 1.75rem;
+}
+
+.crissel-tx__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  background: linear-gradient(145deg, #fce4ec, #fff0f4);
+  box-shadow: 0 30px 60px -30px rgba(61, 28, 36, 0.45);
+}
+
+.crissel-tx__photo {
+  position: absolute !important;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.06);
+  transition:
+    opacity 0.6s ease,
+    transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.crissel-tx__photo.is-active {
+  opacity: 1;
+  transform: none;
+}
+
+.crissel-tx__details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  animation: crissel-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.crissel-tx__points {
+  display: grid !important;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+  .crissel-tx__points {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 900px) {
+  .crissel-tx {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    /* four tab rows, then a spare row that absorbs the panel's extra height */
+    grid-template-rows: repeat(4, auto) 1fr;
+    column-gap: 4rem;
+    border-top: 0;
+  }
+
+  .crissel-tx__tab {
+    grid-column: 1;
+    padding: 1.6rem 0;
+  }
+
+  .crissel-tx__tab:first-of-type {
+    border-top: 1px solid rgba(196, 92, 92, 0.18);
+  }
+
+  .crissel-tx__panel {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    padding: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crissel-tx__tab,
+  .crissel-tx__tab::after,
+  .crissel-tx__title,
+  .crissel-tx__arrow,
+  .crissel-tx__photo {
+    transition: none;
+  }
+
+  .crissel-tx__details {
+    animation: none;
+  }
+}
+
 .crissel-zigzag__media {
   position: relative;
   width: 100%;
@@ -560,55 +2045,6 @@ a {
 
 .crissel-zigzag__frame--portrait {
   aspect-ratio: 4 / 5;
-}
-
-/* —— Full-width photo bands (CTA / contact) —— */
-.crissel-band {
-  position: relative;
-  width: 100%;
-  min-height: 28rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background: #3d1c24;
-}
-
-.crissel-band__media {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.crissel-band__media > span,
-.crissel-band__media > img {
-  position: absolute !important;
-  inset: 0;
-  height: 100% !important;
-  width: 100% !important;
-}
-
-.crissel-band__wash {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(61, 28, 36, 0.55) 0%, rgba(61, 28, 36, 0.75) 100%),
-    linear-gradient(90deg, rgba(229, 115, 115, 0.25) 0%, transparent 60%);
-}
-
-.crissel-band__content {
-  position: relative;
-  width: 100%;
-  max-width: 72rem;
-  margin: 0 auto;
-  padding-block: 5rem;
-}
-
-.crissel-band__card {
-  background: rgba(255, 248, 249, 0.94) !important;
-  border: 1px solid rgba(248, 187, 217, 0.55);
-  backdrop-filter: blur(10px);
 }
 
 /* —— Soft nav over hero —— */
@@ -648,7 +2084,60 @@ a {
   border-top: 1px solid rgba(248, 187, 217, 0.18);
 }
 
-/* —— Gallery thumbnails (unstyled button + hover zoom + caption scrim) —— */
+/* —— Gallery (GalleryPage.tsx): masonry wall — photos keep their real shape —— */
+.crissel-masonry {
+  column-count: 4;
+  column-gap: 1rem;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .crissel-masonry {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 600px) {
+  .crissel-masonry {
+    column-count: 2;
+    column-gap: 0.75rem;
+  }
+}
+
+.crissel-masonry__item {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+  .crissel-masonry__item {
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Scroll reveal (useMasonryReveal sets data-reveal; `is-static` = already on screen at load) */
+.crissel-masonry[data-reveal='on'] .crissel-masonry__item:not(.is-visible):not(.is-static) {
+  opacity: 0;
+  transform: translateY(1.5rem) scale(0.97);
+}
+
+.crissel-masonry__item.is-visible {
+  animation: crissel-masonry-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--d, 0) * 70ms);
+}
+
+@keyframes crissel-masonry-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* —— Gallery thumbnails (unstyled button + hover zoom + sliding caption) —— */
 .crissel-gallery-thumb {
   position: relative;
   display: block;
@@ -660,6 +2149,17 @@ a {
   border-radius: var(--radius-l);
   overflow: hidden;
   text-align: left;
+  /* soft placeholder while the (lazy-loaded) photo comes in */
+  background: linear-gradient(145deg, #fce4ec, #fff0f4);
+  box-shadow: 0 18px 40px -28px rgba(61, 28, 36, 0.45);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s ease;
+}
+
+.crissel-gallery-thumb:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 28px 50px -26px rgba(229, 115, 115, 0.55);
 }
 
 .crissel-gallery-thumb:focus-visible {
@@ -668,27 +2168,67 @@ a {
 }
 
 .crissel-gallery-thumb img {
-  transition: transform 0.3s ease;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.crissel-gallery-thumb:hover img {
-  transform: scale(1.05);
+.crissel-gallery-thumb:hover img,
+.crissel-gallery-thumb:focus-visible img {
+  transform: scale(1.06);
 }
 
 .crissel-gallery-thumb__caption {
   position: absolute;
   inset: auto 0 0 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3) 60%, transparent);
+  background: linear-gradient(to top, rgba(42, 18, 24, 0.8), rgba(42, 18, 24, 0.35) 65%, transparent);
   pointer-events: none;
 }
 
+/* With a mouse, the caption slides up on hover; on touch screens it's always shown */
+@media (hover: hover) {
+  .crissel-gallery-thumb__caption {
+    opacity: 0;
+    transform: translateY(40%);
+    transition:
+      opacity 0.35s ease,
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .crissel-gallery-thumb:hover .crissel-gallery-thumb__caption,
+  .crissel-gallery-thumb:focus-visible .crissel-gallery-thumb__caption {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .crissel-gallery-thumb img {
+  .crissel-gallery-thumb,
+  .crissel-gallery-thumb img,
+  .crissel-gallery-thumb__caption {
     transition: none;
+  }
+
+  .crissel-gallery-thumb:hover {
+    transform: none;
   }
 }
 
 /* next/image `fill` helper (replaces the Tailwind utility) */
 .object-cover {
   object-fit: cover;
+}
+
+/* "▶ Video" pill on video tiles in the gallery */
+.crissel-gallery-thumb__badge {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.65rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(42, 18, 24, 0.7);
+  backdrop-filter: blur(6px);
+  color: #fff8f9;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  pointer-events: none;
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import type { ComponentType, ReactNode } from 'react'
+import { useLayoutEffect, useRef, useState, type ComponentType, type ReactNode } from 'react'
 import { Heading, Text } from '@once-ui-system/core'
 
 interface SectionHeaderProps {
@@ -15,14 +15,73 @@ interface SectionHeaderProps {
   align?: 'start' | 'center' | 'end'
   tone?: 'light' | 'dark'
   titleAs?: 'h1' | 'h2'
+  /** id on the heading, for `aria-labelledby` on the section */
+  titleId?: string
+  /** `compact` for titles in a half-width column (e.g. next to a photo) */
+  size?: 'default' | 'compact'
   className?: string
   titleClassName?: string
   descriptionClassName?: string
 }
 
 /**
+ * Reveal state, kept off until JS decides:
+ * - `static`: already on screen at mount (or reduced motion) — never animate, so no flicker
+ * - `hidden`: below the fold — words wait, then animate in on `shown`
+ */
+type RevealState = 'static' | 'hidden' | 'shown'
+
+const useScrollReveal = <T extends HTMLElement>() => {
+  const ref = useRef<T>(null)
+  const [state, setState] = useState<RevealState>('static')
+
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (el.getBoundingClientRect().top < window.innerHeight) return
+
+    setState('hidden')
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setState('shown')
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '0px 0px -15% 0px' },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return { ref, state }
+}
+
+/** Splits plain-string titles into words so each can animate in turn */
+const Words = ({ text, start = 0 }: { text: string; start?: number }) => (
+  <>
+    {text.split(/(\s+)/).map((part, i) =>
+      part.trim() ? (
+        <span
+          key={i}
+          className="crissel-word"
+          style={{ ['--i' as string]: start + Math.floor(i / 2) }}
+        >
+          {part}
+        </span>
+      ) : (
+        part
+      ),
+    )}
+  </>
+)
+
+const wordCount = (text: string) => text.split(/\s+/).filter(Boolean).length
+
+/**
  * La Femme–style section title:
- * eyebrow with hairline rules · serif headline · italic accent · soft lede
+ * ✦ coral eyebrow ✦ · large serif headline with word-by-word reveal ·
+ * italic accent with brush underline · soft lede
  */
 export const SectionHeader = ({
   eyebrow,
@@ -33,43 +92,55 @@ export const SectionHeader = ({
   align = 'center',
   tone = 'light',
   titleAs = 'h2',
+  titleId,
+  size = 'default',
   className = '',
 }: SectionHeaderProps) => {
   const isCenter = align !== 'start'
   const isDark = tone === 'dark'
+  const { ref, state } = useScrollReveal<HTMLDivElement>()
+  const titleWords = typeof title === 'string' ? wordCount(title) : 0
 
   return (
     <div
+      ref={ref}
+      data-reveal={state}
       className={[
         'crissel-section-header',
         isCenter ? 'crissel-section-header--center' : 'crissel-section-header--start',
         isDark ? 'crissel-section-header--dark' : '',
+        size === 'compact' ? 'crissel-section-header--compact' : '',
         className,
       ]
         .filter(Boolean)
         .join(' ')}
     >
       {eyebrow ? (
-        <div className="crissel-section-header__eyebrow">
-          <span className="crissel-section-header__rule" aria-hidden />
-          <Text variant="label-default-s" className="crissel-section-header__eyebrow-text">
-            {eyebrow}
-          </Text>
-          <span className="crissel-section-header__rule" aria-hidden />
-        </div>
+        <Text as="p" variant="label-strong-s" className="crissel-section-header__eyebrow">
+          <span className="crissel-section-header__spark" aria-hidden>
+            ✦
+          </span>
+          {eyebrow}
+          <span className="crissel-section-header__spark" aria-hidden>
+            ✦
+          </span>
+        </Text>
       ) : null}
 
       <Heading
         as={titleAs}
-        variant="display-strong-s"
+        id={titleId}
+        variant="display-strong-m"
         align={isCenter ? 'center' : 'left'}
         className="font-display crissel-section-header__title"
       >
-        {title}
+        {typeof title === 'string' ? <Words text={title} /> : title}
         {titleAccent ? (
           <>
             {' '}
-            <em className="crissel-italic">{titleAccent}</em>
+            <em className="crissel-italic crissel-accent">
+              <Words text={titleAccent} start={titleWords} />
+            </em>
             {titleEnd}
           </>
         ) : null}
@@ -77,7 +148,7 @@ export const SectionHeader = ({
 
       {description ? (
         <Text
-          variant="body-default-m"
+          variant="body-default-l"
           align={isCenter ? 'center' : 'left'}
           wrap="balance"
           className="crissel-section-header__desc"
