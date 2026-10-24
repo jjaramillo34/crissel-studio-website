@@ -1,40 +1,29 @@
+import { notFound } from 'next/navigation'
 import BlogPostPage from '@/components/blog/BlogPostPage'
 import { generateMetadata as generateMetadataHelper } from '@/lib/metadata'
-import { payload, getMediaUrl } from '@/lib/payload'
+import { getMediaUrl } from '@/lib/payload'
+import { getBlogPostBySlug } from '@/lib/blog'
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
+type Params = { params: Promise<{ slug: string }> }
+
+// Re-render at most every 5 minutes so CMS edits show up without a deploy
+export const revalidate = 300
+
+export async function generateMetadata({ params }: Params) {
   try {
-    const resolvedParams = await params
-    const slug = resolvedParams?.slug
-    
-    if (!slug) {
-      return generateMetadataHelper({
-        title: 'Artículo no encontrado | Blog Crissel Studio',
-      })
-    }
-    
-    // Add timeout to prevent hanging
-    const post = await Promise.race([
-      payload.getBlogBySlug(slug, { depth: 1 }),
-      new Promise<null>((resolve) => setTimeout(() => resolve(null), 5000))
-    ])
-    
+    const { slug } = await params
+    const post = await getBlogPostBySlug(slug)
+
     if (!post) {
       return generateMetadataHelper({
         title: 'Artículo no encontrado | Blog Crissel Studio',
       })
     }
 
-    const imageUrl = getMediaUrl(post.featuredImage)
-
     return generateMetadataHelper({
       title: `${post.title} | Blog Crissel Studio`,
       description: post.excerpt,
-      image: imageUrl || undefined,
+      image: getMediaUrl(post.featuredImage) || undefined,
       type: 'article',
       url: `/blog/${encodeURIComponent(slug)}`,
     })
@@ -47,19 +36,9 @@ export async function generateMetadata({
   }
 }
 
-export default async function BlogPostPageRoute({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  let slug = ''
-  try {
-    const resolvedParams = await params
-    slug = String(resolvedParams?.slug || '')
-  } catch (error) {
-    console.error('Error resolving params:', error)
-  }
-  
-  return <BlogPostPage slug={slug} />
+export default async function BlogPostPageRoute({ params }: Params) {
+  const { slug } = await params
+  const post = await getBlogPostBySlug(slug)
+  if (!post) notFound()
+  return <BlogPostPage post={post} />
 }
-

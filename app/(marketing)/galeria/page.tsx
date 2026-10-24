@@ -3,7 +3,7 @@ import { generateMetadata } from '@/lib/metadata'
 
 export const metadata = generateMetadata({
   title: 'Galería | Crissel Studio',
-  description: 'Explora nuestra galería de trabajos: extensiones de pestañas, diseño de cejas, maquillaje profesional y más.',
+  description: 'Explora nuestra galería de trabajos: extensiones de pestañas, diseño de cejas, maquillaje profesional, uñas y más.',
   url: '/galeria',
 })
 

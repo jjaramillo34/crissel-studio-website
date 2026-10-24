@@ -194,7 +194,7 @@ export interface Blog {
    * Short description for previews
    */
   excerpt: string;
-  category: 'Extensiones' | 'Cejas' | 'Pestañas' | 'Maquillaje' | 'Skincare';
+  category: 'Extensiones' | 'Cejas' | 'Pestañas' | 'Maquillaje' | 'Uñas' | 'Skincare';
   featuredImage: string | Media;
   author: string;
   publishedAt: string;
@@ -231,7 +231,7 @@ export interface Service {
    * Price in USD (optional)
    */
   price?: number | null;
-  category: 'extensiones-pestanas' | 'diseno-cejas' | 'maquillaje' | 'microblading' | 'planchado-cejas';
+  category: 'extensiones-pestanas' | 'diseno-cejas' | 'maquillaje' | 'microblading' | 'planchado-cejas' | 'unas';
   images?:
     | {
         image: string | Media;
@@ -266,7 +266,8 @@ export interface Gallery {
     | 'maquillaje-social'
     | 'maquillaje-fantasia'
     | 'microblading'
-    | 'planchado-cejas';
+    | 'planchado-cejas'
+    | 'unas';
   description?: string | null;
   /**
    * Order for display (lower numbers appear first)
@@ -384,7 +385,7 @@ export interface ContactSubmission {
   id: string;
   name: string;
   email: string;
-  subject: 'appointment' | 'makeup' | 'eyebrows' | 'lashes' | 'other';
+  subject: 'appointment' | 'makeup' | 'eyebrows' | 'lashes' | 'nails' | 'other';
   message: string;
   status?: ('new' | 'in-progress' | 'replied' | 'archived') | null;
   updatedAt: string;

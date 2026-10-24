@@ -114,6 +114,36 @@ This project uses Payload CMS integrated with Next.js. Access the admin panel at
 
 **Note:** With Next.js integration, everything runs on a single server (port 3000). No need to run separate servers!
 
+## Adding Gallery Photos
+
+Photos live in `public/assets/gallery/`. Name them by what they show, in lowercase with no spaces or accents, for example `unas-4.jpg`, `maquillaje-fantasia-catrina-4.jpg`, or `promo-dia-de-la-madre.jpg` for flyers. Accents are restored in the lightbox titles automatically (`unas` → "Uñas", `fantasia` → "Fantasía").
+
+### 1. Add it to the Galería (`src/components/GalleryPage.tsx`)
+
+Add one line to `imageCategories`. The key must be the file name, and `path` is the filter it appears under: `extensiones`, `cejas`, `maquillaje` or `unas`.
+
+```ts
+'unas-4.jpg': { label: 'Uñas', path: 'unas' },
+```
+
+If the photo isn't square, also add its pixel size to `imageSizes` so the masonry wall keeps its real shape (otherwise it's shown as a square):
+
+```ts
+'unas-4.jpg': [1200, 1600], // [width, height]
+```
+
+Short `.mp4` clips work the same way: they play muted on a loop in the wall, with controls in the lightbox.
+
+### 2. Optional: use it elsewhere
+
+- **Homepage treatments** (`src/components/sections/Treatments.tsx`): each treatment has an `image`. It's shown in a landscape 4:3 frame, so landscape photos fit best.
+- **Productos** (`src/components/ProductsPage.tsx`): each service has a `mainImage` (4:3) plus optional `benefitsImage` / `detailsImage` (shown square, side by side).
+- **Hero wall** (`src/components/sections/Hero.tsx`): add the path to `photos`. Use real work photos, not flyers with text, because the wall crops to portrait 3:4.
+
+### 3. Check it
+
+Run `pnpm dev` and look at `/galeria` (use the filter for the category), plus `/` and `/productos` if you used the photo there. Then run `pnpm build` before committing.
+
 ## Deployment Notes
 
 - Commit only source files—build output (`dist`) and local environment files (`.env*`) are ignored via `.gitignore`.

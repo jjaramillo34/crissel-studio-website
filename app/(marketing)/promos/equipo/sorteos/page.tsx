@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Column, Heading, InlineCode, Text } from '@once-ui-system/core'
 import StaffSorteoClient from '@/components/promos/StaffSorteoClient'
 
 export const metadata: Metadata = {
@@ -9,16 +10,19 @@ export const metadata: Metadata = {
 
 export default function StaffSorteoPage() {
   return (
-    <div className="min-h-screen px-4 pb-24 pt-24">
-      <div className="mx-auto max-w-lg">
-        <h1 className="font-display text-2xl font-bold text-neutral-900">Sorteo maquillaje</h1>
-        <p className="mt-2 text-sm text-neutral-600">
-          Uso interno del estudio. No enlaces esta URL desde la web pública. Configura{' '}
-          <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">RAFFLE_STAFF_TOKEN</code> en
-          el servidor (Vercel / .env).
-        </p>
+    <Column as="main" fillWidth horizontal="center" paddingX="24" paddingTop="104" paddingBottom="104">
+      <Column fillWidth maxWidth="xs" gap="32">
+        <Column gap="8">
+          <Heading as="h1" variant="heading-strong-xl">
+            Sorteo maquillaje
+          </Heading>
+          <Text variant="body-default-s" onBackground="neutral-medium">
+            Uso interno del estudio. No enlaces esta URL desde la web pública. Configura{' '}
+            <InlineCode>RAFFLE_STAFF_TOKEN</InlineCode> en el servidor (Vercel / .env).
+          </Text>
+        </Column>
         <StaffSorteoClient />
-      </div>
-    </div>
+      </Column>
+    </Column>
   )
 }

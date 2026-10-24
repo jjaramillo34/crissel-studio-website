@@ -3,7 +3,7 @@ import { getPayload } from 'payload'
 import configPromise from '../../../payload.config'
 import { checkRateLimit } from '../../../src/lib/rateLimit'
 
-const subjects = ['appointment', 'makeup', 'eyebrows', 'lashes', 'other'] as const
+const subjects = ['appointment', 'makeup', 'eyebrows', 'lashes', 'nails', 'other'] as const
 type Subject = (typeof subjects)[number]
 const maxRequestBytes = 10_000
 

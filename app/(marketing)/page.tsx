@@ -10,9 +10,9 @@ import { Column } from '@once-ui-system/core'
 import { generateMetadata } from '@/lib/metadata'
 
 export const metadata = generateMetadata({
-  title: 'Crissel Studio | Expertas en mirada, cejas y maquillaje en Ambato',
+  title: 'Crissel Studio | Pestañas, cejas, maquillaje y uñas en Ambato',
   description:
-    'Somos especialistas en extensiones de pestañas, diseño de cejas, maquillaje profesional y paquetes de belleza personalizada en Ambato.',
+    'Somos especialistas en extensiones de pestañas, diseño de cejas, maquillaje profesional y uñas (manicure, pedicure, semipermanente, acrílicas y nail art) en Ambato.',
   url: '/',
 })
 

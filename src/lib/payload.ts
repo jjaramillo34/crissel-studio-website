@@ -155,7 +155,10 @@ export async function fetchPayloadDoc<T = any>(
  * Get media URL from Payload media object
  * Payload returns media URLs in different formats depending on configuration
  */
-export function getMediaUrl(media: Media | string | null | undefined): string | null {
+/** Anything carrying a media url/filename: our Media type or Payload's generated one */
+type MediaLike = { url?: string | null; filename?: string | null }
+
+export function getMediaUrl(media: MediaLike | string | null | undefined): string | null {
   if (!media) return null
   
   // Safety check: if it's an object but not a Media object, return null

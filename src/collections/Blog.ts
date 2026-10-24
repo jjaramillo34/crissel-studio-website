@@ -40,6 +40,7 @@ export const Blog: CollectionConfig = {
         { label: 'Cejas', value: 'Cejas' },
         { label: 'Pestañas', value: 'Pestañas' },
         { label: 'Maquillaje', value: 'Maquillaje' },
+        { label: 'Uñas', value: 'Uñas' },
         { label: 'Skincare', value: 'Skincare' },
       ],
     },

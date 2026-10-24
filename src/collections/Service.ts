@@ -49,6 +49,7 @@ export const Service: CollectionConfig = {
         { label: 'Maquillaje', value: 'maquillaje' },
         { label: 'Microblading', value: 'microblading' },
         { label: 'Planchado de Cejas', value: 'planchado-cejas' },
+        { label: 'Uñas', value: 'unas' },
       ],
     },
     {

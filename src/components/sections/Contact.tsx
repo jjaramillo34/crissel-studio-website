@@ -1,19 +1,29 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import {
   Button,
   Column,
   Feedback,
+  Icon,
   Input,
-  Row,
   Select,
   SmartLink,
   Text,
   Textarea,
 } from '@once-ui-system/core'
+import { PROMO_WHATSAPP_LINES, whatsappHref } from '@/data/promos'
 import { SectionHeader } from './SectionHeader'
+
+/**
+ * Where the map pin and "Cómo llegar" point. Searching the mall's name pins the wrong mall
+ * (Centro Comercial Ferroviario), so this uses the street corner. Replace with the studio's own
+ * Google Maps place/embed link once it's listed.
+ */
+const MAP_QUERY = 'Juan León Mera y Rocafuerte, Ambato, Ecuador'
+const MAP_EMBED_URL = `https://www.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&z=17&output=embed`
+const DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(MAP_QUERY)}`
+const WHATSAPP_GREETING = 'Hola Crissel Studio, quisiera información sobre sus servicios.'
 
 type FormField = 'name' | 'email' | 'message' | 'subject'
 type FormErrors = Partial<Record<FormField, string>>
@@ -23,6 +33,7 @@ const subjectOptions = [
   { value: 'makeup', label: 'Consulta maquillaje' },
   { value: 'eyebrows', label: 'Consulta cejas' },
   { value: 'lashes', label: 'Consulta pestañas' },
+  { value: 'nails', label: 'Consulta uñas' },
   { value: 'other', label: 'Otro' },
 ]
 
@@ -92,152 +103,178 @@ const Contact = () => {
   }
 
   return (
-    <section id="contacto" className="crissel-band crissel-band--contact" aria-labelledby="contacto-title">
-      <div className="crissel-band__media">
-        <Image
-          src="/assets/images/hero.jpg"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover"
+    <section
+      id="contacto"
+      className="crissel-section crissel-section--cream"
+      aria-labelledby="contacto-title"
+    >
+      <div className="crissel-section__inner">
+        <SectionHeader
+          titleId="contacto-title"
+          eyebrow="Contacto y ubicación"
+          title="Visítanos en el"
+          titleAccent="estudio"
+          description="Espacio tranquilo y céntrico. En el corazón de Ambato."
         />
-        <div className="crissel-band__wash" aria-hidden />
-      </div>
 
-      <Row
-        className="crissel-band__content"
-        fillWidth
-        maxWidth="l"
-        gap="48"
-        paddingX="l"
-        paddingY="80"
-        vertical="center"
-        s={{ direction: 'column', gap: '32' }}
-        zIndex={1}
-      >
-        <Column gap="24" fillWidth>
-          <SectionHeader
-            tone="dark"
-            align="start"
-            eyebrow="Contacto y ubicación"
-            title="Visítanos en el"
-            titleAccent="estudio"
-            description="Espacio tranquilo y céntrico. En el corazón de Ambato."
-          />
-          <Column gap="8">
-            <Text variant="heading-strong-s" className="crissel-hero__title">
-              Centro Comercial La Galería
-            </Text>
-            <Text variant="body-default-m" className="crissel-hero__lede">
-              Mera entre Rocafuerte y Bolívar
-              <br />
-              Ambato, Ecuador
-            </Text>
-          </Column>
-          <Column gap="4">
-            <SmartLink href="https://bit.ly/crisselstudio">
-              <Text variant="body-default-m" className="crissel-hero__lede">
-                bit.ly/crisselstudio
-              </Text>
-            </SmartLink>
-            <SmartLink href="https://instagram.com/crisselstudio.ec">
-              <Text variant="body-default-s" className="crissel-hero__lede">
-                @crisselstudio.ec
-              </Text>
-            </SmartLink>
-          </Column>
-          <Row gap="12" s={{ direction: 'column' }}>
-            <Button href="https://bit.ly/crisselstudio" label="Reservar cita" prefixIcon="calendar" />
-            <Button
-              variant="secondary"
-              href="https://wa.me/593992950683"
-              label="WhatsApp"
-              className="crissel-hero__cta-ghost"
-            />
-          </Row>
-        </Column>
+        <div className="crissel-contact">
+          <div className="crissel-contact__info">
+            <div className="crissel-contact__map">
+              <iframe
+                src={MAP_EMBED_URL}
+                title="Mapa: Crissel Studio en el Centro Comercial La Galería, Ambato"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+              <div className="crissel-contact__place">
+                <span className="crissel-contact__pin" aria-hidden>
+                  <Icon name="mapPin" size="s" />
+                </span>
+                <div className="crissel-contact__place-text">
+                  <p className="crissel-contact__place-name font-display">Centro Comercial La Galería</p>
+                  <p className="crissel-contact__place-address">Mera entre Rocafuerte y Bolívar · Ambato</p>
+                </div>
+                <Button href={DIRECTIONS_URL} size="s" label="Cómo llegar" arrowIcon />
+              </div>
+            </div>
 
-        <Column
-          as="form"
-          fillWidth
-          className="crissel-band__card"
-          padding="32"
-          gap="16"
-          radius="l"
-          onSubmit={handleSubmit}
-        >
-          <Text variant="label-default-s" onBackground="brand-medium">
-            Escríbenos
-          </Text>
-          <Text variant="heading-strong-l" className="font-display">
-            Tu cita te espera
-          </Text>
-          <Text variant="body-default-s" onBackground="neutral-weak">
-            Agenda en línea o déjanos un mensaje. Te orientamos para elegir el tratamiento ideal.
-          </Text>
-          <Input
-            id="contact-name"
-            name="name"
-            label="Nombre"
-            placeholder="Tu nombre completo"
-            value={formData.name}
-            onChange={(event) => handleChange('name', event.target.value)}
-            autoComplete="name"
-            maxLength={80}
-            error={Boolean(errors.name)}
-            errorMessage={errors.name}
-            required
-          />
-          <Input
-            id="contact-email"
-            name="email"
-            type="email"
-            label="Email"
-            placeholder="tu@email.com"
-            value={formData.email}
-            onChange={(event) => handleChange('email', event.target.value)}
-            autoComplete="email"
-            error={Boolean(errors.email)}
-            errorMessage={errors.email}
-            required
-          />
-          <Select
-            id="contact-subject"
-            label="Asunto"
-            value={formData.subject}
-            options={subjectOptions}
-            onSelect={(value) => handleChange('subject', Array.isArray(value) ? value[0] : value)}
-          />
-          <Textarea
-            id="contact-message"
-            name="message"
-            label="Mensaje"
-            placeholder="Cuéntanos sobre el servicio que necesitas..."
-            value={formData.message}
-            onChange={(event) => handleChange('message', event.target.value)}
-            lines={4}
-            maxLength={2000}
-            characterCount
-            resize="none"
-            error={Boolean(errors.message)}
-            errorMessage={errors.message}
-            required
-          />
-          <Button
-            type="submit"
-            label={isSubmitting ? 'Enviando...' : 'Enviar mensaje'}
+            <ul className="crissel-contact__tiles">
+              {PROMO_WHATSAPP_LINES.map((line) => (
+                <li key={line.id}>
+                  <SmartLink
+                    unstyled
+                    fillWidth
+                    className="crissel-contact__tile"
+                    href={whatsappHref(line.waE164, WHATSAPP_GREETING)}
+                  >
+                    <span className="crissel-contact__tile-icon">
+                      <Icon name="whatsapp" size="s" />
+                    </span>
+                    <span className="crissel-contact__tile-label">WhatsApp {line.label}</span>
+                    <span className="crissel-contact__tile-value">{line.displayNational}</span>
+                  </SmartLink>
+                </li>
+              ))}
+              <li>
+                <SmartLink
+                  unstyled
+                  fillWidth
+                  className="crissel-contact__tile"
+                  href="mailto:crisseleon1990@gmail.com"
+                >
+                  <span className="crissel-contact__tile-icon">
+                    <Icon name="mail" size="s" />
+                  </span>
+                  <span className="crissel-contact__tile-label">Email</span>
+                  <span className="crissel-contact__tile-value">crisseleon1990@gmail.com</span>
+                </SmartLink>
+              </li>
+              <li>
+                <SmartLink
+                  unstyled
+                  fillWidth
+                  className="crissel-contact__tile"
+                  href="https://instagram.com/crisselstudio.ec"
+                >
+                  <span className="crissel-contact__tile-icon">
+                    <Icon name="sparkle" size="s" />
+                  </span>
+                  <span className="crissel-contact__tile-label">Instagram</span>
+                  <span className="crissel-contact__tile-value">@crisselstudio.ec</span>
+                </SmartLink>
+              </li>
+            </ul>
+          </div>
+
+          <Column
+            as="form"
             fillWidth
-            loading={isSubmitting}
-            disabled={isSubmitting}
-          />
-          {status && (
-            <Feedback
-              variant={status.type === 'success' ? 'success' : 'danger'}
-              description={status.message}
+            className="crissel-contact__form"
+            gap="16"
+            onSubmit={handleSubmit}
+          >
+            <Text variant="label-strong-s" onBackground="brand-medium">
+              Escríbenos
+            </Text>
+            <Text variant="heading-strong-xl" className="font-display">
+              Tu cita te espera
+            </Text>
+            <Text variant="body-default-s" onBackground="neutral-weak">
+              Agenda en línea o déjanos un mensaje. Te orientamos para elegir el tratamiento ideal.
+            </Text>
+            <Input
+              id="contact-name"
+              name="name"
+              label="Nombre"
+              placeholder="Tu nombre completo"
+              value={formData.name}
+              onChange={(event) => handleChange('name', event.target.value)}
+              autoComplete="name"
+              maxLength={80}
+              error={Boolean(errors.name)}
+              errorMessage={errors.name}
+              required
             />
-          )}
-        </Column>
-      </Row>
+            <Input
+              id="contact-email"
+              name="email"
+              type="email"
+              label="Email"
+              placeholder="tu@email.com"
+              value={formData.email}
+              onChange={(event) => handleChange('email', event.target.value)}
+              autoComplete="email"
+              error={Boolean(errors.email)}
+              errorMessage={errors.email}
+              required
+            />
+            <Select
+              id="contact-subject"
+              label="Asunto"
+              value={formData.subject}
+              options={subjectOptions}
+              onSelect={(value) => handleChange('subject', Array.isArray(value) ? value[0] : value)}
+            />
+            <Textarea
+              id="contact-message"
+              name="message"
+              label="Mensaje"
+              placeholder="Cuéntanos sobre el servicio que necesitas..."
+              value={formData.message}
+              onChange={(event) => handleChange('message', event.target.value)}
+              lines={4}
+              maxLength={2000}
+              characterCount
+              resize="none"
+              error={Boolean(errors.message)}
+              errorMessage={errors.message}
+              required
+            />
+            <Button
+              type="submit"
+              size="l"
+              prefixIcon="mail"
+              label={isSubmitting ? 'Enviando...' : 'Enviar mensaje'}
+              fillWidth
+              loading={isSubmitting}
+              disabled={isSubmitting}
+            />
+            {status && (
+              <Feedback
+                variant={status.type === 'success' ? 'success' : 'danger'}
+                description={status.message}
+              />
+            )}
+            <Text variant="body-default-xs" onBackground="neutral-weak" align="center">
+              ¿Prefieres reservar directo?{' '}
+              <SmartLink href="https://bit.ly/crisselstudio" className="crissel-treatment__link">
+                Agenda en línea →
+              </SmartLink>
+            </Text>
+          </Column>
+        </div>
+      </div>
     </section>
   )
 }
