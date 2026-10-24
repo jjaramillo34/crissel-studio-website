@@ -2512,3 +2512,626 @@ a {
   grid-column: 1 / -1;
   aspect-ratio: 2 / 1;
 }
+
+/* —— Shop page (ShopPage.tsx): trust chips, filter pills, editorial product cards —— */
+.crissel-shop-perks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.crissel-shop-perks__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 1rem 0.45rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(229, 115, 115, 0.22);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #3d1c24;
+}
+
+.crissel-shop-perks__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  background: #fce4ec;
+  color: #c45c5c;
+}
+
+.crissel-shop-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.crissel-shop-filters__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.7rem 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(229, 115, 115, 0.3);
+  background: #fff;
+  color: #3d1c24;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.crissel-shop-filters__chip:hover {
+  border-color: var(--crissel-coral);
+}
+
+.crissel-shop-filters__chip:focus-visible {
+  outline: 2px solid var(--brand-solid-strong);
+  outline-offset: 2px;
+}
+
+.crissel-shop-filters__chip[aria-pressed='true'] {
+  background: #3d1c24;
+  border-color: #3d1c24;
+  color: #fff8f9;
+}
+
+.crissel-shop-filters__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding-inline: 0.35rem;
+  border-radius: 999px;
+  background: #fce4ec;
+  color: #c45c5c;
+  font-size: 0.75rem;
+}
+
+.crissel-shop-filters__chip[aria-pressed='true'] .crissel-shop-filters__count {
+  background: var(--crissel-coral);
+  color: #fff8f9;
+}
+
+/* Card: same lift and outlined number as the Standards cards, on a light surface */
+.crissel-shop-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+  padding: 1.75rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(229, 115, 115, 0.16);
+  background: #fff;
+  box-shadow: 0 24px 50px -40px rgba(61, 28, 36, 0.45);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    box-shadow 0.45s ease;
+}
+
+.crissel-shop-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(229, 115, 115, 0.4);
+  box-shadow: 0 30px 50px -28px rgba(229, 115, 115, 0.5);
+}
+
+.crissel-shop-card__number {
+  position: absolute;
+  top: 0.4rem;
+  right: 1rem;
+  font-size: 4.5rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(229, 115, 115, 0.28);
+  transition: -webkit-text-stroke-color 0.35s ease;
+  pointer-events: none;
+}
+
+.crissel-shop-card:hover .crissel-shop-card__number {
+  -webkit-text-stroke-color: rgba(229, 115, 115, 0.6);
+}
+
+.crissel-shop-card__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  /* keep clear of the outlined number */
+  padding-right: 4.5rem;
+}
+
+.crissel-shop-card__category {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #c45c5c;
+}
+
+.crissel-shop-card__name {
+  margin: 0.5rem 0 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #2d1a1f;
+}
+
+.crissel-shop-card__short {
+  margin: 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--crissel-coral);
+}
+
+.crissel-shop-card__desc {
+  flex: 1;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #6b5258;
+}
+
+.crissel-shop-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(229, 115, 115, 0.14);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #c45c5c;
+}
+
+.crissel-shop-card__link span {
+  transition: transform 0.3s ease;
+}
+
+.crissel-shop-card__link:hover {
+  color: var(--crissel-coral);
+}
+
+.crissel-shop-card__link:hover span {
+  transform: translateX(4px);
+}
+
+/* Visit: arched studio photo next to the closing copy */
+.crissel-shop-visit {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  width: 100%;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .crissel-shop-visit {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 5rem;
+  }
+}
+
+.crissel-shop-visit__photo {
+  width: 100%;
+  max-width: 22rem;
+  margin-inline: auto;
+}
+
+.crissel-shop-visit__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.crissel-shop-visit__address {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #3d1c24;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crissel-shop-card,
+  .crissel-shop-card__number,
+  .crissel-shop-card__link span,
+  .crissel-shop-filters__chip {
+    transition: none;
+  }
+
+  .crissel-shop-card:hover,
+  .crissel-shop-card__link:hover span {
+    transform: none;
+  }
+}
+
+/* —— Promos page (PromosPage.tsx): live status, promo spread, coupon ticket, archive —— */
+.crissel-promo-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(229, 115, 115, 0.22);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6b5258;
+}
+
+.crissel-promo-status__dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: #c9b2b7;
+}
+
+.crissel-promo-status.is-live {
+  color: #3d1c24;
+}
+
+.crissel-promo-status.is-live .crissel-promo-status__dot {
+  background: var(--crissel-coral);
+  box-shadow: 0 0 0 0 rgba(229, 115, 115, 0.6);
+  animation: crissel-pulse 1.8s ease-out infinite;
+}
+
+@keyframes crissel-pulse {
+  to {
+    box-shadow: 0 0 0 0.6rem rgba(229, 115, 115, 0);
+  }
+}
+
+.crissel-promo-list {
+  gap: 5rem;
+}
+
+.crissel-promo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  width: 100%;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .crissel-promo {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 4.5rem;
+  }
+}
+
+.crissel-promo__flyer {
+  width: 100%;
+  max-width: 26rem;
+  margin-inline: auto;
+}
+
+/* Flyers carry their own text, so a soft rectangle instead of the arch */
+.crissel-promo__frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: linear-gradient(145deg, #fce4ec, #fff0f4);
+  box-shadow: 0 40px 70px -40px rgba(61, 28, 36, 0.55);
+}
+
+.crissel-product__collage.crissel-promo__flyer::before {
+  border-radius: 1.5rem;
+}
+
+.crissel-promo__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.crissel-promo__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.crissel-promo__price-label {
+  width: 100%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #c45c5c;
+}
+
+.crissel-promo__price-value {
+  font-size: clamp(3rem, 6vw, 4.25rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--crissel-coral);
+}
+
+.crissel-promo__price-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #7a2e3a;
+}
+
+.crissel-promo__hint {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #6b5258;
+}
+
+/* Coupon ticket: dashed divider, notches cut into both edges */
+.crissel-ticket {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 26rem;
+  border-radius: 1rem;
+  background: #fff;
+  border: 1px solid rgba(229, 115, 115, 0.3);
+  box-shadow: 0 20px 40px -30px rgba(229, 115, 115, 0.7);
+}
+
+.crissel-ticket::before,
+.crissel-ticket::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 999px;
+  background: #fffaf7;
+  border: 1px solid rgba(229, 115, 115, 0.3);
+  transform: translateY(-50%);
+}
+
+.crissel-ticket::before {
+  left: -0.6rem;
+  clip-path: inset(0 0 0 50%);
+}
+
+.crissel-ticket::after {
+  right: -0.6rem;
+  clip-path: inset(0 50% 0 0);
+}
+
+.crissel-ticket__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 1rem 1.25rem 1rem 1.5rem;
+}
+
+.crissel-ticket__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #c45c5c;
+}
+
+.crissel-ticket__code {
+  font-size: 1.9rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: #2d1a1f;
+}
+
+.crissel-ticket__discount {
+  font-size: 0.85rem;
+  color: #6b5258;
+}
+
+.crissel-ticket__copy {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  min-width: 6rem;
+  padding: 0 1.25rem;
+  border: 0;
+  border-left: 2px dashed rgba(229, 115, 115, 0.35);
+  border-radius: 0 1rem 1rem 0;
+  background: #fff5f7;
+  color: #c45c5c;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.crissel-ticket__copy:hover {
+  background: #fce4ec;
+}
+
+.crissel-ticket__copy:focus-visible {
+  outline: 2px solid var(--brand-solid-strong);
+  outline-offset: -4px;
+}
+
+/* No active promo */
+.crissel-promo-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 44rem;
+  padding: 3rem 2rem;
+  border-radius: 1.75rem;
+  border: 1px dashed rgba(229, 115, 115, 0.4);
+  background:
+    radial-gradient(at 50% 0%, rgba(248, 187, 217, 0.3) 0, transparent 60%),
+    rgba(255, 255, 255, 0.75);
+  text-align: center;
+}
+
+.crissel-promo-empty__icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  background: #fce4ec;
+  border-color: rgba(229, 115, 115, 0.35);
+  color: #c45c5c;
+}
+
+/* Extras on the plum band: two glass cards, raffle form below */
+.crissel-promo-extras {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .crissel-promo-extras {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.crissel-promo-extras .crissel-standard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.crissel-promo-extras .crissel-standard__title {
+  margin: 0.5rem 0 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.crissel-promo-extras .crissel-standard__desc {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+/* Archive */
+.crissel-past-promos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 48rem;
+}
+
+@media (min-width: 700px) {
+  .crissel-past-promos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.crissel-past-promo {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 0.9rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(229, 115, 115, 0.16);
+  background: #fff;
+}
+
+.crissel-past-promo__thumb {
+  position: relative;
+  width: 5.5rem;
+  aspect-ratio: 4 / 5;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 0.85rem;
+  background: linear-gradient(145deg, #fce4ec, #fff0f4);
+}
+
+.crissel-past-promo__thumb img {
+  filter: grayscale(0.6);
+  opacity: 0.85;
+}
+
+.crissel-past-promo__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.crissel-past-promo__status {
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: #f1e6e8;
+  color: #6b5258;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.crissel-past-promo__title {
+  margin: 0.2rem 0 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #2d1a1f;
+}
+
+.crissel-past-promo__meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #6b5258;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crissel-promo-status.is-live .crissel-promo-status__dot {
+    animation: none;
+  }
+}
+
+.crissel-past-promo:only-child {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 100%;
+  max-width: 24rem;
+}
+
+.crissel-promo-raffle {
+  max-width: 56rem;
+}
