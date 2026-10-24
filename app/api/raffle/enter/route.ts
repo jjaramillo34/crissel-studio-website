@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import configPromise from '../../../../payload.config'
-import { RAFFLE_PROMO_SLUG } from '@/data/raffle'
+import { RAFFLE_PROMO_SLUG, isRaffleOpen } from '@/data/raffle'
 import { normalizeEcuadorMobile } from '@/lib/phoneEcuador'
 import { checkRateLimit } from '@/lib/rateLimit'
 
@@ -20,6 +20,13 @@ function isDuplicateKeyError(error: unknown): boolean {
 }
 
 export async function POST(req: Request) {
+  if (!isRaffleOpen()) {
+    return NextResponse.json(
+      { ok: false, message: 'El sorteo ya cerró. ¡Gracias por tu interés!' },
+      { status: 403 },
+    )
+  }
+
   try {
     const forwardedFor = req.headers.get('x-forwarded-for')
     const clientIp =

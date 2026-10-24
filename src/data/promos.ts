@@ -30,6 +30,9 @@ export type PromoEntry = {
   title: string
   subtitle: string
   validLabel: string
+  /** ISO dates with Ecuador offset; the promo shows as active only between them */
+  startsAt: string
+  endsAt: string
   price: string
   priceNote?: string
   services: string[]
@@ -51,6 +54,8 @@ export const promos: PromoEntry[] = [
     title: 'Promo Día de la Mamita',
     subtitle: 'Extensión de pestañas + laminado de cejas',
     validLabel: 'Del 5 al 15 de mayo de 2026',
+    startsAt: '2026-05-05T00:00:00-05:00',
+    endsAt: '2026-05-15T23:59:59-05:00',
     price: '$40',
     priceNote: 'Incluye obsequio especial',
     services: ['Extensión de pestañas', 'Laminado de cejas'],
@@ -63,3 +68,7 @@ export const promos: PromoEntry[] = [
     accent: 'rose-gold',
   },
 ]
+
+export function isPromoActive(promo: PromoEntry, now: Date = new Date()): boolean {
+  return now >= new Date(promo.startsAt) && now <= new Date(promo.endsAt)
+}

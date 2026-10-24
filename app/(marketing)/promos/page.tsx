@@ -1,13 +1,22 @@
 import PromosPage from '@/components/PromosPage'
 import { generateMetadata } from '@/lib/metadata'
+import { isPromoActive, promos } from '@/data/promos'
+import { isRaffleOpen } from '@/data/raffle'
 
 export const metadata = generateMetadata({
-  title: 'Promociones y cupón MADRE | Crissel Studio Ambato',
+  title: 'Promociones | Crissel Studio Ambato',
   description:
-    'Promo Día de la Mamita, 20 cupones orden de llegada, sorteo de maquillaje (anuncio en redes lunes 11 de mayo de 2026; servicio premio viernes 15 de mayo de 2026) y cupón MADRE (5%) por WhatsApp. Del 5 al 15 de mayo de 2026.',
+    'Promociones, cupones y sorteos de Crissel Studio en Ambato: pestañas, cejas, maquillaje y uñas. Agenda por WhatsApp con tu cupón.',
   url: '/promos',
 })
 
+/** Re-check promo dates hourly so campaigns open and close without a redeploy */
+export const revalidate = 3600
+
 export default function PromosRoute() {
-  return <PromosPage />
+  const now = new Date()
+  const activeIds = promos.filter((promo) => isPromoActive(promo, now)).map((promo) => promo.id)
+  const pastIds = promos.filter((promo) => new Date(promo.endsAt) < now).map((promo) => promo.id)
+
+  return <PromosPage activeIds={activeIds} pastIds={pastIds} raffleOpen={isRaffleOpen(now)} />
 }
