@@ -1,19 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  Background,
-  Button,
-  Column,
-  Grid,
-  Heading,
-  Icon,
-  RevealFx,
-  Row,
-  SegmentedControl,
-  Tag,
-  Text,
-} from '@once-ui-system/core'
+import Image from 'next/image'
+import { Button, Column, Grid, Heading, Icon, RevealFx, Row, Text } from '@once-ui-system/core'
 import { SectionHeader } from './sections/SectionHeader'
 
 const WHATSAPP = '593992950683'
@@ -95,51 +84,63 @@ const categoryIcons: Record<ShopProduct['category'], string> = {
   otros: 'package',
 }
 
+const perks = [
+  { icon: 'shieldCheck', label: 'Marca profesional' },
+  { icon: 'sparkle', label: 'La usamos en cabina' },
+  { icon: 'mapPin', label: 'Retiro en Ambato' },
+]
+
+const steps = [
+  {
+    number: '01',
+    icon: 'shoppingBag',
+    title: 'Elige tus productos',
+    text: 'Revisa el catálogo y anota lo que te interesa: referencia, curvatura o formato.',
+  },
+  {
+    number: '02',
+    icon: 'whatsapp',
+    title: 'Escríbenos',
+    text: 'Te confirmamos stock, precio y formatos al instante por WhatsApp.',
+  },
+  {
+    number: '03',
+    icon: 'mapPin',
+    title: 'Retira o recibe',
+    text: 'Pasa por el estudio en Ambato o coordinamos el envío según disponibilidad.',
+  },
+]
+
 const waLink = (productName: string) => {
   const text = `Hola Crissel Studio 👋 Me interesa: ${productName}. ¿Disponibilidad y precio?`
   return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`
 }
 
-const ProductCard = ({ product }: { product: ShopProduct }) => (
-  <Column
-    as="article"
-    fill
-    background="surface"
-    border="neutral-alpha-weak"
-    radius="l"
-    padding="24"
-    gap="12"
-  >
-    <Row horizontal="between" vertical="center" gap="12" wrap>
-      <Row gap="12" vertical="center">
-        <Row center width="48" height="48" radius="m" background="brand-alpha-weak">
-          <Icon name={categoryIcons[product.category]} size="s" onBackground="brand-strong" />
-        </Row>
-        <Tag variant="brand" size="s" label={categoryLabels[product.category]} />
-      </Row>
-      {product.highlight && <Tag variant="accent" size="s" label={product.highlight} />}
-    </Row>
+/** Editorial product card: outlined number, category eyebrow, serif name, coral tagline */
+const ProductCard = ({ product, number }: { product: ShopProduct; number: number }) => (
+  <article className="crissel-shop-card">
+    <span className="crissel-shop-card__number font-display" aria-hidden>
+      {String(number).padStart(2, '0')}
+    </span>
 
-    <Heading as="h3" variant="heading-strong-l">
-      {product.name}
-    </Heading>
-    <Text variant="body-strong-s" onBackground="brand-medium">
-      {product.short}
-    </Text>
-    <Column flex={1}>
-      <Text variant="body-default-s" onBackground="neutral-medium">
-        {product.description}
-      </Text>
-    </Column>
+    <div className="crissel-shop-card__top">
+      <span className="crissel-shop-card__category">
+        <Icon name={categoryIcons[product.category]} size="xs" />
+        {categoryLabels[product.category]}
+      </span>
+      {product.highlight && <span className="crissel-tx__badge">{product.highlight}</span>}
+    </div>
 
-    <Button
-      href={waLink(product.name)}
-      variant="secondary"
-      fillWidth
-      prefixIcon="whatsapp"
-      label="Consultar disponibilidad"
-    />
-  </Column>
+    <h3 className="crissel-shop-card__name font-display">{product.name}</h3>
+    <p className="crissel-shop-card__short">{product.short}</p>
+    <p className="crissel-shop-card__desc">{product.description}</p>
+
+    <a href={waLink(product.name)} className="crissel-shop-card__link">
+      <Icon name="whatsapp" size="xs" />
+      Consultar disponibilidad
+      <span aria-hidden>→</span>
+    </a>
+  </article>
 )
 
 const ShopPage = () => {
@@ -147,34 +148,9 @@ const ShopPage = () => {
   const filtered = filter === 'todas' ? products : products.filter((p) => p.category === filter)
 
   return (
-    <Column as="main" fillWidth horizontal="center" overflow="hidden">
-      <Background
-        position="absolute"
-        top="0"
-        left="0"
-        fill
-        pointerEvents="none"
-        gradient={{
-          display: true,
-          colorStart: 'brand-alpha-medium',
-          x: 100,
-          y: 0,
-          width: 150,
-          height: 100,
-          opacity: 50,
-        }}
-      />
-
-      <Column
-        zIndex={1}
-        fillWidth
-        maxWidth="l"
-        paddingX="24"
-        paddingTop="104"
-        paddingBottom="80"
-        gap="40"
-      >
-        <Column gap="32" horizontal="center">
+    <main className="crissel-products">
+      <section className="crissel-section crissel-section--blush crissel-products__intro">
+        <div className="crissel-section__inner">
           <Button href="/" variant="tertiary" size="s" prefixIcon="arrowLeft" label="Volver al inicio" />
           <SectionHeader
             titleAs="h1"
@@ -183,85 +159,134 @@ const ShopPage = () => {
             titleAccent="Nagaraku"
             description="Extensiones de pestañas, parches de hidrogel y complementos profesionales de la marca Nagaraku. Compra en el estudio o coordina tu pedido por WhatsApp."
           />
-        </Column>
 
-        <Row
-          background="surface"
-          border="neutral-alpha-weak"
-          radius="l"
-          padding="24"
-          gap="24"
-          vertical="center"
-          horizontal="between"
-          s={{ direction: 'column', vertical: 'start' }}
-        >
-          <Row gap="16" vertical="start">
-            <Row center width="48" height="48" radius="l" background="brand-alpha-weak">
-              <Icon name="shoppingBag" onBackground="brand-strong" />
-            </Row>
-            <Column gap="4" flex={1}>
-              <Text variant="heading-strong-m">Calidad profesional</Text>
-              <Text variant="body-default-s" onBackground="neutral-medium">
-                Trabajamos con referencias Nagaraku para nuestros servicios; también puedes llevarte
-                productos según stock. Precios y formatos te los confirmamos al instante.
-              </Text>
-            </Column>
-          </Row>
-          <Button href={waLink('catálogo Nagaraku')} prefixIcon="whatsapp" label="Pedir por WhatsApp" />
-        </Row>
+          <ul className="crissel-shop-perks">
+            {perks.map((perk) => (
+              <li key={perk.label} className="crissel-shop-perks__item">
+                <span className="crissel-shop-perks__icon">
+                  <Icon name={perk.icon} size="xs" />
+                </span>
+                {perk.label}
+              </li>
+            ))}
+          </ul>
 
-        <Row horizontal="center">
-          <SegmentedControl
-            fillWidth={false}
-            selected={filter}
-            onToggle={(value) => setFilter(value as ShopCategory)}
-            buttons={(Object.keys(categoryLabels) as ShopCategory[]).map((key) => ({
-              value: key,
-              label: categoryLabels[key],
-            }))}
+          <Button href={waLink('catálogo Nagaraku')} size="l" prefixIcon="whatsapp" label="Pedir por WhatsApp" />
+        </div>
+      </section>
+
+      <section className="crissel-section crissel-section--cream" aria-labelledby="catalogo-title">
+        <div className="crissel-section__inner">
+          <SectionHeader
+            titleId="catalogo-title"
+            eyebrow="Catálogo"
+            title="Lo que usamos"
+            titleAccent="en cabina"
+            description="Precios y formatos te los confirmamos al instante; la disponibilidad depende del stock."
           />
-        </Row>
 
-        {filtered.length > 0 ? (
-          <Grid columns="2" s={{ columns: 1 }} gap="24">
+          <div className="crissel-shop-filters" role="group" aria-label="Filtrar por categoría">
+            {(Object.keys(categoryLabels) as ShopCategory[]).map((key) => {
+              const count =
+                key === 'todas' ? products.length : products.filter((p) => p.category === key).length
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  className="crissel-shop-filters__chip"
+                  aria-pressed={filter === key}
+                  onClick={() => setFilter(key)}
+                >
+                  {categoryLabels[key]}
+                  <span className="crissel-shop-filters__count">{count}</span>
+                </button>
+              )
+            })}
+          </div>
+
+          <Grid key={filter} columns="3" m={{ columns: 2 }} s={{ columns: 1 }} gap="20" fillWidth>
             {filtered.map((product, index) => (
-              <RevealFx key={product.id} delay={index * 0.05} translateY="8" fill>
-                <ProductCard product={product} />
+              <RevealFx key={product.id} delay={index * 0.06} translateY="8" fill>
+                <ProductCard product={product} number={products.indexOf(product) + 1} />
               </RevealFx>
             ))}
           </Grid>
-        ) : (
-          <Text align="center" onBackground="neutral-medium" paddingY="48">
-            No hay productos en esta categoría por ahora.
-          </Text>
-        )}
+        </div>
+      </section>
 
-        <Column
-          background="surface"
-          border="neutral-alpha-weak"
-          radius="xl"
-          padding="40"
-          s={{ padding: '24' }}
-          gap="24"
-          horizontal="center"
-          marginTop="24"
-        >
-          <Column gap="12" horizontal="center" maxWidth="s">
-            <Heading as="h2" variant="display-strong-xs" align="center">
-              ¿Prefieres ver todo en persona?
-            </Heading>
-            <Text variant="body-default-m" onBackground="neutral-medium" align="center">
-              Pasa por Crissel Studio en Ambato o escríbenos para reservar retiro o envío según
-              disponibilidad.
-            </Text>
-          </Column>
-          <Row gap="12" s={{ direction: 'column', fillWidth: true }} horizontal="center">
-            <Button href="/productos" variant="secondary" label="Ver servicios y tarifas" />
-            <Button href="https://bit.ly/crisselstudio" prefixIcon="calendar" label="Reservar cita" />
-          </Row>
-        </Column>
-      </Column>
-    </Column>
+      <section className="crissel-section crissel-section--ink" aria-labelledby="comprar-title">
+        <div className="crissel-section__inner">
+          <SectionHeader
+            tone="dark"
+            titleId="comprar-title"
+            eyebrow="Cómo comprar"
+            title="Simple y"
+            titleAccent="personal"
+            description="Sin carrito ni complicaciones: te atendemos directamente, como en el estudio."
+          />
+
+          <Grid columns="3" m={{ columns: 1 }} gap="20" fillWidth>
+            {steps.map((step, index) => (
+              <RevealFx key={step.number} delay={index * 0.1} translateY="16" fill>
+                <Column as="article" fill gap="16" className="crissel-standard">
+                  <span className="crissel-standard__number font-display" aria-hidden>
+                    {step.number}
+                  </span>
+                  <span className="crissel-standard__icon">
+                    <Icon name={step.icon} size="m" />
+                  </span>
+                  <Heading as="h3" variant="heading-strong-l" className="font-display crissel-standard__title">
+                    {step.title}
+                  </Heading>
+                  <Text variant="body-default-s" className="crissel-standard__desc">
+                    {step.text}
+                  </Text>
+                </Column>
+              </RevealFx>
+            ))}
+          </Grid>
+        </div>
+      </section>
+
+      <section className="crissel-section crissel-section--blush" aria-labelledby="visita-title">
+        <div className="crissel-section__inner">
+          <div className="crissel-shop-visit">
+            <div className="crissel-product__collage crissel-shop-visit__photo">
+              <div className="crissel-product__frame">
+                <Image
+                  src="/assets/gallery/extensiones-pestanas-3.jpg"
+                  alt="Clienta durante un servicio de extensiones en Crissel Studio"
+                  fill
+                  sizes="(max-width: 900px) 80vw, 30vw"
+                  className="object-cover"
+                />
+              </div>
+            </div>
+
+            <div className="crissel-shop-visit__copy">
+              <SectionHeader
+                align="start"
+                size="compact"
+                titleId="visita-title"
+                eyebrow="Visítanos"
+                title="¿Prefieres verlo"
+                titleAccent="en persona"
+                titleEnd="?"
+                description="Pasa por Crissel Studio en Ambato o escríbenos para reservar retiro o envío según disponibilidad."
+              />
+              <p className="crissel-shop-visit__address">
+                <Icon name="mapPin" size="xs" />
+                Calle Mera entre Bolívar y Rocafuerte, Ambato
+              </p>
+              <Row gap="12" s={{ direction: 'column', fillWidth: true }}>
+                <Button href="https://bit.ly/crisselstudio" prefixIcon="calendar" label="Reservar cita" />
+                <Button href="/productos" variant="secondary" label="Ver servicios y tarifas" />
+              </Row>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   )
 }
 
