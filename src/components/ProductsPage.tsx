@@ -1,58 +1,51 @@
 'use client'
 
-import {
-  Background,
-  Button,
-  Column,
-  Flex,
-  Grid,
-  Heading,
-  Icon,
-  Media,
-  RevealFx,
-  Row,
-  Text,
-} from '@once-ui-system/core'
+import Image from 'next/image'
+import { Button, Icon, Row, SmartLink } from '@once-ui-system/core'
 import { SectionHeader } from './sections/SectionHeader'
+import ConsultationCta from './sections/ConsultationCta'
+import Contact from './sections/Contact'
 
 const BOOKING_URL = 'https://bit.ly/crisselstudio'
+const WHATSAPP_NUMBER = '593992950683'
 
 type Service = {
   id: string
+  number: string
+  /** Short label for the index at the top of the page */
+  shortTitle: string
   title: string
   subtitle: string
-  icon: string
-  /** Omit until photos exist; a branded placeholder is shown instead */
-  mainImage?: string
-  benefitsImage?: string
-  detailsImage?: string
+  mainImage: string
+  /** Up to two smaller photos shown under the main one */
+  extraImages?: string[]
   description: string
   duration?: string
   serviceTime?: string
   prices?: { name: string; price: string; description: string }[]
   /** Sub-services without a listed price */
   options?: { name: string; description: string }[]
-  price?: string
   benefits: string[]
+  isNew?: boolean
 }
 
 const services: Service[] = [
   {
     id: 'extensiones',
-    title: 'Extensiones de Pestañas',
-    subtitle: 'By Crissel',
-    icon: 'eye',
-    mainImage: '/assets/gallery/maquillaje-fantasia-10.jpg',
-    benefitsImage: '/assets/gallery/maquillaje-fantasia-3.jpg',
-    detailsImage: '/assets/gallery/maquillaje-fantasia-6.jpg',
+    number: '01',
+    shortTitle: 'Pestañas',
+    title: 'Extensiones de pestañas',
+    subtitle: 'By Crissel · Rimel · Híbrido · Volumen',
+    mainImage: '/assets/gallery/extensiones-pestanas-3.jpg',
+    extraImages: ['/assets/gallery/planchado-cejas-1.jpg', '/assets/gallery/extensiones-pestanas-2.jpg'],
     description:
       'Servicio diseñado para vernos perfectas desde el momento de despertar, al salir de la ducha y cuando vamos a una piscina. Logramos un efecto de volumen y mucho más largas, logramos reajustar la forma de tus ojos, protegemos tus pestañas naturales, no afectan los ojos, y no causan irritación.',
-    duration: 'Tiempo de duración de 8 meses a 1 año',
-    serviceTime: 'Tiempo de servicio de 2 horas a 2:30',
+    duration: 'Duran de 8 meses a 1 año',
+    serviceTime: 'Servicio de 2 h a 2 h 30',
     prices: [
-      { name: 'Efecto Rimel', price: '$30.00', description: 'Look natural y elegante' },
-      { name: 'Efecto Híbrido', price: '$40.00', description: 'Combinación perfecta' },
-      { name: 'Efecto Volumen', price: '$45.00', description: 'Máximo impacto y volumen' },
+      { name: 'Efecto Rimel', price: '$30', description: 'Look natural y elegante' },
+      { name: 'Efecto Híbrido', price: '$40', description: 'Combinación perfecta' },
+      { name: 'Efecto Volumen', price: '$45', description: 'Máximo impacto y volumen' },
     ],
     benefits: [
       'ADIÓS!!! rimel',
@@ -63,21 +56,22 @@ const services: Service[] = [
   },
   {
     id: 'planchado',
-    title: 'Planchado de Cejas',
-    subtitle: 'Perfección Natural',
-    icon: 'crown',
-    mainImage: '/assets/gallery/maquillaje-fantasia-5.jpg',
+    number: '02',
+    shortTitle: 'Planchado',
+    title: 'Planchado de cejas',
+    subtitle: 'Perfección natural',
+    mainImage: '/assets/gallery/microblading-cejas-2.jpg',
     description:
       'Técnica profesional que logra cejas perfectas con apariencia completa, ideal para cejas escasas.',
     benefits: ['Cejas peinadas', 'Cejas perfectas', 'Apariencia completa', 'Ideal para cejas escasas'],
-    price: 'Consultar precio',
   },
   {
     id: 'depilacion',
-    title: 'Depilación con Hilo',
-    subtitle: 'Precisión Perfecta',
-    icon: 'sparkle',
-    mainImage: '/assets/gallery/maquillaje-fantasia-4.jpg',
+    number: '03',
+    shortTitle: 'Depilación',
+    title: 'Depilación con hilo',
+    subtitle: 'Precisión perfecta',
+    mainImage: '/assets/gallery/microblading-cejas-1.jpg',
     description:
       'Técnica de depilación exacta que cuida la elasticidad de tu piel con mayor tiempo de duración.',
     benefits: [
@@ -86,26 +80,25 @@ const services: Service[] = [
       'Mayor tiempo de duración',
       'Cuida la elasticidad de tu piel',
     ],
-    price: 'Consultar precio',
   },
   {
     id: 'maquillaje',
-    title: 'Maquillaje Social',
-    subtitle: 'Elegancia y Estilo',
-    icon: 'heart',
-    mainImage: '/assets/gallery/maquillaje-fantasia-9.jpg',
+    number: '04',
+    shortTitle: 'Maquillaje',
+    title: 'Maquillaje social',
+    subtitle: 'Elegancia y estilo',
+    mainImage: '/assets/gallery/maquillaje-social-1.jpg',
     description: 'Maquillaje profesional para eventos sociales que resalta tu belleza natural.',
     benefits: ['Mímate', 'Deslumbra con tu llegada', 'Fotografías perfectas', 'Alimenta tu autoestima'],
-    price: 'Consultar precio',
   },
   {
     id: 'unas',
+    number: '05',
+    shortTitle: 'Uñas',
     title: 'Uñas',
-    subtitle: 'Nuevo en Crissel Studio',
-    icon: 'nails',
+    subtitle: 'Manicure · Semipermanente · Acrílicas · Nail art',
     mainImage: '/assets/gallery/unas-2.jpg',
-    benefitsImage: '/assets/gallery/unas-1.jpg',
-    detailsImage: '/assets/gallery/unas-3.jpg',
+    extraImages: ['/assets/gallery/unas-1.jpg', '/assets/gallery/unas-3.jpg'],
     description:
       'Manos y pies impecables, con el mismo detalle de cada servicio del estudio. Desde un manicure clásico hasta uñas acrílicas o polygel con el diseño que imaginas.',
     options: [
@@ -120,313 +113,170 @@ const services: Service[] = [
       'Manos y pies cuidados',
       'Ideal para eventos y el día a día',
     ],
-    price: 'Consultar precio',
+    isNew: true,
   },
 ]
 
-const contacts = [
-  { icon: 'phone', lines: ['0995059403', '0992950683'] },
-  { icon: 'mail', lines: ['crisseleon1990@gmail.com'] },
-  { icon: 'mapPin', lines: ['Calle Mera entre Bolívar y Rocafuerte'], note: 'Ambato, Ecuador' },
-]
+const whatsappFor = (service: Service) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    `Hola Crissel Studio, quisiera información sobre ${service.title.toLowerCase()}.`,
+  )}`
 
-const IconTile = ({ name, size = 'm' }: { name: string; size?: 'm' | 'l' }) => (
-  <Row
-    center
-    width={size === 'l' ? '64' : '48'}
-    height={size === 'l' ? '64' : '48'}
-    radius="l"
-    background="brand-alpha-weak"
-    border="brand-alpha-medium"
-  >
-    <Icon name={name} size={size} onBackground="brand-strong" />
-  </Row>
-)
-
-const ServiceRow = ({ service, reverse }: { service: Service; reverse: boolean }) => (
-  <Flex
-    id={service.id}
-    fillWidth
-    gap="48"
-    vertical="center"
-    direction={reverse ? 'row-reverse' : 'row'}
-    m={{ direction: 'column' }}
-    style={{ scrollMarginTop: '6rem' }}
-  >
-    <Column flex={1} gap="24">
-      <Row gap="16" vertical="center">
-        <IconTile name={service.icon} size="l" />
-        <Column gap="4">
-          <Heading as="h2" variant="display-strong-xs">
-            {service.title}
-          </Heading>
-          <Text variant="body-strong-l" onBackground="brand-medium">
-            {service.subtitle}
-          </Text>
-        </Column>
-      </Row>
-
-      <Text variant="body-default-l" onBackground="neutral-medium">
-        {service.description}
-      </Text>
-
-      {service.duration && (
-        <Column gap="8">
-          {[
-            { icon: 'clock', text: service.duration },
-            { icon: 'calendar', text: service.serviceTime },
-          ].map((detail) => (
-            <Row key={detail.icon} gap="8" vertical="center">
-              <Icon name={detail.icon} size="s" onBackground="brand-medium" />
-              <Text variant="body-default-m" onBackground="neutral-medium">
-                {detail.text}
-              </Text>
-            </Row>
-          ))}
-        </Column>
-      )}
-
-      {service.prices ? (
-        <Column gap="16">
-          <Heading as="h3" variant="heading-strong-l">
-            Precios
-          </Heading>
-          <Grid columns="3" s={{ columns: 1 }} gap="16">
-            {service.prices.map((price) => (
-              <Column
-                key={price.name}
-                background="surface"
-                border="neutral-alpha-weak"
-                radius="l"
-                padding="20"
-                gap="4"
-              >
-                <Text variant="heading-strong-s">{price.name}</Text>
-                <Text variant="display-strong-xs" onBackground="brand-strong">
-                  {price.price}
-                </Text>
-                <Text variant="body-default-s" onBackground="neutral-weak">
-                  {price.description}
-                </Text>
-              </Column>
-            ))}
-          </Grid>
-        </Column>
-      ) : (
-        <>
-          {service.options && (
-            <Column gap="16">
-              <Heading as="h3" variant="heading-strong-l">
-                Servicios
-              </Heading>
-              <Grid columns="2" s={{ columns: 1 }} gap="12">
-                {service.options.map((option) => (
-                  <Column
-                    key={option.name}
-                    background="surface"
-                    border="neutral-alpha-weak"
-                    radius="l"
-                    padding="16"
-                    gap="4"
-                  >
-                    <Text variant="heading-strong-s">{option.name}</Text>
-                    <Text variant="body-default-s" onBackground="neutral-weak">
-                      {option.description}
-                    </Text>
-                  </Column>
-                ))}
-              </Grid>
-            </Column>
-          )}
-          <Column background="brand-alpha-weak" border="brand-alpha-medium" radius="l" padding="24">
-            <Text variant="heading-strong-l" onBackground="brand-strong">
-              {service.price}
-            </Text>
-          </Column>
-        </>
-      )}
-
-      <Column gap="16">
-        <Heading as="h3" variant="heading-strong-l">
-          Beneficios
-        </Heading>
-        <Grid columns="2" s={{ columns: 1 }} gap="12">
-          {service.benefits.map((benefit) => (
-            <Row
-              key={benefit}
-              background="surface"
-              border="neutral-alpha-weak"
-              radius="l"
-              padding="12"
-              gap="12"
-              vertical="center"
-            >
-              <Icon name="star" size="s" onBackground="brand-medium" />
-              <Text variant="body-strong-m" onBackground="neutral-strong">
-                {benefit}
-              </Text>
-            </Row>
-          ))}
-        </Grid>
-      </Column>
-
-      <Button
-        href={BOOKING_URL}
-        size="l"
-        prefixIcon="calendar"
-        label={`Reservar ${service.title}`}
-      />
-    </Column>
-
-    <Column flex={1} gap="16" fillWidth>
-      {service.mainImage ? (
-        <Media
+/** Arched main photo with an offset coral outline, plus up to two small photos */
+const ServiceMedia = ({ service }: { service: Service }) => (
+  <div className="crissel-product__media">
+    <div className="crissel-product__collage">
+      <div className="crissel-product__frame">
+        <Image
           src={service.mainImage}
           alt={service.title}
-          aspectRatio="4 / 3"
-          radius="l"
-          border="neutral-alpha-weak"
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          fill
+          sizes="(max-width: 900px) 90vw, 40vw"
+          className="object-cover"
         />
-      ) : (
-        <Column
-          fillWidth
-          aspectRatio="4 / 3"
-          center
-          gap="12"
-          radius="l"
-          background="brand-alpha-weak"
-          border="brand-alpha-medium"
-          aria-hidden
-        >
-          <Icon name={service.icon} size="xl" onBackground="brand-medium" />
-          <Text variant="label-default-s" onBackground="brand-medium">
-            Fotos muy pronto
-          </Text>
-        </Column>
-      )}
-      {service.benefitsImage && (
-        <Grid columns="2" gap="16">
-          {[service.benefitsImage, service.detailsImage].filter(Boolean).map((src) => (
-            <Media
-              key={src}
-              src={src as string}
-              alt=""
-              aspectRatio="1 / 1"
-              radius="l"
-              border="neutral-alpha-weak"
-              sizes="(max-width: 1024px) 50vw, 25vw"
-            />
-          ))}
-        </Grid>
-      )}
-    </Column>
-  </Flex>
+      </div>
+      {service.isNew && <span className="crissel-product__badge">Nuevo</span>}
+    </div>
+    {service.extraImages && (
+      <div className="crissel-product__thumbs">
+        {service.extraImages.map((src) => (
+          <div key={src} className="crissel-product__thumb">
+            <Image src={src} alt="" fill sizes="(max-width: 900px) 45vw, 18vw" className="object-cover" />
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
 )
+
+/** Salon-menu rows: name and note on the left, a dotted leader, price on the right */
+const ServiceMenu = ({ service }: { service: Service }) => {
+  const rows = service.prices ?? service.options?.map((option) => ({ ...option, price: undefined }))
+  if (!rows) return null
+
+  return (
+    <div className="crissel-menu">
+      <p className="crissel-menu__title">{service.prices ? 'Precios' : 'Servicios'}</p>
+      <ul className="crissel-menu__list">
+        {rows.map((row) => (
+          <li key={row.name} className="crissel-menu__row">
+            <span className="crissel-menu__name">
+              <span className="font-display">{row.name}</span>
+              <span className="crissel-menu__note">{row.description}</span>
+            </span>
+            {row.price && (
+              <>
+                <span className="crissel-menu__leader" aria-hidden />
+                <span className="crissel-menu__price font-display">{row.price}</span>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+const ServiceSection = ({ service, index }: { service: Service; index: number }) => {
+  const reverse = index % 2 === 1
+  const titleId = `${service.id}-title`
+
+  return (
+    <section
+      id={service.id}
+      aria-labelledby={titleId}
+      className={`crissel-section ${reverse ? 'crissel-section--soft' : 'crissel-section--cream'} crissel-product`}
+    >
+      <div className="crissel-section__inner">
+        <div className={`crissel-treatment${reverse ? ' crissel-treatment--reverse' : ''}`}>
+          <ServiceMedia service={service} />
+
+          <div className="crissel-treatment__copy crissel-product__copy">
+            <p className="crissel-treatment__number">
+              {service.number} — {service.shortTitle}
+            </p>
+            <h2 id={titleId} className="crissel-treatment__title font-display">
+              {service.title}
+            </h2>
+            <p className="crissel-treatment__subtitle">{service.subtitle}</p>
+            <p className="crissel-treatment__desc">{service.description}</p>
+
+            {service.duration && (
+              <div className="crissel-product__meta">
+                {[
+                  { icon: 'clock', text: service.duration },
+                  { icon: 'calendar', text: service.serviceTime },
+                ].map((detail) => (
+                  <span key={detail.icon} className="crissel-product__chip">
+                    <Icon name={detail.icon} size="xs" />
+                    {detail.text}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <ServiceMenu service={service} />
+
+            {!service.prices && <p className="crissel-product__price-note">Precio: consúltanos por WhatsApp</p>}
+
+            <ul className="crissel-treatment__points crissel-product__points">
+              {service.benefits.map((benefit) => (
+                <li key={benefit}>
+                  <span className="crissel-treatment__check" aria-hidden>
+                    ✓
+                  </span>
+                  {benefit}
+                </li>
+              ))}
+            </ul>
+
+            <Row gap="12" s={{ direction: 'column', fillWidth: true }} className="crissel-product__ctas">
+              <Button href={BOOKING_URL} prefixIcon="calendar" label="Reservar cita" />
+              <Button href={whatsappFor(service)} variant="secondary" prefixIcon="whatsapp" label="Preguntar" />
+            </Row>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 const ProductsPage = () => {
   return (
-    <Column as="main" fillWidth horizontal="center" overflow="hidden">
-      <Background
-        position="absolute"
-        top="0"
-        left="0"
-        fill
-        pointerEvents="none"
-        gradient={{
-          display: true,
-          colorStart: 'brand-alpha-medium',
-          x: 0,
-          y: 0,
-          width: 150,
-          height: 100,
-          opacity: 50,
-        }}
-      />
-
-      <Column
-        zIndex={1}
-        fillWidth
-        maxWidth="l"
-        paddingX="24"
-        paddingTop="104"
-        paddingBottom="80"
-        gap="104"
-      >
-        <Column gap="32" horizontal="center">
+    <main className="crissel-products">
+      <section className="crissel-section crissel-section--blush crissel-products__intro">
+        <div className="crissel-section__inner">
           <Button href="/" variant="tertiary" size="s" prefixIcon="arrowLeft" label="Volver al inicio" />
           <SectionHeader
             titleAs="h1"
             eyebrow="Catálogo"
             title="Nuestros"
             titleAccent="productos & servicios"
-            description="Extensiones de pestañas, cejas, depilación con hilo y maquillaje social — todo con el mismo estándar profesional de Crissel Studio en Ambato."
+            description="Extensiones de pestañas, cejas, depilación con hilo, maquillaje social y uñas — todo con el mismo estándar profesional de Crissel Studio en Ambato."
           />
-        </Column>
 
-        {services.map((service, index) => (
-          <RevealFx key={service.id} translateY="16" fillWidth>
-            <ServiceRow service={service} reverse={index % 2 === 1} />
-          </RevealFx>
-        ))}
-
-        <Column
-          background="surface"
-          border="neutral-alpha-weak"
-          radius="xl"
-          padding="48"
-          s={{ padding: '24' }}
-          gap="32"
-          horizontal="center"
-          align="center"
-        >
-          <Column gap="12" horizontal="center">
-            <Heading as="h2" variant="display-strong-s" align="center">
-              ¿Lista para tu transformación?
-            </Heading>
-            <Text variant="body-default-l" onBackground="neutral-medium" align="center">
-              Contáctanos para agendar tu cita y descubrir el poder de realzar tu mirada
-            </Text>
-          </Column>
-
-          <Grid columns="3" m={{ columns: 1 }} gap="16" fillWidth>
-            {contacts.map((contact) => (
-              <Column
-                key={contact.icon}
-                background="page"
-                border="neutral-alpha-weak"
-                radius="l"
-                padding="20"
-                gap="8"
-                horizontal="center"
-              >
-                <IconTile name={contact.icon} />
-                {contact.lines.map((line) => (
-                  <Text key={line} variant="body-strong-m" align="center" style={{ overflowWrap: 'anywhere' }}>
-                    {line}
-                  </Text>
-                ))}
-                {contact.note && (
-                  <Text variant="body-default-s" onBackground="neutral-weak">
-                    {contact.note}
-                  </Text>
-                )}
-              </Column>
+          <nav aria-label="Servicios" className="crissel-pindex">
+            {services.map((service) => (
+              <SmartLink key={service.id} unstyled href={`#${service.id}`} className="crissel-pindex__item">
+                <span className="crissel-pindex__thumb">
+                  <Image src={service.mainImage} alt="" fill sizes="56px" className="object-cover" />
+                </span>
+                <span className="crissel-pindex__number">{service.number}</span>
+                <span className="crissel-pindex__title font-display">{service.shortTitle}</span>
+                {service.isNew && <span className="crissel-tx__badge">Nuevo</span>}
+              </SmartLink>
             ))}
-          </Grid>
+          </nav>
+        </div>
+      </section>
 
-          <Row gap="12" s={{ direction: 'column', fillWidth: true }} horizontal="center">
-            <Button href={BOOKING_URL} size="l" prefixIcon="calendar" label="Reservar cita online" />
-            <Button
-              href="https://instagram.com/crisselstudio.ec"
-              variant="secondary"
-              size="l"
-              label="Síguenos en Instagram"
-            />
-          </Row>
-        </Column>
-      </Column>
-    </Column>
+      {services.map((service, index) => (
+        <ServiceSection key={service.id} service={service} index={index} />
+      ))}
+
+      <ConsultationCta />
+      <Contact />
+    </main>
   )
 }
 
